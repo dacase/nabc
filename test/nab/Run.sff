@@ -11,7 +11,7 @@ fi
 echo "Running test to do simple minimization"
 echo "(this tests the molecular mechanics interface)"
 echo ""
-$AMBERHOME/bin/$NAB -o sff ltest.nab || error
+../../bin/$NAB -o sff ltest.nab || error
 $DO_PARALLEL ./sff > ltest.out || error
 
 ../dacdif ltest.out.check ltest.out

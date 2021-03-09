@@ -32,7 +32,7 @@ while( scanf( "%s %lf %lf %lf %lf", mname, xoff, incl, twist, rise ) == 5 ){
 #else
 while( scanf( "%s %f %f %f %f", mname, xoff, incl, twist, rise ) == 5 ){
 #endif
-	m = wc_helix(	"gcgttaacgc", "", "dna", "cgcaattgcg", "", "dna",
+	m = wc_helix(	"gcgttaacgc", "dna", "cgcaattgcg", "dna",
 			xoff, incl, twist, rise, "s5a5s3a3" );
 	pdbfname = sprintf( "%s.pdb", mname );
 	putpdb( pdbfname, m, "-wwpdb" );

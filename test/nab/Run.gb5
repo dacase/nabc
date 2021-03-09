@@ -11,7 +11,7 @@ fi
 echo "Running test to do simple minimization"
 echo "(this tests the ao-2 generalized Born implementation)"
 echo ""
-$AMBERHOME/bin/$NAB -o sff gb5trx.nab || error
+../../bin/$NAB -o sff gb5trx.nab || error
 $DO_PARALLEL ./sff > gb5trx.out || error
 
 ../dacdif gb5trx.out.check gb5trx.out

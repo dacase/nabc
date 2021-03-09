@@ -11,7 +11,7 @@ fi
 
 echo "Running test to create Amber force-field description"
 echo ""
-$AMBERHOME/bin/$NAB -o prm prm.nab || error
+../../bin/$NAB -o prm prm.nab || error
 $DO_PARALLEL ./prm > prm.out1 || error
 tail -20 prm.out1 > prm.out
 ../dacdif prm.out.check prm.out

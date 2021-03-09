@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute GB Newton-Raphson and normal modes:"
 echo ""
-$AMBERHOME/bin/$NAB -o asp asp.nab || error
+../../bin/$NAB -o asp asp.nab || error
 ($DO_PARALLEL ./asp > asp.out.tmp) || error
 cat asp.out.tmp | tail -67 > asp.out
 

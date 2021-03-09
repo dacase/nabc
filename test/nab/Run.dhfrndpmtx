@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute NAB energy of 3dfr minus waters."
 echo ""
-$AMBERHOME/bin/$NAB -o dhfrndpmtx dhfrndpmtx.nab || error
+../../bin/$NAB -o dhfrndpmtx dhfrndpmtx.nab || error
 $DO_PARALLEL ./dhfrndpmtx > dhfrndpmtx.out || error
 
 echo "Compare the NAB energy with the previously computed Amber energy:"

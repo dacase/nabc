@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute Langevin modes:"
 echo ""
-$AMBERHOME/bin/$NAB -o asp_nm3 asp_nm3.nab || error
+../../bin/$NAB -o asp_nm3 asp_nm3.nab || error
 $DO_PARALLEL ./asp_nm3 > asp_nm3.out.tmp || error
 cat asp_nm3.out.tmp | tail -67 > asp_nm3.out || error
 

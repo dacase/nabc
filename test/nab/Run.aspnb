@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute non-GB Newton-Raphson and normal modes:"
 echo ""
-$AMBERHOME/bin/$NAB -o aspnb aspnb.nab || error
+../../bin/$NAB -o aspnb aspnb.nab || error
 $DO_PARALLEL ./aspnb > aspnb.out.tmp || error
 cat aspnb.out.tmp | tail -67 > aspnb.out
 rm aspnb.out.tmp

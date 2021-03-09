@@ -8,7 +8,7 @@ fi
 
 echo "Running test to create a simple mmCIF file "
 echo ""
-$AMBERHOME/bin/nab -o cif cif.nab || error
+../../bin/nab -o cif cif.nab || error
 ./cif || error
 
 ../dacdif gbrna.cif.check gbrna.cif

@@ -8,7 +8,7 @@ fi
 
 echo "Running Reflexive test:"
 echo ""
-$AMBERHOME/bin/nab -o refl reflexive.nab || error
+../../bin/nab -o refl reflexive.nab || error
 ./refl > ref.out || error
 
 ../dacdif ref.out.check ref.out

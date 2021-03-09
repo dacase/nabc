@@ -12,7 +12,7 @@ if [ -n "${DO_PARALLEL}" ] ; then
    exit 0
 fi
 
-$AMBERHOME/bin/nab -o sff pbdmp.nab || error
+../../bin/nab -o sff pbdmp.nab || error
 $DO_PARALLEL ./sff > pbdmp.out || error
 
 ../dacdif pbdmp.out.check pbdmp.out

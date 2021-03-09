@@ -11,7 +11,7 @@ fi
 echo "Running test to do simple minimization"
 echo "(this tests the generalized Born implementation)"
 echo ""
-$AMBERHOME/bin/$NAB -o sff xfin_sa.nab || error
+../../bin/$NAB -o sff xfin_sa.nab || error
 $DO_PARALLEL ./sff > xfin_sa.out || error
 
 ../dacdif xfin_sa.out.check xfin_sa.out
