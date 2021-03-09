@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export MSANDERHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
+$MSANDERHOME/bin/x/REPLACE_ME "$@"
