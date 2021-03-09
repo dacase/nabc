@@ -66,7 +66,7 @@ TESTS = test-penalties test-int-part test-combination
 all: $(PROGS)
 
 dispatch:
-	SFX=$(SFX) BINDIR=$(BINDIR) sh patch.sh
+	@SFX=$(SFX) BINDIR=$(BINDIR) sh patch.sh
 
 tests: $(TESTS)
 

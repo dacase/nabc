@@ -1,7 +1,5 @@
 include ../../config.h
 
-CUSTOMBUILDFLAGS = -I../sff
-
 .SUFFIXES:
 .SUFFIXES:  .c .o 
 

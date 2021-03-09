@@ -5,6 +5,7 @@ include ../config.h
 install: $(INSTALLTYPE)
 
 serial:
+	@cd ucpp-1.3 && $(MAKE) ucpp
 	@cd leap && $(MAKE) tleap
 	@cd antechamber && $(MAKE) ac
 	@cd sff && $(MAKE) libsff
@@ -14,10 +15,12 @@ serial:
 parallel:
 
 clean:
+	-(cd ucpp-1.3 && $(MAKE) clean )
 	-(cd leap && $(MAKE) clean )
 	-(cd antechamber && $(MAKE) clean )
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
+	-(cd nab && $(MAKE) clean )
 
 uninstall: clean
 	-(cd $(BINDIR) && /bin/rm -f teLeap tleap)
