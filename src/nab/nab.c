@@ -116,7 +116,7 @@ char	*cppstring;
 
 	char	*cmd;
 	int	    status;
-    char    *msanderhome;
+    char    *nabhome;
     int     cpp_ofd, n2c_ofd;
 
     asprintf( &n2c_ofname, "/tmp/n2c_ofname_XXXXXX" );
@@ -143,14 +143,14 @@ char	*cppstring;
                  exit(1);
            }
 
-            msanderhome = (char * ) getenv("MSANDERHOME");
-            if( msanderhome == NULL ){
-               fprintf( stderr, "MSANDERHOME is not set!\n" );
+            nabhome = (char * ) getenv("NABHOME");
+            if( nabhome == NULL ){
+               fprintf( stderr, "NABHOME is not set!\n" );
                exit(1);
             }
 
 			asprintf( &cmd, "%s/bin/%s %s -I%s/include %s > %s",
-				msanderhome, "ucpp -l", cppstring, msanderhome,
+				nabhome, "ucpp -l", cppstring, nabhome,
 				argv[ ac ] ? argv[ ac ] : "", cpp_ofname );
 			if( cgdopt ) fprintf( stderr, "cpp cmd: %s\n", cmd );
             status = system( cmd );
@@ -167,7 +167,7 @@ char	*cppstring;
 #else
 			asprintf( &cmd, "%s/bin/nab2c %s %s %s -nfname %s < %s > %s",
 #endif
-				msanderhome,
+				nabhome,
 				cgdopt ? cgdval : "",
 				noassert ? "-noassert" : "",
 				nodebug ? "-nodebug" : "",
@@ -199,19 +199,19 @@ char	nfmask[];
 */
 {
 	int	ac;
-	char	*dotp, *msanderhome;
+	char	*dotp, *nabhome;
 	char	*cmd, word[ 1024 ];
 	int     cmd_sz;
 	int 	status;
 
-    msanderhome = (char *) getenv("MSANDERHOME");
-    if( msanderhome == NULL ){
-       fprintf( stderr, "MSANDERHOME is not set!\n" );
+    nabhome = (char *) getenv("NABHOME");
+    if( nabhome == NULL ){
+       fprintf( stderr, "NABHOME is not set!\n" );
        exit(1);
     }
 	cmd_sz = 1024;
 	cmd = malloc(cmd_sz);
-	sprintf( cmd, "%s -I%s/include", CC, msanderhome );
+	sprintf( cmd, "%s -I%s/include", CC, nabhome );
 	for( ac = 1; ac < argc; ac++ ){
 		word[0] = '\0';
 		if( nfmask[ ac ] ){
@@ -230,7 +230,7 @@ char	nfmask[];
 		}
 	}
 	if( !copt ){
-		sprintf( word, " -L%s/lib ", msanderhome );
+		sprintf( word, " -L%s/lib ", nabhome );
 		if (strlen(cmd) + strlen(word) + strlen(FLIBS) + 6 > cmd_sz) {
 		    cmd_sz += strlen(word) + strlen(FLIBS) + 6;
 		    cmd = realloc(cmd, cmd_sz);

@@ -5,7 +5,8 @@ include ../../config.h
 	$(VB)$(CC) -c $(COPTFLAGS) $(CFLAGS) $(NETCDFINC) -o $@ $<
 
 OBJS = conjgrad.o lmodC.o memutil.o nblist.o newton.o nmode.o \
-	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o 
+	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o \
+       wallclock.o
 
 install: libsff hcp_getpdb$(SFX)
 
