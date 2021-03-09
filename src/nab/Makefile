@@ -5,7 +5,7 @@ include ../../config.h
 
 %.o: %.nab $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
 	@echo "[NAB]  NAB $<"
-	$(VB)$(WINE) $(BINDIR)/$(MPI)nab$(SFX) -c $(NABFLAGS) $< -o $@
+	$(VB)$(BINDIR)/$(MPI)nab$(SFX) -c $(NABFLAGS) $< -o $@
 	@rm -f $*.c
 
 NAB2COBJS=	\
@@ -20,8 +20,13 @@ NAB2COBJS=	\
 	y.tab.o
 
 LIBNABOBJS=	\
+	bdna.o \
+	getseq_from_pdb.o \
+	getxyz_from_pdb.o \
 	gsub.o	\
 	hashutil.o	\
+	link_na.o \
+	linkprot.o \
 	traceback.o \
     time.o \
 	tm_malloc.o	
@@ -29,17 +34,8 @@ LIBNABOBJS=	\
 
 #===========================================================================
 
-install: $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
-	@rm -f $(INCDIR)/nabcode.h $(INCDIR)/defreal.h $(INCDIR)/nab.h
-	@cp nabcode.h $(INCDIR)
-	@cp nabtypes.h $(INCDIR)
-	@cp defreal.h $(INCDIR)
-	@cp nab.h $(INCDIR)
-#	@cp nab_netcdf.h $(INCDIR)
-#	@cp xmin_opt.h lmod_opt.h $(INCDIR)
-	@mv $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/x/
-	@cat nab_template | sed "s/REPLACE_ME/$(MPI)nab$(SFX)/g" > $(BINDIR)/$(MPI)nab$(SFX)
-	@chmod +x $(BINDIR)/$(MPI)nab$(SFX)
+install: $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX) \
+         $(LIBDIR)/libnab.a
 
 #  Force rebuilding of nab, since there is no easy to to see if FLIBS has
 #  changed.
@@ -48,11 +44,23 @@ $(BINDIR)/$(MPI)nab$(SFX)::
 	$(VB)$(CC) -DCC='"$(CC)"' -DCPP='"$(CPP)"' -DFLIBS='"$(FLIBS)"' \
 		$(CNOOPTFLAGS) $(CFLAGS) \
 		$(LDFLAGS) -o $(BINDIR)/$(MPI)nab$(SFX) nab.c
+	@cp nabcode.h $(INCDIR)
+	@cp nabtypes.h $(INCDIR)
+	@cp defreal.h $(INCDIR)
+	@cp nab.h $(INCDIR)
+	@mv $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/x/
+	@cat nab_template | sed "s/REPLACE_ME/$(MPI)nab$(SFX)/g" > $(BINDIR)/$(MPI)nab$(SFX)
+	@chmod +x $(BINDIR)/$(MPI)nab$(SFX)
 
 $(BINDIR)/$(MPI)nab2c$(SFX):	$(NAB2COBJS)
 	@echo "[NAB]  CC $@"
 	$(VB)$(CC) $(CFLAGS) $(AMBERCFLAGS) $(LDFLAGS) $(AMBERLDFLAGS) \
 		-o $(BINDIR)/$(MPI)nab2c$(SFX) $(NAB2COBJS)
+
+$(LIBDIR)/libnab.a: $(LIBNABOBJS) $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
+	@echo "[NAB]  AR $@"
+	$(VB)$(AR) $@ $(LIBNABOBJS)  > /dev/null
+	$(VB)-ranlib $@
 
 #===========================================================================
 

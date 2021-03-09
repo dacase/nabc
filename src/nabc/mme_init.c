@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "nab.h"
+#include "nabc.h"
 #include "memutil.h"
 #include "molutil.h"
 #include "../sff/prm.h"

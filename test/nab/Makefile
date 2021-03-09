@@ -1,7 +1,7 @@
 
 
 test: duplex_test deform_test reflexive_test gsub_test hashed_test shifts_test \
-	sff_test rattle_min_test fd_test gb_test xfin_test gbsa_test gb2_test \
+	sff_test rattle_min_test gb_test xfin_test gbsa_test gb2_test \
 	gb5_test gb8_test gb7_test rattle_md_test rembed_test dhfrndpmtx_test \
 	asp_test aspnb_test prm_test cif_test xmin_test gbnetcdf_test \
 	netcdf_test variable_14test \
@@ -30,9 +30,6 @@ sff_test::
 
 rattle_min_test::
 	@./Run.shake
-
-fd_test:: 
-	@./Run.fd
 
 gb_test::
 	@./Run.gb

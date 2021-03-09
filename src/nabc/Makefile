@@ -18,6 +18,7 @@ NABCOBJS=	\
 	jacobi.o	\
 	match.o		\
 	matop.o		\
+	mme_init.o  \
 	molio.o		\
 	molsurf.o   \
 	molutil.o	\
