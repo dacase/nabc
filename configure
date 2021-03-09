@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "configure script for msander\n\n"
+printf "configure script for nab\n\n"
 
 # Store the command
 command=`echo "$0 $*"`
@@ -10,10 +10,7 @@ nabhome=`pwd`
 verbose="@"
 enablempi=
 requested_help="no"
-bintraj="-DBINTRAJ"
-clangf=""
-rism="librism"
-rismsander="-DRISMSANDER"
+bintraj=""
 conda="no"
 openblas="no"
 boost="yes"
@@ -33,6 +30,7 @@ ompflag=""
 ldflags=""
 mkl="no"
 installtype="serial"
+inc="-I$nabhome/include"
 
 #  process command-line flags:
 for var in "$@"; do
@@ -135,7 +133,6 @@ if [ ! -d include ]; then
     mkdir include
 fi
 cp src/include/CompatibilityMacros.h include
-cp src/msander/sander.h include
 
 #------------------------------------------------------------------------------
 #  Initialize variables that are architecture specific:
@@ -161,7 +158,6 @@ if [ "$OS" = "Darwin" ]; then
    is_mac='yes'
    shared_suffix=.dylib
    make_shared=-dynamiclib
-   libgfortran=`$msanderhome/src/libgfortran.sh`
    lm=
 else
    is_mac='no'
@@ -346,7 +342,7 @@ NETCDFLIBF=$netcdflibf
 
 #  (4)  C compiler
 
-CFLAGS=$bintraj $clangf $inc $ompflag -fPIC
+CFLAGS=$bintraj $inc $ompflag
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 
@@ -364,5 +360,8 @@ VB=$verbose
 INSTALLTYPE=$installtype
 
 EOF
+
+printf "Configure complete\n"
+printf "\nThe next step is to type 'make clean && make install'\n\n"
 
 exit 0

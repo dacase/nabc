@@ -61,6 +61,6 @@ uninstall: clean
 
 depend: $(NABCOBJS:.o=.c)
 	@echo "[NABC] make depend"
-	$(VB)$(CC) -MM $^ > $@
+	$(VB)$(CC) $(CFLAGS) -MM $^ > $@
 
 include depend

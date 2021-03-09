@@ -7,8 +7,8 @@ int	regerr;
 #define	GETC()	(*sp++)
 #define	PEEKC()	(*sp)
 #define	UNGETC(c)	(--sp)
-#define	RETURN(c)	{ regerr = 0; return('\0'); }
-#define	ERROR(c)	{ remsg(c); return('\0'); }
+#define	RETURN(c)	{ regerr = 0; return(NULL); }
+#define	ERROR(c)	{ remsg(c); return(NULL); }
 
 static	void	getrnge( char * );
 

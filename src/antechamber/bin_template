@@ -1,4 +1,4 @@
 #!/bin/sh
 
-export MSANDERHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
-$MSANDERHOME/bin/x/REPLACE_ME "$@"
+export NABHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
+$NABHOME/bin/x/REPLACE_ME "$@"

@@ -1,12 +1,12 @@
 #!/bin/sh
 
-export MSANDERHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
+export NABHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
 if [ `uname -s|awk '{print $1}'` != "Darwin" ]; then
     if [ -z "${LD_LIBRARY_PATH}" ]; then
-       export LD_LIBRARY_PATH="${MSANDERHOME}/lib"
+       export LD_LIBRARY_PATH="${NABHOME}/lib"
     else
-       export LD_LIBRARY_PATH="${MSANDERHOME}/lib:${LD_LIBRARY_PATH}"
+       export LD_LIBRARY_PATH="${NABHOME}/lib:${LD_LIBRARY_PATH}"
     fi
 fi
 
-$MSANDERHOME/bin/x/REPLACE_ME $*
+$NABHOME/bin/x/REPLACE_ME $*
