@@ -1,3 +1,4 @@
+#define NAB_DOUBLE_PRECISION 1
 //
 //	Transformation applier. Used as the sink in a symmetry server
 //	pipeline. 
