@@ -350,7 +350,7 @@ COPTFLAGS=$optflags
 
 #  (5)  other flags:
 
-FLIBS= -lsff -lnabc -lcifparse $flibs_la
+FLIBS= -lsff -lnabc -lnab -lcifparse $flibs_la
 AR=    ar rv
 RANLIB=ranlib
 MV=mv

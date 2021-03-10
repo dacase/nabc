@@ -21,15 +21,12 @@ NAB2COBJS=	\
 
 LIBNABOBJS=	\
 	bdna.o \
-	getchivol.o \
 	getseq_from_pdb.o \
 	getxyz_from_pdb.o \
 	gsub.o	\
 	hashutil.o	\
 	link_na.o \
 	linkprot.o \
-	setboundsfromdb.o \
-	setchiplane.o \
 	traceback.o \
 	transform.o \
     time.o \

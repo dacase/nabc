@@ -489,15 +489,15 @@ int fieldLength;
      */
     if (i == str_len) {
       if (*offset != 0) 
-	sprintf(tmpstring, " %s\0", value);
+	sprintf(tmpstring, " %s", value);
       else 
 	strcpy(tmpstring, value);
     }
     else {
       if (*offset != 0) 
-	sprintf(tmpstring, " \'%s\'\0", value);
+	sprintf(tmpstring, " \'%s\'", value);
       else
-	sprintf(tmpstring, "\'%s\'\0", value);
+	sprintf(tmpstring, "\'%s\'", value);
     }
     if (str_len < fieldLength) { 
       if ((fieldLength+3) > 80) str_len +=3;
