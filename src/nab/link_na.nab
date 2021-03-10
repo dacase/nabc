@@ -1,4 +1,4 @@
-molecule build( string resletter, string library, string strandname )
+molecule build( string resletter, string strandname )
 {
 	residue in_res;
 	string resname;
@@ -14,8 +14,7 @@ molecule build( string resletter, string library, string strandname )
 
 // creates extended conformation of nucleic acid sequence in 5'->3' direction:
 
-molecule link_na( string strandname, string seq, string reslib, 
-	string natype, string opts )
+molecule link_na( string strandname, string seq, string natype, string opts )
 {
 	molecule m1,m2;
 	matrix 	mat;
@@ -36,13 +35,13 @@ molecule link_na( string strandname, string seq, string reslib,
 	if( opts =~ "5" ) rname = rname + "5";
 
 	// create first residue, m1:
-	m1 = build( rname, reslib, strandname );	
+	m1 = build( rname, strandname );	
 
 	for( i = 2; i <= len-1; i = i + 1 ){
 
 		rname = substr( seq, i, 1 );	// create next residue, m2
 		if( natype == "DNA" ) rname = "D" + rname;
-		m2 = build( rname, reslib, strandname );
+		m2 = build( rname, strandname );
 					
 					// align m1:O3'->C3' with m2:P->O5'
 		setframe(2, m2, ":1:P", ":1:OP2", ":1:OP1", ":1:P", ":1:O5'");
@@ -104,7 +103,7 @@ molecule link_na( string strandname, string seq, string reslib,
 		if( opts =~ "3" ) rname = rname + "3";
 
 		// create last residue, m2
-		m2 = build( rname, reslib, strandname );	
+		m2 = build( rname, strandname );	
 
 						// align m1:O3'->C3' with m2:P->O5'
 		setframe(2, m2, ":1:P", ":1:OP2", ":1:OP1", ":1:P", ":1:O5'");

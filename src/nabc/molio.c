@@ -90,7 +90,7 @@ static void initres(void);
 void NAB_initres(RESIDUE_T *, int);
 void NAB_initatom(ATOM_T *, int);
 static void makebonds(RESIDUE_T *);
-static REAL_T dist(ATOM_T *, ATOM_T *);
+static REAL_T distio(ATOM_T *, ATOM_T *);
 static void fputpdb(FILE *, MOLECULE_T *, char *);
 static void fputcif(FILE *, char *, MOLECULE_T *);
 static void mk_brook_rname(char[], RESIDUE_T *);
@@ -447,7 +447,7 @@ int putdist(char fname[], MOLECULE_T * mol, char aexp1[], char aexp2[])
                                     r1 + 1, res1->r_resname,
                                     ap1->a_atomname, r2 + 1,
                                     res2->r_resname, ap2->a_atomname,
-                                    dist(ap1, ap2));
+                                    distio(ap1, ap2));
                             cnt++;
                         }
                     }
@@ -1268,7 +1268,7 @@ static void makebonds(RESIDUE_T * res)
                     ap2->a_atomname[1] == 'h';
             else
                 ih2 = *ap2->a_atomname == 'H' || *ap2->a_atomname == 'h';
-            d = dist(ap1, ap2);
+            d = distio(ap1, ap2);
             if (ih1 || ih2) {
                 if (d <= BH_THRESH) {
                     if (ap1->a_nconnect < A_CONNECT_SIZE &&
@@ -1288,7 +1288,7 @@ static void makebonds(RESIDUE_T * res)
     }
 }
 
-static REAL_T dist(ATOM_T * ap1, ATOM_T * ap2)
+static REAL_T distio(ATOM_T * ap1, ATOM_T * ap2)
 {
     REAL_T dx, dy, dz;
 

@@ -148,7 +148,7 @@ REAL_T		db_viol3( REAL_T*, REAL_T*, INT_T* );
 MOLECULE_T	*dg_helix( STRING_T**, STRING_T**, STRING_T**, STRING_T**, STRING_T**, STRING_T**, 
 		REAL_T*, REAL_T*, REAL_T*, REAL_T*, STRING_T** );
 INT_T		dg_options( BOUNDS_T*, STRING_T* );
-/* REAL_T		dist( MOLECULE_T*, STRING_T*, STRING_T* );  --duplicated in molio.c  */
+REAL_T		dist( MOLECULE_T*, STRING_T*, STRING_T* );
 REAL_T		distp( POINT_T, POINT_T );
 BOUNDS_T	*dt_to_bmat( MOLECULE_T**, STRING_T**, STRING_T** );
 INT_T		dt_to_prmtop( STRING_T**, STRING_T**, STRING_T**, STRING_T**, STRING_T** );
@@ -182,8 +182,6 @@ STRING_T	*getresname( RESIDUE_T* );
 INT_T		getxyz_from_pdb( STRING_T**, MOLECULE_T**, STRING_T**, INT_T* );
 INT_T		helixanal( MOLECULE_T** );
 INT_T		length( STRING_T*** );
-MOLECULE_T 	*linkprot( STRING_T**, STRING_T**, STRING_T** );
-MOLECULE_T 	*link_na( STRING_T**, STRING_T**, STRING_T**, STRING_T**, STRING_T** );
             
 INT_T		mergestr( MOLECULE_T*, STRING_T*, STRING_T*, MOLECULE_T*, STRING_T*, STRING_T* );
 INT_T		metrize( BOUNDS_T*, INT_T );
