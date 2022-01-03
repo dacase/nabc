@@ -1024,7 +1024,7 @@ char	s_op[];
 		return( OP_TRANS );
 	else if( !strcmp( s_op, "merge" ) )
 		return( OP_MERGE );
-	else if( !strcmp( s_op, "mulitply" ) )
+	else if( !strcmp( s_op, "multiply" ) )
 		return( OP_MULT );
 	else if( !strcmp( s_op, "read" ) )
 		return( OP_READ );

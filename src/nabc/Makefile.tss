@@ -114,7 +114,7 @@ clean:
 
 test: matgen transform
 	@echo =====================================================
-	@echo   "Running test create an icosahderal virus"
+	@echo   "Running test to create an icosahedral virus"
 	@echo
 	@./matgen -create ../test/ico.sym |\
 		 ./transform -pdb ../test/tbv.com.pdb > tbv.60.com.pdb

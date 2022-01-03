@@ -51,7 +51,7 @@
 
 #define    D2R    0.01745329251994329576
 
-    /* stuff for craeting chain ids */
+    /* stuff for creating chain ids */
 
 typedef struct cid_t {
     int c_next;
@@ -90,7 +90,7 @@ static void initres(void);
 void NAB_initres(RESIDUE_T *, int);
 void NAB_initatom(ATOM_T *, int);
 static void makebonds(RESIDUE_T *);
-static REAL_T distio(ATOM_T *, ATOM_T *);
+static REAL_T dist(ATOM_T *, ATOM_T *);
 static void fputpdb(FILE *, MOLECULE_T *, char *);
 static void fputcif(FILE *, char *, MOLECULE_T *);
 static void mk_brook_rname(char[], RESIDUE_T *);
@@ -447,7 +447,7 @@ int putdist(char fname[], MOLECULE_T * mol, char aexp1[], char aexp2[])
                                     r1 + 1, res1->r_resname,
                                     ap1->a_atomname, r2 + 1,
                                     res2->r_resname, ap2->a_atomname,
-                                    distio(ap1, ap2));
+                                    dist(ap1, ap2));
                             cnt++;
                         }
                     }
@@ -581,12 +581,12 @@ static MOLECULE_T *fgetpdb(FILE * fp, char *options)
             *np1 = '\0';
 
             /* check to see if this residue is RNA, and change the
-               Brookahven name H2'1 to the Amber (and IUPAC?) standard
+               Brookhaven name H2'1 to the Amber (and IUPAC?) standard
                H2'.  If the Brookhaven file doesn't have protons, there
                is no problem; if it does, they usually follow the heavy
                atoms, and the following code will also work.  If H2'
                precedes O2', then the code below will fail, and something
-               will have to be written to pre-scan the entire resiude :-(   */
+               will have to be written to pre-scan the entire residue :-(   */
             if (!strcmp(aname, "O2\'"))
                 res.r_kind = RT_RNA;
             if (!strcmp(aname, "H2\'1") && res.r_kind == RT_RNA)
@@ -1268,7 +1268,7 @@ static void makebonds(RESIDUE_T * res)
                     ap2->a_atomname[1] == 'h';
             else
                 ih2 = *ap2->a_atomname == 'H' || *ap2->a_atomname == 'h';
-            d = distio(ap1, ap2);
+            d = dist(ap1, ap2);
             if (ih1 || ih2) {
                 if (d <= BH_THRESH) {
                     if (ap1->a_nconnect < A_CONNECT_SIZE &&
@@ -1288,7 +1288,7 @@ static void makebonds(RESIDUE_T * res)
     }
 }
 
-static REAL_T distio(ATOM_T * ap1, ATOM_T * ap2)
+static REAL_T dist(ATOM_T * ap1, ATOM_T * ap2)
 {
     REAL_T dx, dy, dz;
 
@@ -1305,10 +1305,10 @@ static void fputpdb(FILE * fp, MOLECULE_T * mol, char *options)
         -pqr:  add charges and radii after the xyz coordinates
         -nobocc:  don't add occupancies and b-factors after the xyz coordinates
         (implied if -pqr is present)
-        -brook:  use Broohaven (aka pdb version2 )atom/residue names
-        -wwpdb:  use wwpdb (aka pdb version 3)  atom/residue names (default)
+        -brook:  use Brookhaven (aka pdb version 2) atom/residue names
+        -wwpdb:  use wwpdb (aka pdb version 3) atom/residue names (default)
         -tr:  use residue numbers that do not restart at each chain
-        -nocid:  do not put put chain id's in the output
+        -nocid:  do not put chain id's in the output
 
       */
 {
@@ -1669,7 +1669,7 @@ static void mk_wwpdb_aname(char aname[], char name[], char rname[])
 
     /*
      *      ---convert atom names to closely resemble those used by the
-     *         wwPDB in its "remdiated" files
+     *         wwPDB in its "remediated" files
      *       
      *      ---First, assume that there are no two-character element names
      *         (like Fe or Ca or Na).  Then, according to Brookhaven rules,

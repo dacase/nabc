@@ -1,5 +1,7 @@
 include ../../config.h
 
+CUSTOMBUILDFLAGS = -I../sff
+
 .SUFFIXES:
 .SUFFIXES:  .c .o 
 
@@ -18,7 +20,6 @@ NABCOBJS=	\
 	jacobi.o	\
 	match.o		\
 	matop.o		\
-	mme_init.o  \
 	molio.o		\
 	molsurf.o   \
 	molutil.o	\
@@ -60,6 +61,6 @@ uninstall: clean
 
 depend: $(NABCOBJS:.o=.c)
 	@echo "[NABC] make depend"
-	$(VB)$(CC) $(CFLAGS) -MM $^ > $@
+	$(VB)$(CC) -MM $(CFLAGS) $^ > $@
 
 include depend
