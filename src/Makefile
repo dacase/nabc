@@ -5,18 +5,20 @@ include ../config.h
 install: $(INSTALLTYPE)
 
 serial:
-	@cd ucpp-1.3 && $(MAKE) ucpp
+#	@cd ucpp-1.3 && $(MAKE) ucpp
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
-	@cd nab && $(MAKE) install
+#	@cd nab && $(MAKE) install
+	@cd leap && $(MAKE) tleap
 
 parallel:
 
 clean:
-	-(cd ucpp-1.3 && $(MAKE) clean )
+#	-(cd ucpp-1.3 && $(MAKE) clean )
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
-	-(cd nab && $(MAKE) clean )
+#	-(cd nab && $(MAKE) clean )
+	-(cd leap && $(MAKE) clean )
 
 uninstall: clean
 	/bin/rm -f $(INCDIR)/* ../config.h

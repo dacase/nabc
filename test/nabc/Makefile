@@ -44,7 +44,7 @@ test_cif:  tcif
 	./tcif
 	/bin/rm tcif tcif.o
 
-LIBS = -L$(LIBDIR) -lsff $(FLIBSF) $(NETCDFLIBF)  $(LM) -lgfortran -w
+LIBS = -L$(LIBDIR) -lsff $(FLIBSF) $(NETCDFLIBF)  $(LM) 
 
 #---------------------------------------------------------------------------
 txmin:  txmin.o
