@@ -82,7 +82,7 @@ FILE *fp;
   if (fp == NULL ) {
     return 0;
   }
-  cifpin = fp;
+  // cifpin = fp;
   lineNo = 0;
   rewind(fp);
   if (cifpparse() != 0) { /* YYACCEPT */
