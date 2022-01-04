@@ -5,12 +5,11 @@ include ../../config.h
 	$(VB)$(CC) -c $(COPTFLAGS) $(CFLAGS) $(NETCDFINC) -o $@ $<
 
 OBJS = conjgrad.o lmodC.o memutil.o nblist.o newton.o nmode.o \
-	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o \
-       wallclock.o
+	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o 
 
-libsff: $(LIBDIR)/libsff.a
+install: libsff hcp_getpdb$(SFX)
 
-$(LIBDIR)/libsff.a: $(OBJS)
+libsff: $(OBJS)
 	@echo "[SFF]  AR $@"
 	$(VB)/bin/rm -f $(LIBDIR)/libsff.a
 	$(VB)$(AR) $(LIBDIR)/libsff.a $(OBJS)	> /dev/null

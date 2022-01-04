@@ -272,15 +272,9 @@ int com_vw2zero(REAL_T *, REAL_T *,REAL_T *);
 
 REAL_T seconds(void)
 {
-#ifdef SUN
-   hrtime_t nsec;
-   nsec = gethrtime();
-   return (((REAL_T) nsec) * 1.0e-09);
-#else
    REAL_T t1;
    arsecond_( &t1);
    return t1;
-#endif
 }
 
 
@@ -809,7 +803,7 @@ void checkpoint(char *fname, int natom, REAL_T * x, int iter)
    /* Convert the iteration number to ascii. */
 
    buf = (char *) malloc(j + 1);
-   sprintf(buf, "%d", iter);
+   sprintf(buf, "%d\0", iter);
 
    k = strlen(fname);
    if ((i = strindex(fname, "%d")) < 0) {

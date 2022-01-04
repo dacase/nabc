@@ -2957,7 +2957,7 @@ lmodC(int *nlmodit, int *nmod, int *kmod, int *rotran, int *natm_ext,
 	  k = 0;
       for(j=(*rotran); j<nof_computed_modes; j++) {
          for(i=0; i<ndim_local; i++) {
-            conflib[k++] = eigvecs[j*ndim_local+i];
+            conflib[k++] = 1e3*eigvecs[j*ndim_local+i];
          }
       }
       /* handle the last mixed/combined mode differently: */
@@ -2970,7 +2970,7 @@ lmodC(int *nlmodit, int *nmod, int *kmod, int *rotran, int *natm_ext,
       sum = ZERO;
       for(i=l; i<l +ndim_local; i++) sum += SQR(conflib[i]);
       sum = sqrt(sum);
-      for(i=l; i<l +ndim_local; i++) conflib[i] /= sum;
+      for(i=l; i<l +ndim_local; i++) conflib[i] /= (sum*1e-3);
 #if 0
       l = k;   /* remember where the combined mode starts */
       for(i=0; i<ndim_local; i++) {
@@ -2984,7 +2984,7 @@ lmodC(int *nlmodit, int *nmod, int *kmod, int *rotran, int *natm_ext,
       sum = ZERO;
       for(i=l; i<l +ndim_local; i++) sum += SQR(conflib[i]);
       sum = sqrt(sum);
-      for(i=l; i<l +ndim_local; i++) conflib[i] /= sum;
+      for(i=l; i<l +ndim_local; i++) conflib[i] /= (sum*1e-3);
 #endif
    }
    else {  /* Load archive into conflib[] for use in parent program: */
