@@ -44,7 +44,7 @@ test_cif:  tcif
 	./tcif
 	/bin/rm tcif tcif.o
 
-LIBS = -L$(LIBDIR) -lsff $(FLIBSF) $(NETCDFLIBF)  $(LM) 
+LIBS = -L$(LIBDIR) -lsff $(FLIBS) $(NETCDFLIBF)  $(LM) 
 
 #---------------------------------------------------------------------------
 txmin:  txmin.o
@@ -53,9 +53,8 @@ txmin:  txmin.o
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o tlmod tlmod.o $(LIBS) \
-                $(BASEDIR)/src/msander/dsarpack.o -lgfortran -w
-
+	$(VB)$(CC) -o tlmod tlmod.o -larpack $(LIBS)
+                
 tmd:  tmd.o
 	@echo "[NABC] CC $@"
 	$(VB)$(CC) -o $@ $<  $(LIBS)
