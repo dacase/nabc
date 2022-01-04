@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export MSANDERHOME="$(dirname "$(cd "$(dirname "$0")" && pwd)")"
+
+$MSANDERHOME/bin/teLeap \
+           -I$MSANDERHOME/dat/leap/prep \
+           -I$MSANDERHOME/dat/leap/lib \
+           -I$MSANDERHOME/dat/leap/parm \
+           -I$MSANDERHOME/dat/leap/cmd \
+            $*
