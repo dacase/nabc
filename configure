@@ -11,24 +11,22 @@ verbose="@"
 enablempi=
 requested_help="no"
 bintraj=""
-conda="no"
+netcdflibf=""
 openblas="no"
-boost="yes"
-moft="moft"
-gcc10=""
-pythonv=`python --version 2>&1 | cut -c 8-10`
 
 compiler="gnu"
 cc="gcc -Wno-unused-result"
 cxx="g++"
 mpicc="mpicc"
-
 optflags="-g -Ofast -mtune=native"
 
 openmp='no'
 ompflag=""
 ldflags=""
+
 mkl="no"
+openblas="no"
+
 installtype="serial"
 inc="-I$nabhome/include"
 
@@ -41,22 +39,12 @@ for var in "$@"; do
             requested_help="yes";;
         --verbose)
             verbose="";;
-        --conda)
-            optflags="-g -O3"
-            conda="yes";;
         --openmp)
             ompflag='-fopenmp -DOPENMP';
-            flibs_fftw="-lfftw3_omp -lfftw3"
             openmp="yes";;
-        --no-netcdf)
-            netcdflibf=""
-            bintraj="";;
-        --gcc10)
-            gcc10="-fallow-argument-mismatch";;
-        --mingw)
-            cc="x86_64-w64-mingw32-gcc --static"
-            cxx="x86_64-w64-mingw32-g++ --static"
-            fc="x86_64-w64-mingw32-gfortran --static";;
+        --netcdf)
+            netcdflibf=""   # TODO: point to some environment variable
+            bintraj="-DBINTRAJ";;
         --mkl)
             mkl="yes";;
         --openblas)
@@ -80,10 +68,7 @@ for var in "$@"; do
             optflags="-g -O3";;
         --mpi)
             mpi="yes"
-            fftw_flags="--enable-mpi=yes $fftw_flags"
             mpiflag="-DMPI"
-            flibs_fftw="-lfftw3_mpi -lfftw3 -lmpi"
-            short_ene=short_ene.o
             installtype="parallel"
             sfx=".MPI";;
         *)
@@ -94,14 +79,13 @@ done
 
 if [ "$requested_help" = "yes" ] ; then
 	printf " --verbose      give build details, otherwise be more silent\n"
-	printf " --no-netcdf    disable NetCDF support\n"
-	printf " --no-rism      disable 3D-RISM support\n"
-	printf " --no-boost     disable moft support\n"
-	printf " --intel        use Intel compilers; default is gnu\n"
-	printf " --mpi          prepare for mpi build\n"
+	printf " --netcdf       enable NetCDF support (not yet working)\n"
+	printf " --intel        use Intel compiler; default is gcc\n"
+	printf " --clang        use clang compiler; default is gcc\n"
+	printf " --mpi          prepare for mpi build (not yet working)\n"
 	printf " --openmp       prepare for OMP build\n"
-	printf " --mkl          use MKL routines from $MKLROOT\n"
-	printf " --openblas     use BLAS routines from $GOTO\n"
+	printf " --mkl          use MKL routines from \$MKLROOT\n"
+	printf " --openblas     use BLAS routines from \$GOTO\n"
 	printf " --static       use static linking\n"
     exit 0
 fi
@@ -122,9 +106,6 @@ fi
 #------------------------------------------------------------------------------
 if [ ! -d bin ]; then
     mkdir bin
-fi
-if [ ! -d bin/x ]; then
-    mkdir bin/x
 fi
 if [ ! -d lib ]; then
     mkdir lib
@@ -181,29 +162,23 @@ fi
 if [ -z "$mklroot" -o "$mkl" == "no" ] ; then
 
    if [ ! -z "$GOTO" -a "$openblas" == "yes" ]; then
-      echo "using OpenBLAS libraries in $GOTO"
+      echo "using OpenBLAS in $GOTO for BLAS/LAPACK"
       flibs_la="$GOTO -lpthread"
    else
       # use the compiled versions;
-      flibs_la="-llapack -lblas"
-      lapack=liblapack
-      blas=libblas
+      printf "current code requires either --mkl or --openblas to be set\n"
+      exit 1
+      #flibs_la="-llapack -lblas"
+      #lapack=liblapack
+      #blas=libblas
    fi
 
 else
 
-  if [ "$mpi" == "yes" ]; then
-     echo "Using MKL for BLAS/LAPACK in $mklroot"
-     inc="-I$mklroot/include $inc"
-     lapack=skip
-     blas=skip
-  else
-     echo "Using MKL for BLAS/LAPACK/FFTW in $mklroot"
-     inc="-I$mklroot/include -I$mklroot/include/fftw $inc"
-     lapack=skip
-     blas=skip
-     flibs_fftw=""
-  fi
+   echo "Using MKL in $mklroot for BLAS/LAPACK"
+   inc="-I$mklroot/include $inc"
+   lapack=skip
+   blas=skip
 
   # Determine how we are linking MKL
   if  [ "$compiler" = 'gnu' -o "$compiler" = 'clang' ] ; then
@@ -285,18 +260,8 @@ else
 fi
 
 #--------------------------------------------------------------------------
-#  create the config.h file: may differ for different subsets
+#  create the config.h file
 #--------------------------------------------------------------------------
-
-if [ "$conda" == "yes" ]; then
-
-cat <<EOF > config.h
-
-#  msander configuration file.
-#  Created on `date` via $command
-EOF
-
-else
 
 cat <<EOF > config.h
 
@@ -306,12 +271,6 @@ cat <<EOF > config.h
 CC=$cc
 CXX=$cxx
 LDFLAGS=$ldflags
-
-EOF
-
-fi
-
-cat <<EOF >> config.h
 
 ###############################################################################
 
@@ -350,7 +309,7 @@ COPTFLAGS=$optflags
 
 #  (5)  other flags:
 
-FLIBS= -lsff -lnabc -lnab -lcifparse $flibs_la
+FLIBS= -lsff -lnabc -lcifparse $flibs_la
 AR=    ar rv
 RANLIB=ranlib
 MV=mv
