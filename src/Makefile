@@ -5,7 +5,7 @@ include ../config.h
 install: $(INSTALLTYPE)
 
 serial:
-#	@cd ucpp-1.3 && $(MAKE) ucpp
+	@cd cifparse && $(MAKE) libcifparse
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 #	@cd nab && $(MAKE) install
@@ -14,7 +14,7 @@ serial:
 parallel:
 
 clean:
-#	-(cd ucpp-1.3 && $(MAKE) clean )
+	-(cd cifparse && $(MAKE) clean )
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
 #	-(cd nab && $(MAKE) clean )
