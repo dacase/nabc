@@ -1,6 +1,6 @@
 include ../../config.h
 
-# LOCALFLAGS=-Wno-unused-value
+LOCALFLAGS=-Wno-unused-value
 
 .c.o:
 	@echo "[TLEAP] CC $<"

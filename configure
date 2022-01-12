@@ -62,8 +62,8 @@ for var in "$@"; do
         --clang)
             compiler="clang"
             clangf="-DCLANG"
-            cc="clang-10"
-            cxx="clang++-10"
+            cc="clang"
+            cxx="clang++"
             fc="flang"
             optflags="-g -O3";;
         --mpi)
