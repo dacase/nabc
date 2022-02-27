@@ -1,7 +1,7 @@
 /*
  *	Bill Ross, UCSF 1994
  *
- *  MPI function calls added by Russ Brown (russ.brown@sun.com).
+ *  MPI function calls added by Russ Brown (russ.brown@yahoo.com).
  *
  *  With MPI, input is accomplished by task zero, and the results
  *  are broadcast to the other tasks.  Output is accomplished by
