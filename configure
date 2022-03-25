@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "configure script for nab\n\n"
+printf "configure script for nabc\n\n"
 
 # Store the command
 command=`echo "$0 $*"`

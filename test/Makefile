@@ -1,4 +1,4 @@
-include ../../config.h
+include ../config.h
 
 SUFFIXES:
 SUFFIXES: .c .o
