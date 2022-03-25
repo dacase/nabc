@@ -1,4 +1,4 @@
-#   top-level Makefile for nab
+#   top-level Makefile for nabc
 
 include ../config.h
 
@@ -9,7 +9,6 @@ serial:
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 #	@cd nab && $(MAKE) install
-	@cd leap && $(MAKE) tleap
 
 parallel:
 
@@ -18,7 +17,6 @@ clean:
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
 #	-(cd nab && $(MAKE) clean )
-	-(cd leap && $(MAKE) clean )
 
 uninstall: clean
 	/bin/rm -f $(INCDIR)/* ../config.h
