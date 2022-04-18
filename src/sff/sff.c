@@ -35,7 +35,6 @@
 #endif
 
 #include "sff.h"
-#include "../pbsa/interface.h"
 #include "memutil.h"
 #include "debug.h"
 #include "timer.h"
@@ -152,120 +151,6 @@ static int nr_debug = 0;        /* non-zero if extra printout for Newt. Raph. */
 static int gb2_debug = 0;       /* non-zero if extra printout for GB 2nd deriv.  */
 static int gbsa_debug = 0;      /* non-zero if extra printout for GBSA  */
 static int e_debug = 0;         /* non-zero if extra printout for energies   */
-
-/* epbsa */
-
-PBOPTSTRUCT_T* pbopt;
-static int pbsa = 0;		/* non-zero if PBSA is to be run */
-static int inp = -9999, smoothopt = -9999, radiopt = -9999, npbopt = -9999;
-static int solvopt = -9999, maxitn = -9999, nfocus = -9999, fscale = -9999;
-static int bcopt = -9999, eneopt = -9999, dbfopt = -9999, frcopt = -9999;
-static int npbverb = -9999, nsnba = -9999, npbgrid = -9999;
-static int maxarcdot = -9999;
-static REAL_T epsin = -9999, epsout = -9999, istrng = -9999, dprob = -9999;
-static REAL_T iprob = -9999, accept = -9999, fillratio = -9999, space = -9999;
-static REAL_T cutnb = -9999, sprob = -9999;
-static REAL_T ivalence = -9999, arcres = -9999;
-static REAL_T cavity_surften = -9999, cavity_offset = -9999;
-
-/* 3D RISM section. */
-static RismData rismData = {
-    .solvcut = -9999,
-    .buffer = -9999.,
-    .grdspc[0] = -9999., .grdspc[1] = -9999., .grdspc[2] = -9999.,
-    .solvbox[0] = -9999., .solvbox[1] = -9999., .solvbox[2] = -9999.,
-    .mdiis_del = -9999.,
-    .mdiis_restart = -9999.,
-    .fcecut = -9999.,
-    .fcenormsw = -9999.,
-    .uccoeff[0] = -9999., .uccoeff[1] = 0.,
-    .uccoeff[2] = 0., .uccoeff[3] = 0.,
-    .biasPotential = -9999.,
-    .closureOrder = -9999,
-    .ng3[0] = -9999, .ng3[1] = -9999, .ng3[2] = -9999, 
-    .rism = 0,
-    .asympCorr = 1,
-    .mdiis_nvec = -9999, 
-    .mdiis_method = -9999,
-    .maxstep = -9999,
-    .npropagate = -9999,
-    .centering = -9999, 
-    .zerofrc = -9999,
-    .apply_rism_force = -9999, 
-    .polarDecomp = -9999,
-    .entropicDecomp = -9999, 
-    .gfCorrection = -9999,
-    .pcplusCorrection = -9999,
-    .rismnrespa = -9999,
-    .fcestride = -9999, 
-    .fcenbasis = -9999,
-    .fcenbase = -9999,
-    .fcecrd = -9999,
-    .fceweigh = -9999,
-    .fcetrans = -9999,
-    .fcesort = -9999,
-    .fceifreq=-9999,
-    .fcentfrcor=-9999,
-    .fcewrite=-9999,
-    .fceread=-9999,
-    .saveprogress = -9999, 
-    .ntwrism = -9999,
-    .verbose = -9999,
-    .progress = -9999,
-    .molReconstruct = 0, 
-    .write_thermo = -9999,
-    .selftest = 0,
-    .treeDCF = 1,
-    .treeTCF = 1,
-    .treeCoulomb = 1,
-    .treeDCFOrder = -9999,
-    .treeTCFOrder = -9999,
-    .treeCoulombOrder = -9999,
-    .treeDCFN0 = -9999,
-    .treeTCFN0 = -9999,
-    .treeCoulombN0 = -9999,
-    .treeDCFMAC = -9999.,
-    .treeTCFMAC = -9999.,
-    .treeCoulombMAC = -9999.,
-    .asympKSpaceTolerance = -9999.,
-    .ljTolerance = -9999.,
-    .chargeSmear = -9999.,
-};
-
-#define CLOSURELEN 8
-#define NCLOSURE 10
-static int rismntol = NCLOSURE;
-/* use zero as a default for extensiblity 
-   (it is difficult to initial to another value) */
-static REAL_T rismtol[NCLOSURE] = {0.};
-static char closure[NCLOSURE][CLOSURELEN];
-static char* xvvfile = NULL;
-static char* guvfile = NULL;
-static char* huvfile = NULL;
-static char* cuvfile = NULL;
-static char* uuvfile = NULL;
-static char* asympfile = NULL;
-static char* quvfile = NULL;
-static char* chgdistfile = NULL;
-static char* exchemfile = NULL;
-static char* solvenefile = NULL;
-static char* entropyfile = NULL;
-static char* exchemGFfile = NULL;
-static char* solveneGFfile = NULL;
-static char* entropyGFfile = NULL;
-static char* exchemPCPLUSfile = NULL;
-static char* solvenePCPLUSfile = NULL;
-static char* entropyPCPLUSfile = NULL;
-static char* exchemUCfile = NULL;
-static char* solveneUCfile = NULL;
-static char* entropyUCfile = NULL;
-static char* potUVfile = NULL;
-static char* electronMapfile = NULL;
-static char* volfmt = NULL;
-static char* periodic = NULL;
-static char* rst = NULL;
-static int ntpr_rism = 0;        /* print frequency for thermodynamics */
-
 
 /*LCPO stuff */
 
@@ -1001,7 +886,7 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
 
    /* Before proceding, check that the boundary conditions are
       consistent with solvation method requested. */
-   if (prm->IfBox && (gb || pbsa)) {
+   if (prm->IfBox && gb) {
      if (get_mytaskid() == 0) {
        fprintf(nabout, "Error: %s is incompatible with periodic boundary conditions.\n",
                (gb ? "gb>0" : "ipb>0"));
@@ -1296,149 +1181,6 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
       if (ips == 1 || ips == 2) teips = 1;
       ipssys();
    }
-
-#ifdef RISMSFF
-   /*  Set up RISM parameters:  */
-   if (rismData.rism) {
-#  ifdef MPI
-     int comm = MPI_Comm_c2f(MPI_COMM_WORLD);
-#  else
-     int comm = 0;
-#  endif
-     int closurelen = CLOSURELEN;
-     int nclosure = NCLOSURE;
-     int xvvlen;
-     int guvlen;
-     int huvlen;
-     int cuvlen;
-     int uuvlen;
-     int asymplen;
-     int quvlen;
-     int chgdistlen;
-     int exchemlen;
-     int solvenelen;
-     int entropylen;
-     int exchemGFlen;
-     int solveneGFlen;
-     int entropyGFlen;
-     int exchemPCPLUSlen;
-     int solvenePCPLUSlen;
-     int entropyPCPLUSlen;
-     int exchemUClen;
-     int solveneUClen;
-     int entropyUClen;
-     int potUVlen;
-     int electronMaplen;
-     int volfmtlen;
-     int periodicfmtlen;
-     int rstlen;
-     int i;
-     int t = 1;
-     /* Ensure that we are passing aleast a null character. */
-     /* if(closure == NULL) {closure = (char*)malloc(sizeof(char)); closure[0]='\0';} */
-     if (xvvfile == NULL) { xvvfile = (char*)malloc(sizeof(char)); xvvfile[0]='\0'; }
-     if (guvfile == NULL) { guvfile = (char*)malloc(sizeof(char)); guvfile[0]='\0'; }
-     if (huvfile == NULL) { huvfile = (char*)malloc(sizeof(char)); huvfile[0]='\0'; }
-     if (cuvfile == NULL) { cuvfile = (char*)malloc(sizeof(char)); cuvfile[0]='\0'; }
-     if (uuvfile == NULL) { uuvfile = (char*)malloc(sizeof(char)); uuvfile[0]='\0'; }
-     if (asympfile == NULL) { asympfile = (char*)malloc(sizeof(char)); asympfile[0]='\0'; }
-     if (quvfile == NULL) { quvfile = (char*)malloc(sizeof(char)); quvfile[0]='\0'; }
-     if (chgdistfile == NULL) { chgdistfile = (char*)malloc(sizeof(char)); chgdistfile[0]='\0'; }
-     if (exchemfile == NULL) { exchemfile = (char*)malloc(sizeof(char)); exchemfile[0]='\0'; }
-     if (solvenefile == NULL) { solvenefile = (char*)malloc(sizeof(char)); solvenefile[0]='\0'; }
-     if (entropyfile == NULL) { entropyfile = (char*)malloc(sizeof(char)); entropyfile[0]='\0'; }
-     if (exchemGFfile == NULL) { exchemGFfile = (char*)malloc(sizeof(char)); exchemGFfile[0]='\0'; }
-     if (solveneGFfile == NULL) { solveneGFfile = (char*)malloc(sizeof(char)); solveneGFfile[0]='\0'; }
-     if (entropyGFfile == NULL) { entropyGFfile = (char*)malloc(sizeof(char)); entropyGFfile[0]='\0'; }
-     if (exchemPCPLUSfile == NULL) { exchemPCPLUSfile = (char*)malloc(sizeof(char)); exchemPCPLUSfile[0]='\0'; }
-     if (solvenePCPLUSfile == NULL) { solvenePCPLUSfile = (char*)malloc(sizeof(char)); solvenePCPLUSfile[0]='\0'; }
-     if (entropyPCPLUSfile == NULL) { entropyPCPLUSfile = (char*)malloc(sizeof(char)); entropyPCPLUSfile[0]='\0'; }
-     if (exchemUCfile == NULL) { exchemUCfile = (char*)malloc(sizeof(char)); exchemUCfile[0]='\0'; }
-     if (solveneUCfile == NULL) { solveneUCfile = (char*)malloc(sizeof(char)); solveneUCfile[0]='\0'; }
-     if (entropyUCfile == NULL) { entropyUCfile = (char*)malloc(sizeof(char)); entropyUCfile[0]='\0'; }
-     if (potUVfile == NULL) { potUVfile = (char*)malloc(sizeof(char)); potUVfile[0]='\0'; }
-     if (electronMapfile == NULL) { electronMapfile = (char*)malloc(sizeof(char)); electronMapfile[0]='\0'; }
-     if (volfmt == NULL) { volfmt = (char*)malloc(sizeof(char)); volfmt[0]='\0'; }
-     if (periodic == NULL) { periodic = (char*)malloc(sizeof(char)); periodic[0]='\0'; }
-     if (rst == NULL) { rst = (char*)malloc(sizeof(char)); rst[0]='\0'; }
-     /* closurelen = strlen(closure); */
-     xvvlen = strlen(xvvfile);
-     guvlen = strlen(guvfile);
-     huvlen = strlen(huvfile);
-     cuvlen = strlen(cuvfile);
-     uuvlen = strlen(uuvfile);
-     asymplen = strlen(asympfile);
-     quvlen = strlen(quvfile);
-     chgdistlen = strlen(chgdistfile);
-     exchemlen = strlen(exchemfile);
-     solvenelen = strlen(solvenefile);
-     entropylen = strlen(entropyfile);
-     exchemGFlen = strlen(exchemGFfile);
-     solveneGFlen = strlen(solveneGFfile);
-     entropyGFlen = strlen(entropyGFfile);
-     exchemPCPLUSlen = strlen(exchemPCPLUSfile);
-     solvenePCPLUSlen = strlen(solvenePCPLUSfile);
-     entropyPCPLUSlen = strlen(entropyPCPLUSfile);
-     exchemUClen = strlen(exchemUCfile);
-     solveneUClen = strlen(solveneUCfile);
-     entropyUClen = strlen(entropyUCfile);
-     potUVlen = strlen(potUVfile);
-     electronMaplen = strlen(electronMapfile);
-     volfmtlen = strlen(volfmt);
-     periodicfmtlen = strlen(periodic);
-     rstlen = strlen(rst);
-     fflush(stderr); fflush(stdout); fflush(nabout);
-     for (i = 0; i < rismntol; i++) {
-       if (rismtol[i] == 0.)
-         break;
-     }
-     rismntol = i;
-     rism_setparam_(
-         &rismData, &rismntol, rismtol, 
-         &closurelen, &nclosure, closure,
-         &xvvlen, xvvfile,
-         &guvlen, guvfile, &huvlen, huvfile, &cuvlen, cuvfile,
-         &uuvlen, uuvfile, &asymplen, asympfile, &quvlen, quvfile,
-         &chgdistlen, chgdistfile,
-         &exchemlen, exchemfile,
-         &solvenelen, solvenefile, &entropylen, entropyfile,
-         &exchemGFlen, exchemGFfile,
-         &solveneGFlen, solveneGFfile, &entropyGFlen, entropyGFfile,
-         &exchemPCPLUSlen, exchemPCPLUSfile,
-         &solvenePCPLUSlen, solvenePCPLUSfile, &entropyPCPLUSlen, entropyPCPLUSfile,
-         &exchemUClen, exchemUCfile,
-         &solveneUClen, solveneUCfile, &entropyUClen, entropyUCfile,
-         &potUVlen, potUVfile,
-         &electronMaplen, electronMapfile,
-         &volfmtlen, volfmt,
-         &periodicfmtlen, periodic,
-         &rstlen, rst,
-         &comm,
-         &(prm->Natom), &(prm->Ntypes),
-         prm->Charges, prm->Masses, prm->Cn1, prm->Cn2,
-         prm->Iac, prm->Cno);
-     rism_init_(&comm);
-
-     /* Set GB to vacuum electrostatics. */
-     gb = 0;
-     if (ntpr_rism != 0) {
-       /* Create and initialize an empty array to pass.  Not necessary
-          since this array should not be use here but this is good
-          practise. */
-       REAL_T emptyPot[11];
-       for (i = 0; i < 11; i++) {
-         emptyPot[i] = 0.;
-       }
-       rism_thermo_print_(&t, emptyPot);
-     }
-   }
-#else
-   if (rismData.rism) {
-     fprintf(nabout, "Error: 3D-RISM not installed.  Please recompile with -rismmpi.\n");
-     fflush(nabout);
-     mpierror(-1);
-   }
-#endif /*RISMSFF*/
 
    /* Set up GB/OBC parameters: */
    if (gb == 2 || gb == 5 || gb == 7 || gb == 8) {
@@ -2620,22 +2362,6 @@ int md(int n, int maxstep, REAL_T * x, REAL_T * f, REAL_T * v,
    t1 = seconds();
    *tmd += seconds() - tmd1;
    return (0);
-}
-
-/******************************************************************************
-                                  mmd_rism_max_memory()
-******************************************************************************/
-/*reports to the outfile the max amount of memory allocated by RISM at
-  any one time*/
-int mme_rism_max_memory()
-{
-#ifdef RISMSFF
-  rism_max_memory_();
-#else
-  fprintf(nabout,"WARNING: mme_rism_max_memory(): 3D-RISM not install.   Please recompile with -rismmpi.\n");
-  fflush(nabout);
-#endif /*RISMSFF*/
-  return(0);
 }
 
 /*   #include "shiftnbond.c"   */

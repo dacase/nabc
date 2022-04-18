@@ -1,5 +1,5 @@
-%name-prefix="cifp"
-%file-prefix="cifp"
+%define api.prefix {cifp}
+%file-prefix "cifp"
 
 /*
 
