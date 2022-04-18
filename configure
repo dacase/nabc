@@ -255,7 +255,7 @@ else
 
   else
     # ----- Use simple flag for Intel compilers ------------
-    flibs_la='-mkl'
+    flibs_la='-qmkl'
   fi
 fi
 
