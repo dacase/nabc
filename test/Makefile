@@ -44,7 +44,7 @@ test_cif:  tcif
 	./tcif
 	/bin/rm tcif tcif.o
 
-LIBS = -L$(LIBDIR) -lsff $(FLIBS) $(NETCDFLIBF)  $(LM) 
+LIBS = -L$(LIBDIR) $(FLIBS) $(NETCDFLIBF)  $(LM) 
 
 #---------------------------------------------------------------------------
 txmin:  txmin.o
@@ -53,7 +53,7 @@ txmin:  txmin.o
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o tlmod tlmod.o $(LIBS)
+	$(VB)$(CC) -o tlmod tlmod.o $(LIBS) -larpack $(FLIBS_ARCH)
                 
 tmd:  tmd.o
 	@echo "[NABC] CC $@"

@@ -18,6 +18,8 @@ compiler="gnu"
 cc="gcc -Wno-unused-result"
 cxx="g++"
 mpicc="mpicc"
+fc="gfortran"
+cstdflags=""
 optflags="-g -Ofast -mtune=native"
 
 fc="gfortran"
@@ -35,6 +37,8 @@ openblas="no"
 
 installtype="serial"
 inc="-I$nabhome/include"
+
+flibs_arch="-lgfortran -w"
 
 #  process command-line flags:
 for var in "$@"; do
@@ -62,6 +66,7 @@ for var in "$@"; do
             cc="icc"
             cxx="icpc"
             fc="ifort"
+            cstdflags="-std=c99"
             gccsys="-gcc-sys "
             optflags="-g -O3"
             flibs_arch="-lifport -lifcore -lsvml";;
@@ -277,6 +282,7 @@ cat <<EOF > config.h
 CC=$cc
 CXX=$cxx
 FC=$fc
+FLIBS_ARCH=$flibs_arch
 LDFLAGS=$ldflags
 
 ###############################################################################
@@ -308,7 +314,7 @@ NETCDFLIBF=$netcdflibf
 
 #  (4)  C compiler
 
-CFLAGS=$bintraj $inc $ompflag
+CFLAGS=$bintraj $inc $ompflag $cstdflags
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 

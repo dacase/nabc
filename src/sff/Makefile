@@ -10,7 +10,9 @@ OBJS = conjgrad.o lmodC.o memutil.o nblist.o newton.o nmode.o \
 
 install: libsff hcp_getpdb$(SFX)
 
-libsff: $(OBJS)
+libsff: $(LIBDIR)/libsff.a
+
+$(LIBDIR)/libsff.a: $(OBJS)
 	@echo "[SFF]  AR $@"
 	$(VB)/bin/rm -f $(LIBDIR)/libsff.a
 	$(VB)$(AR) $(LIBDIR)/libsff.a $(OBJS)	> /dev/null
