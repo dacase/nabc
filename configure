@@ -20,6 +20,12 @@ cxx="g++"
 mpicc="mpicc"
 optflags="-g -Ofast -mtune=native"
 
+fc="gfortran"
+flibs_arch="-lgfortran -w"
+flibs_la=""
+flibs_fftw="-lfftw3"
+mpif90="mpif90"
+
 openmp='no'
 ompflag=""
 ldflags=""
@@ -270,6 +276,7 @@ cat <<EOF > config.h
 
 CC=$cc
 CXX=$cxx
+FC=$fc
 LDFLAGS=$ldflags
 
 ###############################################################################

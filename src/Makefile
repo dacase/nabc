@@ -8,6 +8,7 @@ serial:
 	@cd cifparse && $(MAKE) libcifparse
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
+	@cd arpack && $(MAKE) libarpack
 
 parallel:
 
@@ -15,6 +16,7 @@ clean:
 	-(cd cifparse && $(MAKE) clean )
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
+	-(cd arpack && $(MAKE) clean )
 
 uninstall: clean
 	/bin/rm -f $(INCDIR)/* ../config.h

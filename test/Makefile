@@ -53,7 +53,7 @@ txmin:  txmin.o
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o tlmod tlmod.o -larpack $(LIBS)
+	$(VB)$(CC) -o tlmod tlmod.o $(LIBS)
                 
 tmd:  tmd.o
 	@echo "[NABC] CC $@"
