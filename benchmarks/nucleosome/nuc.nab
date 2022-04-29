@@ -1,0 +1,22 @@
+molecule m;
+float 	x[dynamic], v[dynamic];
+float 	fret, nradd;
+int 	i, natom, ier; 
+string  filep, pdbf;
+
+
+pdbf =  "nuc.pdb";
+m = getpdb( pdbf );
+allocate x[ 3*m.natoms ];
+allocate v[ 3*m.natoms ];
+readparm( m, "nuc.top" );
+for( i=1; i<=3*m.natoms; i++ ) v[i] = 0.0;
+
+mm_options( "cut=999., rgbmax=40., nsnb=9999, ntpr=1, diel=C, gb=1, kappa=.10395" );
+mme_init( m, NULL, "::Z", x, NULL);
+
+getxyz(  "nuc.x", m.natoms, x );
+
+ier = nmode( x, 3*m.natoms, mme2, 40,2,0.0,0.0);
+printf("nmode returns %d\n", ier );
+

@@ -1,0 +1,10 @@
+The following files are used to benchmark the new version of nmode:
+crambin.x
+crambin.top
+crambin.pdb
+crambin_langevin.nab ->  Langevin modes of crambin without an expfile
+
+
+
+
+

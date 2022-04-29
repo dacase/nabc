@@ -1,0 +1,17 @@
+molecule m;
+float 	x[55000], f[55000], v[55000];
+float 	dgrad, fret, time;
+int 	ier, mytaskid, rank, size; 
+
+mytaskid = mpiinit( argc, argv, rank, size );
+
+m = getpdb("cox2.pdb");
+readparm(m, "cox2.prmtop");
+mm_options( "nsnb=10, ntpr=8, ntpr_md=8, gb=1, kappa=0.14701, cut=12.0, diel=C, rgbmax=12., rattle=1, tautp=999999.");
+mme_init( m, NULL, "::Z", x, NULL);
+getxv( "cox2.inpcrd", m.natoms, time, x, v );
+
+md(3*m.natoms, 96, x, f, v, mme );
+mme_timer();
+
+mpifinalize();

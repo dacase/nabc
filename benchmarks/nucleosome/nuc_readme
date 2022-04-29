@@ -1,0 +1,10 @@
+The following files are used to benchmark the new version of nmode:
+nuc.x
+nuc.top
+nuc.pdb
+nuc.nab ->  Normal modes of the nucleosome core. Will crash in either the second dgemm (mkl 6.1) call in egb2 or the Cholesky call (clapack in nab). 
+
+
+
+
+

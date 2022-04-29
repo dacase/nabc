@@ -1,0 +1,19 @@
+molecule m;
+float 	x[dynamic], v[dynamic];
+float 	fret, nradd;
+int 	i, natom, ier; 
+
+m = getpdb( "gact4.pdb");
+readparm( m,  "gact4.top" );
+allocate x[ 3*m.natoms ];
+allocate v[ 3*m.natoms ];
+for( i=1; i<=3*m.natoms; i++ ) v[i] = 0.0;
+
+mm_options( "cut=999., ntpr=100, nsnb=99999, rgbmax=999.,diel=C, gb=1, dielc=1.0, kappa=.10395" );
+mme_init( m, NULL, "::Z", x, NULL);
+
+getxv(  "gact4.x", m.natoms, fret, x, v );
+printf("nmode returns \n");
+ier = nmode( x, 3*m.natoms, mme2, 40,1,0.0,0.0);
+printf("nmode returns %d\n", ier );
+

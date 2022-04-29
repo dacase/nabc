@@ -1,0 +1,12 @@
+The following files are used to benchmark the new version of nmode:
+gact4.x
+gact4.top
+gact4.pdb
+gact4_arpack_nm.nab ->  Hessian diagonalized with the arpack routine dsaupd after a Cholesky decomposition
+gact4_dsyevd_nm.nab ->  Hessian diagonalized with the lapack routine dsyevd (divide and conquer)
+gact4_dsyev_nm.nab ->  Hessian diagonalized with the lapack routine dsyev
+
+
+
+
+

@@ -1,0 +1,13 @@
+molecule m;
+float 	x[23000], f[23000], v[23000];
+float 	dgrad, fret, time;
+int 	ier, nat; 
+
+m = getpdb("p450.mc.pdb");
+readparm(m, "p450.top");
+mm_options( "ntpr=2, ntpr_md=10, gb=2, kappa=0.127315, cut=15.0, rgbmax=15., diel=C, rattle=1, gamma_ln=10.0");
+mme_init( m, NULL, "::Z", x, NULL);
+getxv( "p450.mc.x", nat, time, x, v );
+
+md(3*m.natoms, 20, x, f, v, mme );
+mme_timer();

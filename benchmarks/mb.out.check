@@ -1,0 +1,39 @@
+Reading parm file (mb.prmtop)
+title:
+                                                                                
+	mm_options:  nsnb=10
+	mm_options:  ntpr=20
+	mm_options:  ntpr_md=20
+	mm_options:  gb=1
+	mm_options:  kappa=0.14701
+	mm_options:  cut=20.0
+	mm_options:  diel=C
+	mm_options:  rgbmax=15.
+	mm_options:  rattle=1
+	mm_options:  tautp=999999.
+allocating space for 6207572 non-bonded pairs
+    iter    Total    bad         vdW     elect.     cons.   genBorn      frms
+ff:   0  -3291.46   2691.01   -622.96   2137.48      0.00  -7496.98  1.71e+01
+md:           1      0.001    1515.29   -3376.03   -1860.74     307.72
+ff:  20  -3487.88   2421.17   -600.73   2206.92      0.00  -7515.24  1.21e+01
+md:          20      0.020    1626.14   -3487.88   -1861.74     330.23
+ff:  40  -3430.08   2372.50   -513.31   2394.98      0.00  -7684.24  1.21e+01
+md:          40      0.040    1569.35   -3430.08   -1860.72     318.70
+ff:  60  -3530.84   2194.04   -459.56   2336.45      0.00  -7601.77  1.17e+01
+md:          60      0.060    1669.11   -3530.84   -1861.72     338.96
+ff:  80  -3432.26   2278.34   -451.37   2389.59      0.00  -7648.83  1.20e+01
+md:          80      0.080    1571.62   -3432.26   -1860.64     319.16
+ff: 100  -3482.08   2369.77   -540.92   2513.68      0.00  -7824.61  1.25e+01
+md:         100      0.100    1621.19   -3482.08   -1860.89     329.23
+
+Timing summary:
+   bonds            0.0
+   angles           0.1
+   torsions         0.2
+   pairlist         1.8
+   eff. radii      17.1
+   nonbonds        28.1
+   diag. GB        22.0
+   constraints      0.0
+   Total           69.3
+
