@@ -11,7 +11,7 @@ verbose="@"
 enablempi=
 requested_help="no"
 bintraj=""
-netcdflibf=""
+netcdflib=""
 openblas="no"
 
 compiler="gnu"
@@ -53,7 +53,7 @@ for var in "$@"; do
             ompflag='-fopenmp -DOPENMP';
             openmp="yes";;
         --netcdf)
-            netcdflibf=""   # TODO: point to some environment variable
+            netcdflib="-lnetcdf"
             bintraj="-DBINTRAJ";;
         --mkl)
             mkl="yes";;
@@ -90,7 +90,7 @@ done
 
 if [ "$requested_help" = "yes" ] ; then
 	printf " --verbose      give build details, otherwise be more silent\n"
-	printf " --netcdf       enable NetCDF support (not yet working)\n"
+	printf " --netcdf       enable NetCDF support (requires libnetcdf)\n"
 	printf " --intel        use Intel compiler; default is gcc\n"
 	printf " --clang        use clang compiler; default is gcc\n"
 	printf " --mpi          prepare for mpi build (not yet working)\n"
@@ -306,13 +306,7 @@ LM=$lm
 
 ###############################################################################
 
-#  (3) allow for the use of netcdf
-
-NETCDFLIBF=$netcdflibf
-
-###############################################################################
-
-#  (4)  C compiler
+#  (3)  C compiler
 
 CFLAGS=$bintraj $inc $ompflag $cstdflags
 CNOOPTFLAGS=-g -O0
@@ -320,9 +314,9 @@ COPTFLAGS=$optflags
 
 ###############################################################################
 
-#  (5)  other flags:
+#  (4)  other flags:
 
-FLIBS= -lsff -lnabc -lcifparse $flibs_la
+FLIBS= -lsff -lnabc -lcifparse $flibs_la $netcdflib
 AR=    ar rv
 RANLIB=ranlib
 MV=mv
