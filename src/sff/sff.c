@@ -1907,7 +1907,8 @@ REAL_T mme_rattle(REAL_T * x, REAL_T * f, int *iter)
    }
 
    nat3 = 3 * prm->Natom;
-   dtx = 0.001 * 20.455;
+   // dtx = 0.001 * 20.455;  ??? fixing dt here?
+   dtx = dt * 20.455;
 
    niter = 0;
    done = 0;
