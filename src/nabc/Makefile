@@ -12,7 +12,6 @@ CUSTOMBUILDFLAGS = -I../sff
 NABCOBJS=	\
 	axis2frame.o	\
 	bonded_atoms.o \
-	database.o  \
 	deform_ener.o \
     fd_helix.o \
 	frameutil.o	\
