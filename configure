@@ -6,9 +6,10 @@ printf "configure script for nabc\n\n"
 command=`echo "$0 $*"`
 
 # set up defaults:
-nabhome=`pwd`
+nabchome=`pwd`
 verbose="@"
-enablempi=
+mpi=
+mpiflag=""
 requested_help="no"
 bintraj=""
 netcdflib=""
@@ -36,7 +37,7 @@ mkl="no"
 openblas="no"
 
 installtype="serial"
-inc="-I$nabhome/include"
+inc="-I$nabchome/include"
 
 flibs_arch="-lgfortran -w"
 
@@ -64,6 +65,7 @@ for var in "$@"; do
         --intel)
             compiler="intel"
             cc="icc"
+            mpicc="mpiicc"
             cxx="icpc"
             fc="ifort"
             cstdflags="-std=c99"
@@ -78,10 +80,7 @@ for var in "$@"; do
             fc="flang"
             optflags="-g -O3";;
         --mpi)
-            mpi="yes"
             mpiflag="-DMPI"
-            installtype="parallel"
-            sfx=".MPI";;
         *)
             echo "Option $var not recognized"
             exit 1
@@ -93,8 +92,8 @@ if [ "$requested_help" = "yes" ] ; then
 	printf " --netcdf       enable NetCDF support (requires libnetcdf)\n"
 	printf " --intel        use Intel compiler; default is gcc\n"
 	printf " --clang        use clang compiler; default is gcc\n"
-	printf " --mpi          prepare for mpi build (not yet working)\n"
-	printf " --openmp       prepare for OMP build\n"
+	printf " --mpi          prepare for MPI build\n"
+	printf " --openmp       prepare for OpenMP build\n"
 	printf " --mkl          use MKL routines from \$MKLROOT\n"
 	printf " --openblas     use BLAS routines from \$GOTO\n"
 	printf " --static       use static linking\n"
@@ -108,7 +107,6 @@ if [ "$compiler" == "intel" -a "$openmp" == "yes" ]; then
   ompflag="-qopenmp -DOPENMP"
 fi
 if [ "$mpi" == "yes" ]; then
-  fc="$mpif90"
   cc="$mpicc"
 fi
 
@@ -289,12 +287,10 @@ LDFLAGS=$ldflags
 
 # (1)  Location of the installation
 
-BASEDIR=$nabhome
+BASEDIR=$nabchome
 BINDIR=\$(BASEDIR)/bin
 LIBDIR=\$(BASEDIR)/lib
 INCDIR=\$(BASEDIR)/include
-DATDIR=\$(BASEDIR)/dat
-LOGDIR=\$(BASEDIR)/logs
 
 ###############################################################################
 
@@ -308,7 +304,7 @@ LM=$lm
 
 #  (3)  C compiler
 
-CFLAGS=$bintraj $inc $ompflag $cstdflags
+CFLAGS=$bintraj $inc $ompflag $cstdflags $mpiflag
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 
@@ -322,9 +318,7 @@ RANLIB=ranlib
 MV=mv
 CP=cp
 MAKE=make --no-print-directory
-SFX=$sfx
 VB=$verbose
-INSTALLTYPE=$installtype
 
 EOF
 
