@@ -2,15 +2,11 @@
 
 include ../config.h
 
-install: $(INSTALLTYPE)
-
-serial:
+install:
 	@cd cifparse && $(MAKE) libcifparse
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 	@cd arpack && $(MAKE) libarpack
-
-parallel:
 
 clean:
 	-(cd cifparse && $(MAKE) clean )
