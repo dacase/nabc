@@ -11,7 +11,7 @@ cat<<EOF  > mdin
  /
 EOF
 
-sander=/home/case/msander/bin/msander.MPI
+sander=$AMBERHOME/bin/pmemd.cuda
 
-mpirun -np 2 $sander -O -i mdin -p $2 -c $3 -o $1.md.2.o < /dev/null
+$sander -O -i mdin -p $2 -c $3 -o $1.md.cuda.o < /dev/null
 /bin/rm mdin restrt mdinfo
