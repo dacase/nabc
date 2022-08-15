@@ -8,7 +8,9 @@
 #include    "nabc.h"
 #include    "errormsg.h"
 #include    "memutil.h"
+#ifdef CIF
 #  include    "../cifparse/cifparse.h"
+#endif
 
     /* PDB columns, 0-based */
 #define        PDB_ANUM_COL    7
@@ -73,17 +75,19 @@ static int n_atab;
 static RESIDUE_T res;
 
 MOLECULE_T *getpdb(char *, char *);
+#ifdef CIF
 MOLECULE_T *getcif(char *, char *);
 MOLECULE_T *getcompcif(char *, char *);
+int putcif(char[], char[], MOLECULE_T *);
+static MOLECULE_T *fgetcif(FILE *, char *);
+static MOLECULE_T *fgetcompcif(FILE *, char *);
+#endif
 REF_MATRIX_T getmatrix(char *);
 int putpdb(char *, MOLECULE_T *, char *);
-int putcif(char[], char[], MOLECULE_T *);
 int putbnd(char[], MOLECULE_T *);
 int putdist(char[], MOLECULE_T *, char[], char[]);
 int putmatrix(char[], MATRIX_T);
 static MOLECULE_T *fgetpdb(FILE *, char *);
-static MOLECULE_T *fgetcif(FILE *, char *);
-static MOLECULE_T *fgetcompcif(FILE *, char *);
 static int isnewres(char[], char[], int, int);
 static void init_atab(void);
 static void initres(void);
@@ -158,6 +162,7 @@ MOLECULE_T *getpdb(char *fname, char *options)
     return (mol);
 }
 
+#ifdef CIF
 MOLECULE_T *getcif(char *fname, char *datablockname)
 {
     FILE *fp = NULL;
@@ -201,6 +206,7 @@ MOLECULE_T *getcompcif(char *fname, char *datablockname)
 
     return (mol);
 }
+#endif
 
 REF_MATRIX_T getmatrix(char *fname)
 {
@@ -292,6 +298,7 @@ int putpdb(char *fname, MOLECULE_T * mol, char *options)
     return (0);
 }
 
+#ifdef CIF
 int putcif(char fname[], char blockId[], MOLECULE_T * mol)
 {
     FILE *fp;
@@ -311,6 +318,7 @@ int putcif(char fname[], char blockId[], MOLECULE_T * mol)
         fclose(fp);
     return (0);
 }
+#endif
 
 int putbnd(char fname[], MOLECULE_T * mol)
 {
@@ -758,6 +766,7 @@ static MOLECULE_T *fgetpdb(FILE * fp, char *options)
     return (mol);
 }
 
+#ifdef CIF
 static MOLECULE_T *fgetcif(FILE * fp, char *blockId)
 {
 
@@ -1192,6 +1201,7 @@ static MOLECULE_T *fgetcompcif(FILE * fp, char *blockId)
 
     /* probably need some calls here to free up memory cifparse has used */
 }
+#endif
 
 static int isnewres(char l_rname[], char rname[], int l_rnum, int rnum)
 {
@@ -1724,6 +1734,7 @@ static void mk_wwpdb_aname(char aname[], char name[], char rname[])
 
 }
 
+#ifdef CIF
 /*   Write out the molecule information in an "mmCIF-like" format; this
      should come close to being correct, but probably will not be acceptable
      to all mmCIF parsers.  For now, it should just be considered as a 
@@ -1793,3 +1804,4 @@ static void fputcif(FILE * fp, char *blockId, MOLECULE_T * mol)
             cid++;
     }
 }
+#endif
