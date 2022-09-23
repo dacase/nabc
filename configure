@@ -36,6 +36,10 @@ ldflags=""
 mkl="no"
 openblas="no"
 
+cifflags=""
+ciftarget="skip"
+ciflib=""
+
 installtype="serial"
 inc="-I$nabchome/include"
 
@@ -56,6 +60,10 @@ for var in "$@"; do
         --netcdf)
             netcdflib="-lnetcdf"
             bintraj="-DBINTRAJ";;
+        --cif)
+            ciftarget="libcifparse"
+            ciflib="-lcifparse"
+            cifflags="-DCIF";;
         --mkl)
             mkl="yes";;
         --openblas)
@@ -80,7 +88,7 @@ for var in "$@"; do
             fc="flang"
             optflags="-g -O3";;
         --mpi)
-            mpiflag="-DMPI"
+            mpiflag="-DMPI";;
         *)
             echo "Option $var not recognized"
             exit 1
@@ -96,6 +104,7 @@ if [ "$requested_help" = "yes" ] ; then
 	printf " --openmp       prepare for OpenMP build\n"
 	printf " --mkl          use MKL routines from \$MKLROOT\n"
 	printf " --openblas     use BLAS routines from \$GOTO\n"
+	printf " --cif          compile parser for cif files\n"
 	printf " --static       use static linking\n"
     exit 0
 fi
@@ -304,7 +313,7 @@ LM=$lm
 
 #  (3)  C compiler
 
-CFLAGS=$bintraj $inc $ompflag $cstdflags $mpiflag
+CFLAGS=$bintraj $inc $ompflag $cstdflags $mpiflag $cifflags
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 
@@ -312,7 +321,8 @@ COPTFLAGS=$optflags
 
 #  (4)  other flags:
 
-FLIBS= -lsff -lnabc -lcifparse $flibs_la $netcdflib
+FLIBS= -lsff -lnabc $flibs_la $netcdflib $ciflib
+CIFTARGET=$ciftarget
 AR=    ar rv
 RANLIB=ranlib
 MV=mv

@@ -3,13 +3,13 @@
 include ../config.h
 
 install:
-#	@cd cifparse && $(MAKE) libcifparse
+	@cd cifparse && $(MAKE) $(CIFTARGET)
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 	@cd arpack && $(MAKE) libarpack
 
 clean:
-#	-(cd cifparse && $(MAKE) clean )
+	-(cd cifparse && $(MAKE) clean )
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
 	-(cd arpack && $(MAKE) clean )
