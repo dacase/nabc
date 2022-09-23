@@ -1,6 +1,3 @@
-/*  %define api.prefix {cifp}  */
-%name-prefix="cifp"
-%file-prefix="cifp"
 
 /*
 

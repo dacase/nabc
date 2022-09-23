@@ -82,7 +82,7 @@ FILE *fp;
   if (fp == NULL ) {
     return 0;
   }
-  // cifpin = fp;
+  cifpin = fp;
   lineNo = 0;
   rewind(fp);
   if (cifpparse() != 0) { /* YYACCEPT */
@@ -258,7 +258,7 @@ int *linePos;
       }
     }
     else {
-      fprintf(fp, "\n%s  ", null_char);
+      fprintf(fp, "\n%c  ", null_char);
       (*linePos) = 3;
     }
     return;
@@ -489,15 +489,15 @@ int fieldLength;
      */
     if (i == str_len) {
       if (*offset != 0) 
-	sprintf(tmpstring, " %s", value);
+	sprintf(tmpstring, " %s\0", value);
       else 
 	strcpy(tmpstring, value);
     }
     else {
       if (*offset != 0) 
-	sprintf(tmpstring, " \'%s\'", value);
+	sprintf(tmpstring, " \'%s\'\0", value);
       else
-	sprintf(tmpstring, "\'%s\'", value);
+	sprintf(tmpstring, "\'%s\'\0", value);
     }
     if (str_len < fieldLength) { 
       if ((fieldLength+3) > 80) str_len +=3;
