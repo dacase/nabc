@@ -36,6 +36,9 @@ lex.cifp.c: cifparse.l
 
 libcifparse:  $(LIBDIR)/libcifparse.a
 
+skip:
+	@echo "Skipping cifparse"
+
 clean:
 	/bin/rm -f *.o  cifp.output
 	/bin/rm -f lex.cifp.c cifp.tab.c cifp.tab.h
