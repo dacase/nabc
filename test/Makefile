@@ -47,13 +47,17 @@ test_cif:  tcif
 LIBS = -L$(LIBDIR) $(FLIBS) $(NETCDFLIBF)  $(LM) 
 
 #---------------------------------------------------------------------------
+program_2:  program_2.o
+	@echo "[NABC] CC $@"
+	$(VB)$(CC) -o $@ $< $(LIBS)
+
 txmin:  txmin.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o txmin txmin.o $(LIBS)
+	$(VB)$(CC) -o $@ $< $(LIBS)
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o tlmod tlmod.o $(LIBS) -larpack $(FLIBS_ARCH)
+	$(VB)$(CC) -o $@ $< $(LIBS) -larpack $(FLIBS_ARCH)
                 
 tmd:  tmd.o
 	@echo "[NABC] CC $@"
@@ -81,7 +85,7 @@ thcp2:  thcp2.o
 
 tnabc:  tnabc.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  -L$(LIBDIR)  -lnabc -lcifparse $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS)
 
 tcif:  tcif.o
 	@echo "[NABC] CC $@"
