@@ -21,11 +21,10 @@ NABCOBJS=	\
 	matop.o		\
 	molio.o		\
 	molsurf.o   \
-	molutil.o	\
+    molutil.o   \
 	pointutil.o	\
 	prm.o \
 	regexp.o \
-	reslib.o	\
 	select_atoms.o	\
     stringutil.o \
 	traceback.o \
@@ -39,6 +38,7 @@ libnabc: $(LIBDIR)/libnabc.a
 
 $(LIBDIR)/libnabc.a: $(NABCOBJS)
 	@echo "[NABC]  AR $@"
+	$(VB)/bin/rm -f $@
 	$(VB)$(AR) $@ $(NABCOBJS) > /dev/null
 	$(VB)$(RANLIB) $@
 	$(VB)cp nabc.h $(INCDIR)

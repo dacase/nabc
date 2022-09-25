@@ -1863,3 +1863,148 @@ INT_T	circle( REAL_T *p1, REAL_T *p2, REAL_T *p3, REAL_T *pc )
   return 0;
     
 }
+
+RESIDUE_T	*copyresidue( RESIDUE_T *res )
+{
+	int	a, b, c, i;
+	int	*aip;
+	RESIDUE_T	*nres;
+	ATOM_T		*ap;
+	char		*anp, *rnp;
+	INTBOND_T	*bp;
+	CHIRAL_T	*cp;
+
+	if((nres = (RESIDUE_T *)malloc(sizeof(RESIDUE_T) ))
+		== NULL )
+	{
+		sprintf( e_msg, "new residue %s", res->r_resname );
+		rt_errormsg_s( TRUE, E_NOMEM_FOR_S, e_msg );
+		return( NULL );
+	}
+
+	if( ( ap = ( ATOM_T * )malloc(res->r_natoms*sizeof(ATOM_T)))
+		== NULL )
+	{
+		sprintf( e_msg, "atoms in new residue %s", res->r_resname );
+		rt_errormsg_s( TRUE, E_NOMEM_FOR_S, e_msg );
+		return( NULL );
+	}
+
+	if( ( aip = ( int * )malloc(res->r_natoms*sizeof(int))) == NULL )
+	{
+		sprintf( e_msg, "atom index in new residue %s",
+			res->r_resname );
+		rt_errormsg_s( TRUE, E_NOMEM_FOR_S, e_msg );
+		return( NULL );
+	}
+
+	if( res->r_nintbonds > 0 ){
+		if( ( bp = ( INTBOND_T * )
+			malloc(res->r_nintbonds*sizeof(INTBOND_T)))
+			== NULL )
+		{
+			sprintf( e_msg,
+				"bonds in new residue %s", res->r_resname );
+			rt_errormsg_s( TRUE, E_NOMEM_FOR_S, e_msg );
+			return( NULL );
+		}
+	}else
+		bp = NULL;
+
+	if( res->r_nchiral > 0 ){
+		if( ( cp = ( CHIRAL_T * )
+			malloc(res->r_nchiral*sizeof(CHIRAL_T)) )
+			== NULL )
+		{
+			sprintf( e_msg,
+				"chirality in residue %s", res->r_resname );
+			rt_errormsg_s( TRUE, E_NOMEM_FOR_S, e_msg );
+			return( NULL );
+		}
+	}else
+		cp = NULL;
+
+	nres->r_next = NULL;
+
+	rnp = ( char * )malloc(strlen(res->r_resname)+1 );
+	if( rnp == NULL ){
+		fprintf( stderr,
+			"copyresidue: can't allocate new r_resname.\n" );
+		exit( 1 );
+	}
+	strcpy( rnp, res->r_resname );
+	nres->r_resname = rnp;
+
+	rnp = ( char * )malloc(strlen(res->r_resid)+1 );
+	if( rnp == NULL ){
+		fprintf( stderr, "copyresidue: can't allocate new r_resid.\n" );
+		exit( 1 );
+	}
+	strcpy( rnp, res->r_resid );
+	nres->r_resid = rnp;
+
+	nres->r_num = res->r_num;
+	nres->r_tresnum = 0;
+	nres->r_resnum = 0;
+	nres->r_attr = res->r_attr;
+	nres->r_strand = NULL;
+	nres->r_extbonds = copyextbonds( res );
+	nres->r_nintbonds = res->r_nintbonds;
+	nres->r_intbonds = bp;
+	for( b = 0; b < res->r_nintbonds; b++ ){
+		nres->r_intbonds[ b ][ 0 ] = res->r_intbonds[ b ][ 0 ];
+		nres->r_intbonds[ b ][ 1 ] = res->r_intbonds[ b ][ 1 ];
+	}
+	nres->r_nchiral = res->r_nchiral;
+	nres->r_chiral = cp;
+	for( cp = nres->r_chiral, c = 0; c < res->r_nchiral; c++, cp++ ){
+		for( a = 0; a < 4; a++ )
+			cp->c_anum[ a ] = res->r_chiral[ c ].c_anum[ a ];
+		cp->c_dist = res->r_chiral[ c ].c_dist;
+	}
+	nres->r_kind = res->r_kind;
+	nres->r_atomkind = res->r_atomkind;
+	nres->r_natoms = res->r_natoms;
+	nres->r_aindex = aip;
+	if( res->r_aindex ){
+		for( a = 0; a < res->r_natoms; a++ )
+			nres->r_aindex[ a ] = res->r_aindex[ a ];
+	}else{
+		for( a = 0; a < res->r_natoms; a++ )
+			nres->r_aindex[ a ] = a;
+	}
+	nres->r_atoms = ap;
+	for( a = 0; a < res->r_natoms; a++ ){
+
+		anp = (char *)malloc(strlen( res->r_atoms[a].a_atomname )+1);
+		if( anp == NULL ){
+			fprintf( stderr, "copyresidue: can't allocate anp.\n" );
+			exit( 1 );
+		}
+		strcpy( anp, res->r_atoms[ a ].a_atomname );
+		ap[ a ].a_atomname = anp;
+		ap[ a ].a_atomtype = NULL;
+		ap[ a ].a_attr = res->r_atoms[ a ].a_attr;
+		ap[ a ].a_nconnect = res->r_atoms[ a ].a_nconnect;
+		for ( i = 0; i < A_CONNECT_SIZE ; i++ )
+			ap[a].a_connect[i] = res->r_atoms[a].a_connect[i];
+		ap[ a ].a_residue  = nres;
+		ap[ a ].a_charge   = res->r_atoms[ a ].a_charge;
+		ap[ a ].a_radius   = res->r_atoms[ a ].a_radius;
+		ap[ a ].a_bfact    = res->r_atoms[ a ].a_bfact;
+		ap[ a ].a_occ      = res->r_atoms[ a ].a_occ;
+		ap[ a ].a_element  = NULL;
+		ap[ a ].a_int1     = res->r_atoms[ a ].a_int1;
+		ap[ a ].a_float1   = res->r_atoms[ a ].a_float1;
+		ap[ a ].a_float2   = res->r_atoms[ a ].a_float2;
+		ap[ a ].a_tatomnum = res->r_atoms[ a ].a_tatomnum;
+		ap[ a ].a_atomnum  = res->r_atoms[ a ].a_atomnum;
+		ap[ a ].a_fullname = NULL;
+		ap[ a ].a_pos[ 0 ] = res->r_atoms[ a ].a_pos[ 0 ];		
+		ap[ a ].a_pos[ 1 ] = res->r_atoms[ a ].a_pos[ 1 ];		
+		ap[ a ].a_pos[ 2 ] = res->r_atoms[ a ].a_pos[ 2 ];		
+		ap[ a ].a_w        = res->r_atoms[ a ].a_w;
+	}
+
+	return( nres );
+}
