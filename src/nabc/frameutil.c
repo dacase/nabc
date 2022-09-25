@@ -219,7 +219,11 @@ REF_MATRIX_T	superimpose( MOLECULE_T *mol, char aexpr[],
 		ra_pos[ a ][ 2 ] = 0.0;
 	}
 	overlay( na, a_mask, a_pos, ra_pos, mat );
-	put_apos( mol, &a_pos[ s_atoms ] );
+
+    // un-comment next line for original behavior, whereby superimpose()
+    //    actually carries out the transformation.  Without this, we need
+    //    a subsequent call to transformmol() to do that
+	// put_apos( mol, &a_pos[ s_atoms ] );
 
 	free( ra_pos );
 	free( a_pos );
