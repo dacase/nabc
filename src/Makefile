@@ -10,8 +10,8 @@ install:
 
 nab: install
 	@cd ucpp-1.3 && make ucpp
-	@cd nab && make
-	@cd nss & make
+	@cd nab && make install
+	@cd nss & make install
 
 clean:
 	-(cd cifparse && $(MAKE) clean )
