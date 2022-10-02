@@ -6,6 +6,7 @@
 #include <sys/file.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "nabhome.h"
 #ifdef WIN32
 #   define L_SET SEEK_SET
 #else
@@ -116,7 +117,6 @@ char	*cppstring;
 
 	char	*cmd;
 	int	    status;
-    char    *amberhome;
     int     cpp_ofd, n2c_ofd;
 
     asprintf( &n2c_ofname, "/tmp/n2c_ofname_XXXXXX" );
@@ -143,14 +143,10 @@ char	*cppstring;
                  exit(1);
            }
 
-            amberhome = (char * ) getenv("AMBERHOME");
-            if( amberhome == NULL ){
-               fprintf( stderr, "AMBERHOME is not set!\n" );
-               exit(1);
-            }
+            char *nabhome = NABHOME;
 
 			asprintf( &cmd, "%s/bin/%s %s -I%s/include %s > %s",
-				amberhome, "ucpp -l", cppstring, amberhome,
+				nabhome, "ucpp -l", cppstring, nabhome,
 				argv[ ac ] ? argv[ ac ] : "", cpp_ofname );
 			if( cgdopt ) fprintf( stderr, "cpp cmd: %s\n", cmd );
             status = system( cmd );
@@ -167,7 +163,7 @@ char	*cppstring;
 #else
 			asprintf( &cmd, "%s/bin/nab2c %s %s %s -nfname %s < %s > %s",
 #endif
-				amberhome,
+				nabhome,
 				cgdopt ? cgdval : "",
 				noassert ? "-noassert" : "",
 				nodebug ? "-nodebug" : "",
@@ -199,19 +195,15 @@ char	nfmask[];
 */
 {
 	int	ac;
-	char	*dotp, *amberhome;
+    char    *dotp;
 	char	*cmd, word[ 1024 ];
 	int     cmd_sz;
 	int 	status;
 
-    amberhome = (char *) getenv("AMBERHOME");
-    if( amberhome == NULL ){
-       fprintf( stderr, "AMBERHOME is not set!\n" );
-       exit(1);
-    }
+    char *nabhome = NABHOME;
 	cmd_sz = 1024;
 	cmd = malloc(cmd_sz);
-	sprintf( cmd, "%s -I%s/include", CC, amberhome );
+	sprintf( cmd, "%s -I%s/include", CC, nabhome );
 	for( ac = 1; ac < argc; ac++ ){
 		word[0] = '\0';
 		if( nfmask[ ac ] ){
@@ -230,7 +222,7 @@ char	nfmask[];
 		}
 	}
 	if( !copt ){
-		sprintf( word, " -L%s/lib -lnab -lcifparse", amberhome );
+		sprintf( word, " -L%s/lib -lnab -lcifparse", nabhome );
 		if (strlen(cmd) + strlen(word) + strlen(FLIBS) + 6 > cmd_sz) {
 		    cmd_sz += strlen(word) + strlen(FLIBS) + 6;
 		    cmd = realloc(cmd, cmd_sz);

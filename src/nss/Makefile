@@ -1,7 +1,4 @@
-include ../config.h
-
-# trick to use $(AMBER_PREFIX)/bin/nab
-export AMBERHOME=$(AMBER_PREFIX)
+include ../../config.h
 
 ####
 #

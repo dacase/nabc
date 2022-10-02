@@ -1,3 +1,5 @@
+%define api.prefix {cifp}
+%file-prefix "cifp"
 
 /*
 

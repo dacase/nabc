@@ -32,7 +32,7 @@ cifp.tab.o: cifp.tab.c
 
 lex.cifp.c: cifparse.l 
 	@echo "[CIFPARSE]  FLEX $<"
-	$(VB)$(LEX) cifparse.l
+	$(VB)flex cifparse.l
 
 libcifparse:  $(LIBDIR)/libcifparse.a
 

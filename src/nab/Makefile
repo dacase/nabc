@@ -1,11 +1,11 @@
 include ../../config.h
 
 .SUFFIXES:
-.SUFFIXES:  .nab .o
+.SUFFIXES:  .nab .o .c
 
 %.o: %.nab $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
 	@echo "[NAB]  NAB $<"
-	$(VB)$(BINDIR)/$(MPI)nab$(SFX) -c $< -o $@
+	$(VB) $(BINDIR)/$(MPI)nab$(SFX) -c $< -o $@
 	@rm -f $*.c
 
 NAB2COBJS=	\
@@ -67,7 +67,7 @@ LIBNABOBJS=	\
 
 #===========================================================================
 
-install: $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX) libnab.a
+install: nabhome.h $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX) libnab.a
 	@mv -f  libnab.a $(LIBDIR)
 	@rm -f $(INCDIR)/nabcode.h $(INCDIR)/defreal.h $(INCDIR)/nab.h
 	@cp nabcode.h $(INCDIR)
@@ -102,11 +102,14 @@ libnab.a: $(LIBNABOBJS) $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
 	$(VB)$(AR) libnab.a $(LIBNABOBJS)  > /dev/null
 	$(VB)-ranlib libnab.a
 
+nabhome.h::
+	@echo "#define NABHOME \"$(BASEDIR)\"" > nabhome.h
+
 y.tab.h: y.tab.c
 
 y.tab.c:  nabgrm.y lex.yy.c
 	@echo "[NAB]  BISON $<"
-	$(VB)$(YACC) -d nabgrm.y
+	$(VB)bison -v -d nabgrm.y
 
 y.tab.o: y.tab.c
 	@echo "[NAB]  CC $<"
@@ -114,7 +117,7 @@ y.tab.o: y.tab.c
 
 lex.yy.c: nablex.l
 	@echo "[NAB]  FLEX $<"
-	$(VB)$(LEX) nablex.l
+	$(VB)flex nablex.l
 
 lex.dgo.c: dg_options.l
 	@echo "[NAB]  FLEX $<"
@@ -153,8 +156,8 @@ bonded_atoms.o:  bonded_atoms.c
 #===========================================================================
 
 clean:
-	-rm -f *.o nab$(SFX) nab2c$(SFX) libnab.a checkexpr.c
-	-rm -f y.tab.c y.tab.h lex.dgo.c lex.yy.c
+	-rm -f *.o nab$(SFX) nab2c$(SFX) libnab.a checkexpr.c nabhome.h
+	-rm -f y.tab.c y.tab.h lex.dgo.c lex.yy.c 
 	(cd semantics && $(MAKE) clean )
 
 uninstall: clean
