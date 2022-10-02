@@ -102,7 +102,7 @@ int ndb_cif_get_category_id(char*, char*);
 
 
 #ifdef CIF_GLOBAL
-	FILE *cifpin;
+	extern FILE *cifpin;
 	char TempKeyword[MxNameLen+1], TempValue[MAXVALUELENGTH+1];
 	NdbCifDatablocksFormat cifFiles;
 	int  lineNo;      
