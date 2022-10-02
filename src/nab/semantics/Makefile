@@ -1,4 +1,4 @@
-include ../../config.h
+include ../../../config.h
 
 RULES= \
 SYM_ALLOCATE.rules \

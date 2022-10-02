@@ -1,16 +1,11 @@
-include ../config.h
+include ../../config.h
 
 .SUFFIXES:
-.SUFFIXES:  .nab .c .o .f
-
-# trick nab to find header files in $(AMBER_PREFIX)/include
-# At install time, AMBERHOME points to $(AMBER_SOURCE), which 
-# does not have include folder (if using --prefix)
-export AMBERHOME=$(AMBER_PREFIX)
+.SUFFIXES:  .nab .o
 
 %.o: %.nab $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
 	@echo "[NAB]  NAB $<"
-	$(VB)$(WINE) $(BINDIR)/$(MPI)nab$(SFX) -c $(NABFLAGS) $< -o $@
+	$(VB)$(BINDIR)/$(MPI)nab$(SFX) -c $< -o $@
 	@rm -f $*.c
 
 NAB2COBJS=	\
@@ -70,9 +65,6 @@ LIBNABOBJS=	\
 	wc_complement.o	\
 	wc_helix.o
 
-EXAMPLES=	\
-	../examples/program_*.nab
-
 #===========================================================================
 
 install: $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX) libnab.a
@@ -84,9 +76,9 @@ install: $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX) libnab.a
 	@cp nab.h $(INCDIR)
 	@cp nab_netcdf.h $(INCDIR)
 	@cp xmin_opt.h lmod_opt.h $(INCDIR)
-	@mv $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/to_be_dispatched/
-	@cat nab_template | sed "s/REPLACE_ME/$(MPI)nab$(SFX)/g" > $(BINDIR)/$(MPI)nab$(SFX)
-	@chmod +x $(BINDIR)/$(MPI)nab$(SFX)
+#	@mv $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/to_be_dispatched/
+#	@cat nab_template | sed "s/REPLACE_ME/$(MPI)nab$(SFX)/g" > $(BINDIR)/$(MPI)nab$(SFX)
+#	@chmod +x $(BINDIR)/$(MPI)nab$(SFX)
 #	cp lmodprmtop $(BINDIR)
 
 #  Force rebuilding of nab, since there is no easy to to see if FLIBS has

@@ -64,7 +64,7 @@ static	char	*progname;
 
 	/* symbols (#defines) from nab.h	*/
 
-#define	TCK_FILE	"AmberTools/src/nab/nab.h"
+#define	TCK_FILE	"../nab.h"
 static	char	tckfname[ 256 ];
 
 #define	DEFNAME_SIZE	32
@@ -335,7 +335,7 @@ char	*argv[];
 		exit( 1 );
 	}
 	
-	sprintf( tckfname, "%s/../%s", DATDIR, TCK_FILE );
+	sprintf( tckfname, "%s", TCK_FILE );
 	if( ( fp = fopen( tckfname, "r" ) ) == NULL ){
 		fprintf( stderr, "%s: can't read type/class/kind file %s\n",
 			progname, tckfname );
