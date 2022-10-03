@@ -24,7 +24,7 @@ cifp.tab.h: cifp.tab.c
 
 cifp.tab.c:  cifparse.y lex.cifp.c
 	@echo "[CIFPARSE]  BISON $<"
-	$(VB)bison -v -d cifparse.y
+	$(VB)bison -v -d -pcifp -o $@ cifparse.y
 
 cifp.tab.o: cifp.tab.c
 	@echo "[CIFPARSE]  CC $<"
@@ -32,7 +32,7 @@ cifp.tab.o: cifp.tab.c
 
 lex.cifp.c: cifparse.l 
 	@echo "[CIFPARSE]  FLEX $<"
-	$(VB)flex cifparse.l
+	$(VB)flex -Pcifp cifparse.l
 
 libcifparse:  $(LIBDIR)/libcifparse.a
 

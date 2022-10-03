@@ -1,4 +1,3 @@
-%option prefix="cifp"
 %option noyywrap
 
 %{ 
