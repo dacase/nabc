@@ -2692,11 +2692,13 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
       else 
       {
 
-         if (gb == 9) { // what is this???
+         if (gb == 9) { // r6 gb:
             e_gb =
                egbr6(lpairs, upairs, pairlist, lpairs, upairs, pairlist,
                    x, grad, prm->Fs, prm->Rborn, prm->Charges, &kappa,
                    &epsext, &enb, &eel, &esurf, &evdwnp, 0);
+         } else if (gb == 10 ){  // rism
+            //  e_gb = result from rism --should go here??
          } else {
             e_gb =
                egb(lpairs, upairs, pairlist, lpairsnp, upairsnp,
