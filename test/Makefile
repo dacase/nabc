@@ -95,6 +95,10 @@ tnetcdf:  tnetcdf.o
 	@echo "[NABC] CC $@"
 	$(VB)$(CC) -o $@ $<  $(LIBS)
 
+trism-cuda: trism-cuda.o
+	@echo "[NABC] CC $@"
+	$(VB)$(CC) -o $@ $<  $(LIBS)
+
 #---------------------------------------------------------------------------
 #  non-tests:
 

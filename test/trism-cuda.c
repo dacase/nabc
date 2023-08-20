@@ -45,7 +45,7 @@ int main( int argc, char *argv[] )
 //   setup the force field parameters, and get an initial energy:
 
    mm_options( "ntpr=1, cut=99.0, diel=C " );
-   mm_options( "ntpr=1, gb=10, cut=9999.0" );
+   mm_options( "ntpr=1, gb=3, cut=9999.0" );
    // mm_options( "xvvfile=../rism1d/spc-kh/spc.xvv.save" );
    // mm_options( "verbose=0" );
    // mm_options( "buffer=-1, ng=30,30,30, solvbox=15,15,15, solvcut=999" );

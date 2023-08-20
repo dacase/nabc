@@ -1329,9 +1329,11 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
       gboffset = 0.195141;
       gbneckscale = 0.826836;
 
-   } else if (gb == 10) {
+   } else if (gb == 3) {
 
       // rism initialization goes here:
+      fprintf( stderr, "ready for rism initialization\n" );
+      exit(0);
 
    }
 

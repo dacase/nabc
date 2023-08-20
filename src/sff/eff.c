@@ -2447,6 +2447,7 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
    REAL_T tmme1, t1, t2, treduce1;
    int i, j, k, goff, threadnum, numthreads, maxthreads;
    int iteration, mask, consumer, producer, numcopies;
+   REAL_T erism = 0.0;
    int dummy = 0;
    size_t n;
 
@@ -2736,8 +2737,7 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
                q_hcp1, q_hcp2, q_hcp3, grad, &enb, &eel);
          } else {
             nbond(lpairs,upairs, pairlist, 0, x, grad, &enb, &eel, NULL, NULL, 0);
-            erism = 0.0;
-            // if (gb == 10){ erism = rism(x, grad); }
+            // if (gb == 3){ erism = rism(x, grad); }
          }
       }
       ene[1] = enb + enbips;
