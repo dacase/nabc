@@ -2697,8 +2697,6 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
                egbr6(lpairs, upairs, pairlist, lpairs, upairs, pairlist,
                    x, grad, prm->Fs, prm->Rborn, prm->Charges, &kappa,
                    &epsext, &enb, &eel, &esurf, &evdwnp, 0);
-         } else if (gb == 10 ){  // rism
-            //  e_gb = result from rism --should go here??
          } else {
             e_gb =
                egb(lpairs, upairs, pairlist, lpairsnp, upairsnp,
@@ -2738,16 +2736,19 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
                q_hcp1, q_hcp2, q_hcp3, grad, &enb, &eel);
          } else {
             nbond(lpairs,upairs, pairlist, 0, x, grad, &enb, &eel, NULL, NULL, 0);
+            erism = 0.0;
+            // if (gb == 10){ erism = rism(x, grad); }
          }
       }
       ene[1] = enb + enbips;
       ene[2] = eel + eelips;
-      ene[10] = 0.0;
+      ene[10] = erism;
       ene[11] = 0.0;
       ene[12] = 0.0;
       if (e_debug) {
          EXPR("%9.3f", enb);
          EXPR("%9.3f", eel);
+         EXPR("%9.3f", erism);
       }
 
       t2 = seconds();
