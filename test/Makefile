@@ -1,7 +1,7 @@
 include ../config.h
 
 SUFFIXES:
-SUFFIXES: .c .o
+SUFFIXES: .c .cu .o
 
 test:  test_mask test_xmin test_md test_lmod test_nmode
 
@@ -96,8 +96,7 @@ tnetcdf:  tnetcdf.o
 	$(VB)$(CC) -o $@ $<  $(LIBS)
 
 trism-cuda: trism-cuda.o
-	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	nvcc -o $@ $<  $(LIBS)
 
 #---------------------------------------------------------------------------
 #  non-tests:
@@ -123,9 +122,13 @@ loop:  loop.c
         -lnabc -lcifparse $(LIBS)
 
 #---------------------------------------------------------------------------
-.c.o:
+%.o: %.c
 	@echo "[NABC] CC $<"
-	$(VB)$(CC) -c $(COPTFLAGS) $(CFLAGS) -I$(INCDIR) -o $@ $<
+	$(VB)$(CC) $(COPTFLAGS) $(CFLAGS) -I$(INCDIR) -c $< -o $@ 
+
+%.o: %.cu
+	@echo "[NABC] nvcc $<"
+	nvcc $(NVFLAGS) -I$(INCDIR) -c $< -o $@
 
 tmd.MPI.o: tmd.c
 	@echo "[NABC] CC $<"

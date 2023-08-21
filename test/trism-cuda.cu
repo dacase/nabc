@@ -4,6 +4,7 @@
 #include <math.h>
 #include <assert.h>
 #include "sff.h"
+#include "/home/case/rism/3D-RISM-CUDA/src-cuda/rism3d.h"
 FILE* nabout;
 
 //  Very primitive short rism-cuda minimizer, no argument-
@@ -15,7 +16,7 @@ FILE* nabout;
 
 int main( int argc, char *argv[] )
 {
-
+   RISM3D *system;      //  main struct for rism
    PARMSTRUCT_T *prm;   //  struct to hold info from a prmtop file
    XMIN_OPT_T xo;       //  options for the minimizer
    double *xyz,  *grad;
@@ -38,8 +39,8 @@ int main( int argc, char *argv[] )
 
    prm = rdparm( argv[1] );    // reads the prmtop file
    int natm = prm->Natom;
-   xyz = malloc( 3 * natm * (sizeof(double)) );
-   grad = malloc( 3 * natm * (sizeof(double)) );
+   xyz = (double *) malloc( 3 * natm * (sizeof(double)) );
+   grad = (double *) malloc( 3 * natm * (sizeof(double)) );
    getxv( argv[2], natm, start_time, xyz, grad );  // reads a restart file
 
 //   setup the force field parameters, and get an initial energy:

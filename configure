@@ -261,7 +261,7 @@ else
     # Set link flags
     if [ "$gnuld" = 'yes' ]; then
       echo "GNU linker assumed."
-      flibs_la="-Wl,--start-group $mkll/$mklinterfacelayer $mklthread $mkll/libmkl_core.a -Wl,--end-group $mklomp -lpthread"
+      flibs_la="$mkll/$mklinterfacelayer $mklthread $mkll/libmkl_core.a $mklomp -lpthread"
     else
       echo "Non-GNU linker assumed."
       flibs_la="-L$mkll $mkll/$mklinterfacelayer $mklthread $mkll/libmkl_core.a $mklomp -lpthread"
@@ -311,17 +311,20 @@ LM=$lm
 
 ###############################################################################
 
-#  (3)  C compiler
+#  (3)  C, NVCC compilers
 
 CFLAGS=$bintraj $inc $ompflag $cstdflags $mpiflag $cifflags
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 
+CUDA_DIR=/usr/local/cuda
+NVCC = nvcc
+NVFLAGS = -O3 -m64 -gencode=arch=compute_80,code=sm_80 -I\$(CUDA_DIR)/include
 ###############################################################################
 
 #  (4)  other flags:
 
-FLIBS= -lsff -lnabc $flibs_la $netcdflib $ciflib
+FLIBS= -lsff -lnabc -lrism $flibs_la $netcdflib $ciflib
 CIFTARGET=$ciftarget
 AR=    ar rv
 RANLIB=ranlib

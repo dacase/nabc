@@ -255,6 +255,8 @@ void blacs_barrier_(int *, char *);
 
 void blacs_exit_(int *);
 
+void init_rism();
+
 INT_T nblist(INT_T * lpears, INT_T * upears, INT_T ** pearlist, REAL_T * x,
              INT_T context_PxQ, INT_T derivs, REAL_T cutoff, int natom,
              int dim, int *frozen);
@@ -1333,6 +1335,8 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
 
       // rism initialization goes here:
       fprintf( stderr, "ready for rism initialization\n" );
+      init_rism();
+      fprintf( stderr, "back from init_rism\n" );
       exit(0);
 
    }
