@@ -15,7 +15,12 @@ FILE* nabout;
 
 REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter, RISM3D * system ){
 
-   return mme( x, f, iter );
+   REAL_T energy;
+   energy = mme( x, f, iter );
+   fprintf( stderr, "ready for rism interate\n" );
+   system -> iterate(0);
+   fprintf( stderr, "back from rism interate\n" );
+   exit(0);
 }
 
 void init_rism( RISM3D *system ) {
@@ -24,8 +29,11 @@ void init_rism( RISM3D *system ) {
    cudaSetDevice(dn);
    fprintf( stderr, "back from cudaSetDevice\n" );
    system = new RISM3D;
-   system -> initialize( "trpcage_c", "trpcage_s", 0 );
+   system -> initialize( "trpcage_c", "trpcage_s", false );
    fprintf( stderr, "back from system->initialize\n" );
+   system -> iterate(0);
+   fprintf( stderr, "back from rism interate\n" );
+   exit(0);
 
 }
 
@@ -80,8 +88,8 @@ int main( int argc, char *argv[] )
    fprintf( stderr, "back from init_rism\n");
 
    int verbose = -1;   // historical flag to give more verbose output
-   energy = mme( xyz, grad, &verbose );
-   // energy = mme_rism( xyz, grad, &verbose, system );
+   // energy = mme( xyz, grad, &verbose );
+   energy = mme_rism( xyz, grad, &verbose, system );
    exit(0);
 
 //   run the minimization:
