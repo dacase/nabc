@@ -13,6 +13,17 @@ FILE* nabout;
 //  Usage:  trism-cuda  <parm-file>  <restart-file>
 //       output to stdout
 
+void init_rism() {
+
+   RISM3D *system;
+   int dn=0;
+   cudaSetDevice(dn);
+   fprintf( stderr, "back from cudaSetDevice\n" );
+   system = new RISM3D;
+   system -> initialize( "trpcage_c", "trpcage_s", 0 );
+   fprintf( stderr, "back from system->initialize\n" );
+
+}
 
 int main( int argc, char *argv[] )
 {
@@ -60,6 +71,9 @@ int main( int argc, char *argv[] )
    int* constrained = parseMaskString( "@ZZZ", prm, xyz, 2 );
 
    mme_init_sff( prm, frozen, constrained, NULL, NULL );
+   fprintf( stderr, "ready for init_rism\n");
+   init_rism();
+   fprintf( stderr, "back from init_rism\n");
    exit(0);   // just for initial testing
 
    int verbose = -1;   // historical flag to give more verbose output
