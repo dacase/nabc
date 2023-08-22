@@ -13,9 +13,13 @@ FILE* nabout;
 //  Usage:  trism-cuda  <parm-file>  <restart-file>
 //       output to stdout
 
-void init_rism() {
+REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter, RISM3D * system ){
 
-   RISM3D *system;
+   return mme( x, f, iter );
+}
+
+void init_rism( RISM3D *system ) {
+
    int dn=0;
    cudaSetDevice(dn);
    fprintf( stderr, "back from cudaSetDevice\n" );
@@ -35,6 +39,7 @@ int main( int argc, char *argv[] )
    double start_time = 0.0;   // dummy, since this is minimization, not md
 
    nabout = stdout;    // change to redirect output (historical kludge)
+   system = new RISM3D;
 
 //   options for the minimizer:
 
@@ -56,8 +61,7 @@ int main( int argc, char *argv[] )
 
 //   setup the force field parameters, and get an initial energy:
 
-   mm_options( "ntpr=1, cut=99.0, diel=C " );
-   mm_options( "ntpr=1, gb=3, cut=9999.0" );
+   mm_options( "ntpr=1, cut=99.0," );
    // mm_options( "xvvfile=../rism1d/spc-kh/spc.xvv.save" );
    // mm_options( "verbose=0" );
    // mm_options( "buffer=-1, ng=30,30,30, solvbox=15,15,15, solvcut=999" );
@@ -72,12 +76,13 @@ int main( int argc, char *argv[] )
 
    mme_init_sff( prm, frozen, constrained, NULL, NULL );
    fprintf( stderr, "ready for init_rism\n");
-   init_rism();
+   init_rism( system );
    fprintf( stderr, "back from init_rism\n");
-   exit(0);   // just for initial testing
 
    int verbose = -1;   // historical flag to give more verbose output
    energy = mme( xyz, grad, &verbose );
+   // energy = mme_rism( xyz, grad, &verbose, system );
+   exit(0);
 
 //   run the minimization:
 
