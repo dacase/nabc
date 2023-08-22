@@ -62,9 +62,11 @@ all:	$(PROGRAM)
 $(PROGRAM) : main.o $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) main.o $(LIBS) -o $(PROGRAM)
 
-librism.a:  $(OBJS)
-	ar rv librism.a $(OBJS)
-	ranlib librism.a
+librism: ../../lib/librism.a
+
+../../lib/librism.a:  $(OBJS)
+	ar rv $@ $(OBJS)
+	ranlib $@
 
 %.o: %.cc
 	$(CC) $(CFLAGS) -c $< -o $@
