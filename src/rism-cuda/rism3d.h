@@ -25,17 +25,19 @@ public:
   void initialize (string, string, bool);
   void iterate (int);    
   void output ();
-  void init_rism ();
+  double cal_pmv ();
+  double cal_pressure ();
+  void cal_exchem (double * &);
+  void cal_grad (double * &);
+  Cell * ce;
+  Solute * su;
+  Solvent * sv;
 private:
   void add_tuv (double);
   void cal_Coulomb ();
   double cal_euv();
-  void cal_exchem (double * &);
-  void cal_grad (double * &);
   void cal_LJ ();
-  double cal_pmv ();
   void cal_potential ();
-  double cal_pressure ();
   double cal_rms ();
   void calculate (double);
   void initialize_g ();
@@ -83,10 +85,7 @@ private:
   double2 * dfk;
   double * ds;
 
-  Cell * ce;
   Control * co;
-  Solute * su;
-  Solvent * sv;
   AN2 * ma;
   FFT3D * fft;
 };
