@@ -71,7 +71,7 @@ librism: ../../lib/librism.a
 %.o: %.cc
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: %.cu
+%.o: %.cu rism3d.h
 	$(NVCC) $(NVFLAGS) -c $< -o $@
 
 clean:;	@rm -f $(OBJS) core
