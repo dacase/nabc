@@ -4,7 +4,7 @@
 #include <math.h>
 #include <assert.h>
 #include "sff.h"
-#include "/home/case/rism/3D-RISM-CUDA/src-cuda/rism3d.h"
+#include "../src/rism-cuda/rism3d.h"
 FILE* nabout;
 
 //  Very primitive short rism-cuda minimizer, no argument-
@@ -25,10 +25,33 @@ REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
    fprintf( stderr, "back from system->initialize\n" );
    system -> iterate(0);
    fprintf( stderr, "back from rism interate\n" );
-   system -> output();
-   fprintf( stderr, "back from rism output\n" );
- 
-   exit(0);
+
+   // get exchem, pmv, pressure:
+   double pmv = system -> cal_pmv();
+   double pressure = system -> cal_pressure();
+   double * xmu = new double[system -> sv -> natv * 2];
+   system -> cal_exchem(xmu);
+   double ibeta = avogadoro * boltzmann * system -> sv -> temper;
+    
+   double xmua = 0.0;
+   for (int iv = 0; iv < system -> sv -> natv; ++iv) { xmua += xmu[iv]; }   
+   double erism = ibeta * xmua / kcal2J;
+   fprintf( stderr, "emm = %10.5f  erism = %10.5f\n", energy, erism );
+   energy += erism;
+
+   // get gradient:
+   double * du;
+   du = new double[system -> su -> num * 3];
+   system -> cal_grad(du);
+   double dv = system -> ce -> dv / kcal2J;
+   for (int iu = 0; iu < system -> su -> num; ++iu) {
+      int num = iu * 3;
+      f[num] += du[num  ] * dv;
+      f[num] += du[num+1] * dv;
+      f[num] += du[num+2] * dv;
+   }
+
+   return energy;
 }
 
 int main( int argc, char *argv[] )
