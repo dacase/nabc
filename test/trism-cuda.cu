@@ -13,33 +13,26 @@ FILE* nabout;
 //  Usage:  trism-cuda  <parm-file>  <restart-file>
 //       output to stdout
 
-REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter, RISM3D * system ){
+REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
 
    REAL_T energy;
+   RISM3D * system;
+
    energy = mme( x, f, iter );
-   fprintf( stderr, "ready for rism interate\n" );
-   system -> iterate(0);
-   fprintf( stderr, "back from rism interate\n" );
-   exit(0);
-}
 
-void init_rism( RISM3D *system ) {
-
-   int dn=0;
-   cudaSetDevice(dn);
-   fprintf( stderr, "back from cudaSetDevice\n" );
    system = new RISM3D;
    system -> initialize( "trpcage_c", "trpcage_s", false );
    fprintf( stderr, "back from system->initialize\n" );
    system -> iterate(0);
    fprintf( stderr, "back from rism interate\n" );
+   system -> output();
+   fprintf( stderr, "back from rism output\n" );
+ 
    exit(0);
-
 }
 
 int main( int argc, char *argv[] )
 {
-   RISM3D *system;      //  main struct for rism
    PARMSTRUCT_T *prm;   //  struct to hold info from a prmtop file
    XMIN_OPT_T xo;       //  options for the minimizer
    double *xyz,  *grad;
@@ -47,7 +40,6 @@ int main( int argc, char *argv[] )
    double start_time = 0.0;   // dummy, since this is minimization, not md
 
    nabout = stdout;    // change to redirect output (historical kludge)
-   system = new RISM3D;
 
 //   options for the minimizer:
 
@@ -69,7 +61,7 @@ int main( int argc, char *argv[] )
 
 //   setup the force field parameters, and get an initial energy:
 
-   mm_options( "ntpr=1, cut=99.0," );
+   mm_options( (char *) "ntpr=1, cut=99.0," );
    // mm_options( "xvvfile=../rism1d/spc-kh/spc.xvv.save" );
    // mm_options( "verbose=0" );
    // mm_options( "buffer=-1, ng=30,30,30, solvbox=15,15,15, solvcut=999" );
@@ -79,25 +71,22 @@ int main( int argc, char *argv[] )
    // mm_options( "uccoeff=-0.149818,-0.1136266,-0.00053163,0.0103954" );
 
    // nothing frozen or constrained for now:
-   int* frozen = parseMaskString( "@ZZZ", prm, xyz, 2 );
-   int* constrained = parseMaskString( "@ZZZ", prm, xyz, 2 );
+   int* frozen = parseMaskString( (char *) "@ZZZ", prm, xyz, 2 );
+   int* constrained = parseMaskString( (char *) "@ZZZ", prm, xyz, 2 );
 
    mme_init_sff( prm, frozen, constrained, NULL, NULL );
-   fprintf( stderr, "ready for init_rism\n");
-   init_rism( system );
-   fprintf( stderr, "back from init_rism\n");
+   int dn=0;
+   cudaSetDevice(dn);
 
    int verbose = -1;   // historical flag to give more verbose output
-   // energy = mme( xyz, grad, &verbose );
-   energy = mme_rism( xyz, grad, &verbose, system );
-   exit(0);
+   energy = mme_rism( xyz, grad, &verbose );
 
 //   run the minimization:
 
-   char title[] = " non-rattle minimization";
-   energy = xmin( mme,  &natm, xyz, grad,  &energy,  &grms,  &xo );
+// char title[] = " non-rattle minimization";
+// energy = xmin( mme,  &natm, xyz, grad,  &energy,  &grms,  &xo );
 // putxv( argv[3], title, natm, start_time, xyz, xyz );
-   energy = mme( xyz, grad, &verbose );
+// energy = mme( xyz, grad, &verbose );
 
 //  optional: get solvent distribution at the end:
 //   mm_options( "guvfile=g.xmin, apply_rism_force=0, ntwrism=1" );
