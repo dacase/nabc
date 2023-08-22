@@ -96,7 +96,7 @@ tnetcdf:  tnetcdf.o
 	$(VB)$(CC) -o $@ $<  $(LIBS)
 
 trism-cuda: trism-cuda.o
-	nvcc -o $@ $<  $(LIBS)
+	nvcc -o $@ $<  $(LIBS) -L/usr/local/cuda/lib64 -lcufft -lcuda -lcudart
 
 #---------------------------------------------------------------------------
 #  non-tests:
