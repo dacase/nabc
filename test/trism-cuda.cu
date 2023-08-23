@@ -20,6 +20,10 @@ REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
 
    energy = mme( x, f, iter );
 
+   // here we need to copy the current coordinates (passed in as x) into
+   //   the appropriate place inside rsystem:
+
+   rsystem -> cal_potential();
    rsystem -> iterate(0);
    fprintf( stderr, "back from rism interate\n" );
 

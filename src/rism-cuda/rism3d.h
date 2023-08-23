@@ -29,6 +29,7 @@ public:
   double cal_pressure ();
   void cal_exchem (double * &);
   void cal_grad (double * &);
+  void cal_potential ();
   Cell * ce;
   Solute * su;
   Solvent * sv;
@@ -37,7 +38,6 @@ private:
   void cal_Coulomb ();
   double cal_euv();
   void cal_LJ ();
-  void cal_potential ();
   double cal_rms ();
   void calculate (double);
   void initialize_g ();

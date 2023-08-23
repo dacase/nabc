@@ -7,5 +7,7 @@ void RISM3D :: initialize(string control, string structure, bool centering) {
   set_fname(control, structure);
   initialize_g();
   set_solvent();
-  cal_potential();
+  // DAC: since cal_potential depends on the coordinates, do this inside
+  //     mme_rism()
+  // cal_potential();
 } 
