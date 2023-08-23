@@ -6,6 +6,7 @@
 #include "sff.h"
 #include "../src/rism-cuda/rism3d.h"
 FILE* nabout;
+RISM3D * rsystem;
 
 //  Very primitive short rism-cuda minimizer, no argument-
 //     checking, etc., etc.
@@ -16,35 +17,31 @@ FILE* nabout;
 REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
 
    REAL_T energy;
-   RISM3D * system;
 
    energy = mme( x, f, iter );
 
-   system = new RISM3D;
-   system -> initialize( "trpcage_c", "trpcage_s", false );
-   fprintf( stderr, "back from system->initialize\n" );
-   system -> iterate(0);
+   rsystem -> iterate(0);
    fprintf( stderr, "back from rism interate\n" );
 
    // get exchem, pmv, pressure:
-   double pmv = system -> cal_pmv();
-   double pressure = system -> cal_pressure();
-   double * xmu = new double[system -> sv -> natv * 2];
-   system -> cal_exchem(xmu);
-   double ibeta = avogadoro * boltzmann * system -> sv -> temper;
+   double pmv = rsystem -> cal_pmv();
+   double pressure = rsystem -> cal_pressure();
+   double * xmu = new double[rsystem -> sv -> natv * 2];
+   rsystem -> cal_exchem(xmu);
+   double ibeta = avogadoro * boltzmann * rsystem -> sv -> temper;
     
    double xmua = 0.0;
-   for (int iv = 0; iv < system -> sv -> natv; ++iv) { xmua += xmu[iv]; }   
+   for (int iv = 0; iv < rsystem -> sv -> natv; ++iv) { xmua += xmu[iv]; }   
    double erism = ibeta * xmua / kcal2J;
    fprintf( stderr, "emm = %10.5f  erism = %10.5f\n", energy, erism );
    energy += erism;
 
    // get gradient:
    double * du;
-   du = new double[system -> su -> num * 3];
-   system -> cal_grad(du);
-   double dv = system -> ce -> dv / kcal2J;
-   for (int iu = 0; iu < system -> su -> num; ++iu) {
+   du = new double[rsystem -> su -> num * 3];
+   rsystem -> cal_grad(du);
+   double dv = rsystem -> ce -> dv / kcal2J;
+   for (int iu = 0; iu < rsystem -> su -> num; ++iu) {
       int num = iu * 3;
       f[num] += du[num  ] * dv;
       f[num] += du[num+1] * dv;
@@ -63,6 +60,10 @@ int main( int argc, char *argv[] )
    double start_time = 0.0;   // dummy, since this is minimization, not md
 
    nabout = stdout;    // change to redirect output (historical kludge)
+
+   rsystem = new RISM3D;
+   rsystem -> initialize( "trpcage_c", "trpcage_s", false );
+   fprintf( stderr, "back from rsystem->initialize\n" );
 
 //   options for the minimizer:
 
@@ -103,11 +104,12 @@ int main( int argc, char *argv[] )
 
    int verbose = -1;   // historical flag to give more verbose output
    energy = mme_rism( xyz, grad, &verbose );
+   printf( "energy is %10.5f\n", energy );
 
 //   run the minimization:
 
 // char title[] = " non-rattle minimization";
-// energy = xmin( mme,  &natm, xyz, grad,  &energy,  &grms,  &xo );
+// energy = xmin( mme_rism,  &natm, xyz, grad,  &energy,  &grms,  &xo );
 // putxv( argv[3], title, natm, start_time, xyz, xyz );
 // energy = mme( xyz, grad, &verbose );
 
