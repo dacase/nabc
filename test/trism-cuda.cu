@@ -6,7 +6,6 @@
 #include "sff.h"
 #include "../src/rism-cuda/rism3d.h"
 FILE* nabout;
-RISM3D * rsystem;
 
 //  Very primitive short rism-cuda minimizer, no argument-
 //     checking, etc., etc.
@@ -17,15 +16,26 @@ RISM3D * rsystem;
 REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
 
    REAL_T energy;
+   RISM3D * rsystem;
 
    energy = mme( x, f, iter );
 
+   rsystem = new RISM3D;
+   rsystem -> initialize( "trpcage_c", "trpcage_s", false );
+
    // here we need to copy the current coordinates (passed in as x) into
    //   the appropriate place inside rsystem:
+   for (int iu = 0; iu < rsystem -> su -> num; ++iu) {
+      int n = iu * 4;
+      int nsff = iu * 3;
+      rsystem -> su -> r[n  ] = x[nsff  ];
+      rsystem -> su -> r[n+1] = x[nsff+1];
+      rsystem -> su -> r[n+2] = x[nsff+2];
+   }
+   rsystem -> su -> setup_cuda();
 
    rsystem -> cal_potential();
    rsystem -> iterate(0);
-   fprintf( stderr, "back from rism interate\n" );
 
    // get exchem, pmv, pressure:
    double pmv = rsystem -> cal_pmv();
@@ -37,8 +47,10 @@ REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
    double xmua = 0.0;
    for (int iv = 0; iv < rsystem -> sv -> natv; ++iv) { xmua += xmu[iv]; }   
    double erism = ibeta * xmua / kcal2J;
-   fprintf( stderr, "emm = %10.5f  erism = %10.5f\n", energy, erism );
+   printf( "emm = %10.5f  erism = %10.5f  total = %10.5f\n", 
+      energy, erism, energy + erism );
    energy += erism;
+   delete[] xmu;
 
    // get gradient:
    double * du;
@@ -47,11 +59,11 @@ REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
    double dv = rsystem -> ce -> dv / kcal2J;
    for (int iu = 0; iu < rsystem -> su -> num; ++iu) {
       int num = iu * 3;
-      f[num] += du[num  ] * dv;
-      f[num] += du[num+1] * dv;
-      f[num] += du[num+2] * dv;
+      f[num] -= du[num  ] * dv;
+      f[num] -= du[num+1] * dv;
+      f[num] -= du[num+2] * dv;
    }
-
+   delete[] du;
    return energy;
 }
 
@@ -59,15 +71,11 @@ int main( int argc, char *argv[] )
 {
    PARMSTRUCT_T *prm;   //  struct to hold info from a prmtop file
    XMIN_OPT_T xo;       //  options for the minimizer
-   double *xyz,  *grad;
+   double *xyz,  *grad, *v;
    double energy, grms;
    double start_time = 0.0;   // dummy, since this is minimization, not md
 
    nabout = stdout;    // change to redirect output (historical kludge)
-
-   rsystem = new RISM3D;
-   rsystem -> initialize( "trpcage_c", "trpcage_s", false );
-   fprintf( stderr, "back from rsystem->initialize\n" );
 
 //   options for the minimizer:
 
@@ -85,7 +93,9 @@ int main( int argc, char *argv[] )
    int natm = prm->Natom;
    xyz = (double *) malloc( 3 * natm * (sizeof(double)) );
    grad = (double *) malloc( 3 * natm * (sizeof(double)) );
-   getxv( argv[2], natm, start_time, xyz, grad );  // reads a restart file
+   v = (double *) malloc( 3 * natm * (sizeof(double)) );
+
+   getxv( argv[2], natm, start_time, xyz, v );  // reads a restart file
 
 //   setup the force field parameters, and get an initial energy:
 
@@ -97,6 +107,7 @@ int main( int argc, char *argv[] )
    // mm_options( "apply_rism_force=1, centering=2" );
    // mm_options( "ntpr_rism=1, ntwrism=0" );
    // mm_options( "uccoeff=-0.149818,-0.1136266,-0.00053163,0.0103954" );
+   mm_options( (char *) "ntpr_md=1" );
 
    // nothing frozen or constrained for now:
    int* frozen = parseMaskString( (char *) "@ZZZ", prm, xyz, 2 );
@@ -106,21 +117,17 @@ int main( int argc, char *argv[] )
    int dn=0;
    cudaSetDevice(dn);
 
-   int verbose = -1;   // historical flag to give more verbose output
-   energy = mme_rism( xyz, grad, &verbose );
-   printf( "energy is %10.5f\n", energy );
+// int verbose = -1;   // historical flag to give more verbose output
+// energy = mme_rism( xyz, grad, &verbose );
 
-//   run the minimization:
+//   run the simulation:
 
-// char title[] = " non-rattle minimization";
-// energy = xmin( mme_rism,  &natm, xyz, grad,  &energy,  &grms,  &xo );
+//    energy = xmin( mme_rism,  &natm, xyz, grad,  &energy,  &grms,  &xo );
 // putxv( argv[3], title, natm, start_time, xyz, xyz );
-// energy = mme( xyz, grad, &verbose );
 
-//  optional: get solvent distribution at the end:
-//   mm_options( "guvfile=g.xmin, apply_rism_force=0, ntwrism=1" );
-//   mme_init_sff( prm, frozen, constrained, NULL, NULL );
-//   mme( xyz, grad, &verbose );
+   int natm3 = 3 * natm;
+   md( natm3, 25, xyz, grad, v, mme_rism );
+
 
 }
 

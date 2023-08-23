@@ -60,7 +60,8 @@ void RISM3D :: iterate(int cu) {
       } else {
 	ma -> calculate (dt, dtr);
       }
-      cout << " Step = " << istep << " Reside = " << rms << endl;
+      if( istep%50 == 0 )
+         cout << " Step = " << istep << " Reside = " << rms << endl;
       if (co -> ksave > 0 && istep % co -> ksave == 0) {
 	write_tuv();
       }

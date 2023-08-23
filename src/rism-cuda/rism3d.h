@@ -33,6 +33,8 @@ public:
   Cell * ce;
   Solute * su;
   Solvent * sv;
+  Control * co;
+  double * du;
 private:
   void add_tuv (double);
   void cal_Coulomb ();
@@ -75,7 +77,6 @@ private:
   double2 * dhuv;
   double * dt;
   double * dtr;
-  double * du;
   double * de;
   double4 * dgv;
   double * dsig;
@@ -85,7 +86,6 @@ private:
   double2 * dfk;
   double * ds;
 
-  Control * co;
   AN2 * ma;
   FFT3D * fft;
 };
