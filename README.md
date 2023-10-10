@@ -47,8 +47,8 @@ Mostly GPLv3; see the LICENSE file for full details.
 
 # How to install
 
-*  ./configure --help   # then run configure with the options you want
-*  make install   # creates lib/lib{arpack,nabc,sff}.a
+*  ./configure --help   # then run configure with the options you want; no options is the most common choice
+*  make install   # creates lib/lib{arpack,nabc,sff,lapack,blas}.a
 *  cd test && make test  # still needs comparisons to saved inputs
 
 Note that the above is for nabc/sff; there is also NAB source code, but 
