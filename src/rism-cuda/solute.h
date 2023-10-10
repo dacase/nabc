@@ -9,6 +9,7 @@ class Solute {
   void init(int);
   double * centering();
   void setup_cuda();
+  void free_cuda();
   double * q;
   double * sig;
   double * eps;

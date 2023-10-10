@@ -184,11 +184,9 @@ if [ -z "$mklroot" -o "$mkl" == "no" ] ; then
       flibs_la="$GOTO -lpthread"
    else
       # use the compiled versions;
-      printf "current code requires either --mkl or --openblas to be set\n"
-      exit 1
-      #flibs_la="-llapack -lblas"
-      #lapack=liblapack
-      #blas=libblas
+      flibs_la="-llapack -lblas"
+      lapack=liblapack
+      blas=libblas
    fi
 
 else
@@ -324,7 +322,7 @@ NVFLAGS = -O3 -m64 -gencode=arch=compute_80,code=sm_80 -I\$(CUDA_DIR)/include
 
 #  (4)  other flags:
 
-FLIBS= -lsff -lnabc -lrism $flibs_la $netcdflib $ciflib
+FLIBS= -lsff -lnabc -larpack $flibs_la $netcdflib $ciflib
 CIFTARGET=$ciftarget
 AR=    ar rv
 RANLIB=ranlib

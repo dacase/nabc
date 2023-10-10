@@ -14,11 +14,11 @@ test_lmod:  tlmod
 	@/bin/rm -f conflib.dat tlmod tlmod.o
 
 test_md:  tmd
-	time ./tmd xfin.parm7 xfin.md1.x
+	time ./tmd xfin.parm7 xfin.md1.rst7
 	@/bin/rm -f xfin.md2.x
 
 test_md.MPI:  tmd.MPI
-	time mpirun -np 4 ./tmd.MPI xfin.parm7 xfin.md1.x
+	time mpirun -np 4 ./tmd.MPI xfin.parm7 xfin.md1.rst7
 
 test_nmode:  tnmode
 	./tnmode crambin.parm7 crambin.rst7 > nmode.out
@@ -57,7 +57,7 @@ txmin:  txmin.o
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $< $(LIBS) -larpack $(FLIBS_ARCH)
+	$(VB)$(CC) -o $@ $< $(LIBS) $(FLIBS_ARCH)
                 
 tmd:  tmd.o
 	@echo "[NABC] CC $@"
@@ -69,7 +69,7 @@ tmd.MPI:  tmd.MPI.o
 
 tnmode:  tnmode.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 tmask:  tmask.o
 	@echo "[NABC] CC $@"

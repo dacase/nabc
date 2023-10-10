@@ -43,10 +43,11 @@ int main( int argc, char *argv[] )
    double* f = malloc( natm3 * (sizeof(double)) );
    double* v = malloc( natm3 * (sizeof(double)) );
 
+#if 1
    //   option: read a formatted restart file:
-   // int start_time, natm:
-   // getxv( argv[2], natm, start_time, x, v );
-
+   int start_time;
+   getxv( argv[2], natm, start_time, x, v );
+#else
    //  (next lines could be bundled into a netcdfReadRestart() function)
    struct AmberNetcdf ain;
    int ier = netcdfLoad( &ain, argv[2] );
@@ -54,6 +55,7 @@ int main( int argc, char *argv[] )
    // netcdfInfo( &ain );
    netcdfGetFrame(  &ain, 0, x, NULL );
    netcdfGetVelocity( &ain, 0, v );
+#endif
 
 //   set up some md options:
 
@@ -72,8 +74,8 @@ int main( int argc, char *argv[] )
 //   run the md:
 
    md( natm3, 500, x, f, v, mme );
-   if( mytaskid == 0 )
-      netcdfWriteRestart( "xfin.md2.x", natm, x, v, NULL, 1.0, 0.0 );
+   // if( mytaskid == 0 )
+   //    netcdfWriteRestart( "xfin.md2.x", natm, x, v, NULL, 1.0, 0.0 );
 
 #ifdef MPI
    mpifinalize();

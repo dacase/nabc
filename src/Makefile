@@ -7,6 +7,8 @@ install:
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 	@cd arpack && $(MAKE) libarpack
+	@cd lapack && $(MAKE) liblapack
+	@cd blas && $(MAKE) libblas
 
 nab: install
 	@cd ucpp-1.3 && make ucpp
@@ -18,6 +20,8 @@ clean:
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
 	-(cd arpack && $(MAKE) clean )
+	-(cd lapack && $(MAKE) clean )
+	-(cd blas && $(MAKE) clean )
 	-(cd ucpp-1.3 && $(MAKE) clean )
 	-(cd nab && $(MAKE) clean )
 	-(cd nss && $(MAKE) clean )

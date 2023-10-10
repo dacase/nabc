@@ -48,3 +48,9 @@ void Solute :: setup_cuda() {
   cudaMemcpyAsync(dq, q, num * sizeof(double), cudaMemcpyDefault);
   cudaMemcpyAsync(dr, r, num * sizeof(double4), cudaMemcpyDefault);
 }
+
+void Solute :: free_cuda() {
+  cudaFree(dq);
+  cudaFree(dr);
+}
+

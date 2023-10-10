@@ -44,3 +44,10 @@ would like to help out.
 
 # License
 Mostly GPLv3; see the LICENSE file for full details.
+
+# How to install
+
+*  ./configure --help   # then run configure with the options you want
+*  make install   # creates lib/lib{arpack,nabc,sff}.a
+*  cd test && make test  # still needs comparisons to saved inputs
+

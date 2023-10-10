@@ -59,11 +59,12 @@ REAL_T mme_rism( REAL_T * x, REAL_T * f, int *iter ){
    double dv = rsystem -> ce -> dv / kcal2J;
    for (int iu = 0; iu < rsystem -> su -> num; ++iu) {
       int num = iu * 3;
-      f[num] -= du[num  ] * dv;
-      f[num] -= du[num+1] * dv;
-      f[num] -= du[num+2] * dv;
+      f[num] += du[num  ] * dv;
+      f[num] += du[num+1] * dv;
+      f[num] += du[num+2] * dv;
    }
    delete[] du;
+   rsystem -> su -> free_cuda();
    return energy;
 }
 
@@ -126,7 +127,7 @@ int main( int argc, char *argv[] )
 // putxv( argv[3], title, natm, start_time, xyz, xyz );
 
    int natm3 = 3 * natm;
-   md( natm3, 25, xyz, grad, v, mme_rism );
+   md( natm3, 10, xyz, grad, v, mme_rism );
 
 
 }
