@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "nab.h"
-#include "y.tab.h"
+#include "nabgrm.tab.h"
 
 #define	INCR	2
 #define	DUMPFILE	"dump.file"

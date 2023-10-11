@@ -19,7 +19,7 @@ OBJS=    dasum.o daxpy.o dcabs1.o dcopy.o ddot.o \
          zher2k.o zswap.o zgemv.o zhemv.o zscal.o zdotc.o zaxpy.o \
          zher2.o zdscal.o ztrmv.o zcopy.o ztrmm.o zgemm.o zgerc.o
 
-install: $(LIBDIR)/libblas.a
+libblas: $(LIBDIR)/libblas.a
 
 $(LIBDIR)/libblas.a: $(OBJS)
 	@echo "[LAPACK]  AR $@"

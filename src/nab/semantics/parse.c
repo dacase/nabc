@@ -92,9 +92,9 @@ static	int	n_kvtab;
 static	DEF_T	avtab[ AVTAB_SIZE ];
 static	int	n_avtab;
 
-	/* symbols (#defines) from y.tab.h	*/
+	/* symbols (#defines) from nabgrm.tab.h	*/
 
-//#define	SYM_FILE	"AmberTools/src/nab/y.tab.h"
+#define	SYM_FILE	"../nabgrm.tab.h"
 static	char	symfname[ 256 ];
 
 #define	SYMTAB_SIZE	300

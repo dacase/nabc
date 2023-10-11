@@ -48,7 +48,7 @@ OBJS= dsyev.o dsygv.o dlansy.o dsytrd.o dorgtr.o dsteqr.o \
 	ilatrans.o dla_gercond.o ilaprec.o dla_gerfsx_extended.o\
 	dla_rpvgrw.o dgerfsx.o dlascl2.o dgeequb.o
 
-install: $(LIBDIR)/liblapack.a
+liblapack: $(LIBDIR)/liblapack.a
 
 $(LIBDIR)/liblapack.a: $(OBJS)
 	@echo "[LAPACK]  AR $@"

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "nab.h"
-#include "y.tab.h"
+#include "nabgrm.tab.h"
 #include "errormsg.h"
 
 extern	int	cg_lineno;

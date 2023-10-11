@@ -44,14 +44,14 @@ SYM_UPARROW_ASSIGN.rules
 
 ATRFILE=attribute.tab
 
-SYMFILE=../y.tab.h
+SYMFILE=../nabgrm.tab.h
 
-checkexpr.c: $(RULES) attribute.tab parse$(SFX) ../nab.h ../nabgrm.y
-	$(WINE) ./parse$(SFX) *.rules
+checkexpr.c: $(RULES) attribute.tab parse2 ../nab.h ../nabgrm.y
+	./parse2 --y-tab-h ../nabgrm.tab.h --attributes-tab \
+     ./attribute.tab --nab-h-path ../nab.h -o $@ *.rules
 
-parse$(SFX): parse.c
-	$(CC) -DDATDIR='"$(AMBER_SOURCE)/dat"' -DATRFILE='"$(ATRFILE)"' -DSYM_FILE='"$(SYMFILE)"' $(CFLAGS) $(AMBERCFLAGS) \
-		$(LDFLAGS) $(AMBERLDFLAGS) -o parse$(SFX) parse.c
+parse2: parse2.c
+	$(CC) $(CFLAGS) $(AMBERCFLAGS) $(LDFLAGS) $(AMBERLDFLAGS) -o $@ $<
 
 clean::
-	/bin/rm -f parse$(SFX) *.html
+	/bin/rm -f parse2 *.html
