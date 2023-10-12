@@ -53,7 +53,7 @@ program_2:  program_2.o
 
 txmin:  txmin.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $< $(LIBS)
+	$(VB)$(CC) -o $@ $< $(LIBS) $(FLIBS_ARCH)
 
 tlmod:  tlmod.o
 	@echo "[NABC] CC $@"
@@ -61,11 +61,11 @@ tlmod:  tlmod.o
                 
 tmd:  tmd.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 tmd.MPI:  tmd.MPI.o
 	@echo "[NABC] CC $@"
-	$(VB)mpicc -o $@ $<  $(LIBS)
+	$(VB)mpicc -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 tnmode:  tnmode.o
 	@echo "[NABC] CC $@"
@@ -73,27 +73,27 @@ tnmode:  tnmode.o
 
 tmask:  tmask.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 thcp1:  thcp1.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 thcp2:  thcp2.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 tnabc:  tnabc.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 tcif:  tcif.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  -L$(LIBDIR)  -lnabc -lcifparse $(LIBS)
+	$(VB)$(CC) -o $@ $<  -L$(LIBDIR)  -lnabc -lcifparse $(LIBS) $(FLIBS_ARCH)
 
 tnetcdf:  tnetcdf.o
 	@echo "[NABC] CC $@"
-	$(VB)$(CC) -o $@ $<  $(LIBS)
+	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
 trism-cuda: trism-cuda.o
 	nvcc -o $@ $<  $(LIBS) -L/usr/local/cuda/lib64 -lcufft -lcuda -lcudart
