@@ -3,7 +3,7 @@
 include ../config.h
 
 install:
-	@cd cifparse && $(MAKE) $(CIFTARGET)
+	@cd cifparse && $(MAKE) libcifparse
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 	@cd arpack && $(MAKE) libarpack
