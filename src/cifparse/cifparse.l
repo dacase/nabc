@@ -1,3 +1,4 @@
+%option prefix="cifp"
 %option noyywrap
 
 %{ 
@@ -57,7 +58,7 @@ not limited to, any and all claims alleging products liability.
  *  Local prototypes
  */
 static void alt_cifpmore();
-static void delete_punctuation();
+static void delete_punctuation(char*, char*, int*);
 static char tbuf[MAXVALUELENGTH+1];
 /*
  *  Local static variables ...
@@ -266,10 +267,7 @@ static int   buflen;
  *         char *obuf:   unquoted string
  *         int  *bufLen: The sting length of ibuf                   
  *---------------------------------------------------------------------------*/
-static void delete_punctuation(obuf, ibuf, bufLen)
-char *obuf;
-char *ibuf;
-int *bufLen;
+static void delete_punctuation(char *obuf, char *ibuf, int *bufLen)
 {
   int i;
   if (*bufLen == 0) return;

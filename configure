@@ -432,7 +432,7 @@ NVFLAGS = -O3 -m64 -gencode=arch=compute_80,code=sm_80 -I\$(CUDA_DIR)/include
 
 #  (4)  other flags:
 
-FLIBS= -lsff -lnabc -larpack $flibs_la $netcdflib $ciflib
+FLIBS= -lsff -lnabc -larpack $flibs_la $netcdflib $ciflib $flibs_arch
 CIFTARGET=$ciftarget
 AR=    ar rv
 RANLIB=ranlib

@@ -63,8 +63,7 @@ void ndb_cif_print_item_name(FILE *fp, char *itemName, int *linePos);
 void ndb_cif_print_item_value(FILE *fp, char *itemValue, int *linePos);
 void ndb_cif_print_formatted_item_value(FILE *outfile, int *offset, char *value, int newline_end, int fieldLength);
 
-char ndb_cif_set_null_char(new_null)
-char new_null;
+char ndb_cif_set_null_char(char new_null)
      /* Change the CIF character identifying a NULL data value .
       */
 {
@@ -74,8 +73,7 @@ char new_null;
   return old_null;
 }
 
-int ndb_cif_read_file(fp)
-FILE *fp;
+int ndb_cif_read_file(FILE *fp)
 {
 
 
@@ -93,8 +91,7 @@ FILE *fp;
 
 }
 
-int ndb_cif_write_file(fp)
-FILE *fp;
+int ndb_cif_write_file(FILE *fp)
 {
   int i, datablockId, categoryId, rowId, linePos, numColumn, numRow;
   char itemValue[YYLMAX], itemName[MxNameLen], datablockName[MxNameLen];
@@ -156,8 +153,7 @@ FILE *fp;
 }
 
 /*   alternate version of write_file for NEF files:  */
-int ndb_nef_write_file(fp)
-FILE *fp;
+int ndb_nef_write_file(FILE *fp)
 {
   int i, datablockId, categoryId, rowId, linePos, numColumn, numRow;
   char itemValue[YYLMAX], itemName[MxNameLen], datablockName[MxNameLen];
@@ -226,20 +222,14 @@ FILE *fp;
 }
 
 
-void ndb_cif_print_item_name(fp, itemName, linePos)
-FILE *fp;
-char *itemName;
-int *linePos;
+void ndb_cif_print_item_name(FILE *fp, char *itemName, int *linePos)
 {
   fprintf(fp, "%s  ", itemName);
   *linePos = strlen(itemName) +2;
 }
 
 
-void ndb_cif_print_item_value(fp, itemValue, linePos) 
-FILE *fp;
-char *itemValue;
-int *linePos;
+void ndb_cif_print_item_value(FILE *fp, char *itemValue, int *linePos) 
 {
   int i, str_len, multipleLine, multipleWord, embeddedQuotes, len;
 
@@ -313,8 +303,7 @@ int *linePos;
 }
 
 
-void ndb_cif_write_category(fp)
-FILE *fp;
+void ndb_cif_write_category(FILE *fp)
 {
   int icol, irow, datablockId, categoryId, numColumn, numRow, linePos;
   int str_len1, str_len, i;
@@ -392,13 +381,8 @@ FILE *fp;
   fflush(fp);
 }
 
-void ndb_cif_print_formatted_item_value(outfile, offset, 
-					value, newline_end, fieldLength)
-FILE *outfile;
-int *offset;
-char *value;
-int newline_end;
-int fieldLength;
+void ndb_cif_print_formatted_item_value(FILE *outfile, int *offset, 
+					char *value, int newline_end, int fieldLength)
 /* ---------------------------------------------------------------------
                        print_cif_value
    Rule: 1. If there're single quotes or newlines in value or it exceed 80 
@@ -489,15 +473,15 @@ int fieldLength;
      */
     if (i == str_len) {
       if (*offset != 0) 
-	sprintf(tmpstring, " %s", value);
+         sprintf(tmpstring, " %s", value);
       else 
-	strcpy(tmpstring, value);
+         strcpy(tmpstring, value);
     }
     else {
       if (*offset != 0) 
-	sprintf(tmpstring, " \'%s\'", value);
+         sprintf(tmpstring, " %s", value);
       else
-	sprintf(tmpstring, "\'%s\'", value);
+         sprintf(tmpstring, "%s", value);
     }
     if (str_len < fieldLength) { 
       if ((fieldLength+3) > 80) str_len +=3;
@@ -595,8 +579,7 @@ int ndb_cif_close()
 /* ----------------------------------------------------------------
    allocation 
    ---------------------------------------------------------------*/
-int ndb_cif_new_datablock(datablockName)
-char *datablockName;
+int ndb_cif_new_datablock(char *datablockName)
 {
   int i;
   if (cifFiles.numDatablock ==  cifFiles.allDatablock) {
@@ -633,8 +616,7 @@ char *datablockName;
   return cifFiles.curDatablock +1;
 }
 
-int  ndb_cif_put_datablock_name(datablockName)
-char *datablockName;
+int  ndb_cif_put_datablock_name(char *datablockName)
 {
   if (cifFiles.numDatablock == 0)
     ndb_cif_new_datablock(datablockName);
@@ -644,8 +626,7 @@ char *datablockName;
 }
 
 
-int ndb_cif_new_category(categoryName)
- char *categoryName;
+int ndb_cif_new_category(char *categoryName)
 {
   int categoryNo,i;
 
@@ -738,8 +719,7 @@ int ndb_cif_new_row()
   return pCategory->curRow +1;
 }
 
-int ndb_cif_insert_new_row(rowNo)
-int rowNo;
+int ndb_cif_insert_new_row(int rowNo)
 {
   int curCategory, i, j, curDatablock, curRow;
   NdbCifCategoryFormat *pCategory;
@@ -860,8 +840,7 @@ int ndb_cif_reset_datablock()
   return ret;
 }
 
-int ndb_cif_reset_datablock_by_id(datablockId)
-int datablockId;
+int ndb_cif_reset_datablock_by_id(int datablockId)
 {
   int i, ret;
 
@@ -897,9 +876,7 @@ int ndb_cif_reset_category()
   return 1;
 }
 
-int ndb_cif_reset_category_by_id(datablockId, categoryId)
-int datablockId;
-int categoryId;
+int ndb_cif_reset_category_by_id(int datablockId, int categoryId)
 {
   int ret;
   
@@ -941,8 +918,7 @@ int ndb_cif_remove_datablock()
   return cifFiles.curDatablock+1;
 }
 
-int ndb_cif_remove_datablock_by_id(datablockId)
-int datablockId;
+int ndb_cif_remove_datablock_by_id(int datablockId)
 {
   if (datablockId <= 0 ||
       datablockId > cifFiles.numDatablock)
@@ -964,8 +940,7 @@ int datablockId;
   return cifFiles.curDatablock +1;
 }
 
-int ndb_cif_remove_datablock_by_name(datablockName)
-char *datablockName;
+int ndb_cif_remove_datablock_by_name(char *datablockName)
 {
   int datablockId;
 
@@ -1001,9 +976,7 @@ int ndb_cif_remove_category()
   return cifFiles.datablocks[cifFiles.curDatablock].curCategory +1;
 }
 
-int ndb_cif_remove_category_by_id(datablockId, categoryId)
-int datablockId;
-int categoryId;
+int ndb_cif_remove_category_by_id(int datablockId, int categoryId)
 {
 
   if (datablockId <=0 || categoryId <=0 ||
@@ -1025,9 +998,7 @@ int categoryId;
   return cifFiles.datablocks[cifFiles.curDatablock].curCategory +1;
 }
 
-int ndb_cif_remove_category_by_name(datablockName, categoryName)
-char *datablockName;
-char *categoryName;
+int ndb_cif_remove_category_by_name(char *datablockName, char *categoryName)
 {
   int datablockId, categoryId;
   
@@ -1062,10 +1033,7 @@ int ndb_cif_remove_row()
 				 
 }
 
-int ndb_cif_remove_row_by_id(datablockId, categoryId, rowId)
-int datablockId;
-int categoryId;
-int rowId;
+int ndb_cif_remove_row_by_id(int datablockId, int categoryId, int rowId)
 {
 
   NdbCifCategoryFormat  *pCategory;
@@ -1168,8 +1136,7 @@ int ndb_cif_next_column()
   else return 0;
 }
 
-int ndb_cif_move_datablock(datablockName)
-char *datablockName;
+int ndb_cif_move_datablock(char *datablockName)
 {
   int i;
   if (cifFiles.datablocks == NULL)
@@ -1186,8 +1153,7 @@ char *datablockName;
     return 0;
 }
 
-int ndb_cif_move_datablock_by_id(datablockId)
-int datablockId;
+int ndb_cif_move_datablock_by_id(int datablockId)
 {
 
   if (datablockId < 0 ||
@@ -1198,9 +1164,7 @@ int datablockId;
   return datablockId;
 }
 
-int ndb_cif_move_category_by_name(datablockName, categoryName)
-char *datablockName;
-char *categoryName;
+int ndb_cif_move_category_by_name(char *datablockName, char *categoryName)
 {
   int i, curDatablock;
 
@@ -1223,9 +1187,7 @@ char *categoryName;
     return 0;
 }
 
-int ndb_cif_move_category_by_id(datablockId, categoryId)
-int datablockId;
-int categoryId;
+int ndb_cif_move_category_by_id(int datablockId, int categoryId)
 {
   int  curDatablock;
 
@@ -1241,8 +1203,7 @@ int categoryId;
 
 }
 
-int ndb_cif_move_category(categoryId)
-int categoryId;
+int ndb_cif_move_category(int categoryId)
 {
 
   if (categoryId <0 || categoryId > cifFiles.datablocks[cifFiles.curDatablock].numCategory)
@@ -1254,10 +1215,7 @@ int categoryId;
 
 }
 
-int ndb_cif_move_row_by_name(datablockName, categoryName, rowId)
-char *datablockName;
-char *categoryName;
-int rowId;
+int ndb_cif_move_row_by_name(char *datablockName, char *categoryName, int rowId)
 {
   int curCategory, curDatablock;
 
@@ -1273,10 +1231,7 @@ int rowId;
   return rowId+1;
 }
 
-int ndb_cif_move_row_by_id(datablockId, categoryId, rowId)
-int datablockId;
-int categoryId;
-int rowId;
+int ndb_cif_move_row_by_id(int datablockId, int categoryId, int rowId)
 {
   if (datablockId <=0 || categoryId <=0 || rowId <=0 ||
       ndb_cif_move_category_by_id(datablockId, categoryId) == 0) 
@@ -1291,8 +1246,7 @@ int rowId;
 
 }
 
-int ndb_cif_move_row(rowId)
-int rowId;
+int ndb_cif_move_row(int rowId)
 {
   int  curDatablock, curCategory;
 
@@ -1354,8 +1308,7 @@ int ndb_cif_current_datablock()
   return cifFiles.curDatablock+1;
 }
 
-int ndb_cif_current_datablock_name(datablockName)
-char *datablockName;
+int ndb_cif_current_datablock_name(char *datablockName)
 {
   if (cifFiles.curDatablock < 0 ||
       cifFiles.curDatablock >= cifFiles.numDatablock)
@@ -1372,8 +1325,7 @@ int ndb_cif_current_category()
   return cifFiles.datablocks[cifFiles.curDatablock].curCategory+1;
 }
 
-int ndb_cif_current_category_name(categoryName)
-char *categoryName;
+int ndb_cif_current_category_name(char *categoryName)
 {
   if (cifFiles.curDatablock >= cifFiles.numDatablock)
     return 0;
@@ -1412,8 +1364,7 @@ int ndb_cif_current_col()
   return cifFiles.datablocks[curDatablock].categories[curCategory].curCol+1;
 }
 
-int ndb_cif_put_item_keyword(itemKeyword)
-char *itemKeyword;
+int ndb_cif_put_item_keyword(char *itemKeyword)
 { 
   NdbCifCategoryFormat *pCategory;
   int curDatablock, curCategory, i, j;
@@ -1451,8 +1402,7 @@ char *itemKeyword;
   return pCategory->curCol+1;
 }
 
-int ndb_cif_remove_item_keyword(itemKeyword)     
-char *itemKeyword;
+int ndb_cif_remove_item_keyword(char *itemKeyword)     
 /* Given the name of a column, remove the keyword and all of
    the values from the current category.
    */     
@@ -1491,9 +1441,7 @@ char *itemKeyword;
 }
 
 
-int ndb_cif_get_item_name(colId, itemName)
-int colId;
-char *itemName;
+int ndb_cif_get_item_name(int colId, char *itemName)
 {
   int curDatablock, curCategory;
   NdbCifCategoryFormat *pCategory;
@@ -1515,9 +1463,7 @@ char *itemName;
   return TRUE;
 }
 
-int ndb_cif_get_item_shname(colId, itemName)
-int colId;
-char *itemName;
+int ndb_cif_get_item_shname(int colId, char *itemName)
      /* Retur the name minus the category name (the SHort name. 
       */     
 {
@@ -1540,10 +1486,7 @@ char *itemName;
   return TRUE;
 }
 
-int ndb_cif_get_item_value(colId, fieldValue, maxFieldLen)
-int colId;
-char *fieldValue;
-int maxFieldLen;
+int ndb_cif_get_item_value(int colId, char *fieldValue, int maxFieldLen)
 {
   NdbCifRowFormat *pRow;
   int curDatablock, curCategory, curRow;
@@ -1572,8 +1515,7 @@ int maxFieldLen;
   return TRUE;
 }
 
-char *ndb_cif_copy_item_value(colId)
-int colId;
+char *ndb_cif_copy_item_value(int colId)
   /* In the current row,return a newly allocated string that
      contains a copy of the valule in  colID.
    */
@@ -1609,9 +1551,7 @@ int colId;
 }
 
 
-int ndb_cif_output_item(fp, colId)
-FILE *fp;
-int colId;
+int ndb_cif_output_item(FILE *fp, int colId)
   /* In the current row, output the value in colID to port fp.
    */
 {
@@ -1647,14 +1587,8 @@ int colId;
    return 0;
 }
 
-int ndb_cif_item_value_strncmp(catId, colId, rowId, startPos,
-			       fieldValue, maxFieldLen)
-int catId;
-int colId;
-int rowId;
-int startPos;
-char *fieldValue;
-int maxFieldLen;
+int ndb_cif_item_value_strncmp(int catId, int colId, int rowId, int startPos,
+			       char *fieldValue, int maxFieldLen)
 {
  NdbCifRowFormat *pRow;
  int curDatablock;
@@ -1682,17 +1616,8 @@ int maxFieldLen;
  return(-1);
 }
 
-int ndb_cif_item_values_strncmp(catId1, colId1, rowId1, startPos1, 
-				catId2, colId2,  rowId2,  startPos2, maxFieldLen)
-int catId1;
-int colId1;
-int rowId1;
-int startPos1;
-int catId2;
-int colId2;
-int rowId2;
-int startPos2;
-int maxFieldLen;
+int ndb_cif_item_values_strncmp(int catId1, int colId1, int rowId1, int startPos1,
+			int catId2, int colId2,  int rowId2,  int startPos2, int maxFieldLen)
 {
   NdbCifRowFormat *pRow1, *pRow2;
   int curDatablock;
@@ -1734,9 +1659,7 @@ int maxFieldLen;
    the starting column of the string searched against.
    */
 
-int ndb_cif_item_row_1_key(colId, fieldValue)
-int colId;
-char *fieldValue;
+int ndb_cif_item_row_1_key(int colId, char *fieldValue)
   /* In the current category, examine all the rows and return the row number if fieldValue
      is found, and also also set the current row to i. If the row is not found return 0.
      */
@@ -1773,11 +1696,8 @@ char *fieldValue;
  return 0;
 }
 
-int ndb_cif_item_row_2_keys(colId1, fieldValue1, colId2, fieldValue2)
-int colId1;
-char *fieldValue1;
-int colId2;
-char *fieldValue2;
+int ndb_cif_item_row_2_keys(int colId1, char *fieldValue1, int colId2, 
+     char *fieldValue2)
   /* In the current category, examine all the rows and return the row number if fieldValue1 
      and 2 are found in the respecive columns of row i, and also also set the current
      row to i. If the row is not found, return 0.
@@ -1816,14 +1736,8 @@ char *fieldValue2;
  return 0;
 }
 
-int ndb_cif_item_row_3_keys(colId1, fieldValue1, colId2, fieldValue2,
-			    colId3, fieldValue3)
-int colId1;
-char *fieldValue1;
-int colId2;
-char *fieldValue2;
-int colId3;
-char *fieldValue3;
+int ndb_cif_item_row_3_keys(int colId1, char *fieldValue1, int colId2, 
+     char *fieldValue2, int colId3, char *fieldValue3)
 
   /* In the current category, examine all the rows and return the row number if fieldValue1 
      2 and 3 are found in the respective columns of row i, and also also set the current
@@ -1865,10 +1779,9 @@ char *fieldValue3;
  return 0;
 }
 
-int ndb_cif_item_row_4_keys(colId1, fieldValue1, colId2, fieldValue2,
-			    colId3, fieldValue3, colId4, fieldValue4)
-int colId1, colId2, colId3, colId4;
-char *fieldValue1, *fieldValue2, *fieldValue3, *fieldValue4;
+int ndb_cif_item_row_4_keys(int colId1, char *fieldValue1, 
+                int colId2, char *fieldValue2,
+			    int colId3, char *fieldValue3, int colId4, char *fieldValue4)
   /* In the current category, examine all the rows and return the row number if fieldValue1 
      2, 3 and 4 are found in the respective columns of row i, and also also set the current
      row to i. If the row is not found, return 0.
@@ -1911,9 +1824,7 @@ char *fieldValue1, *fieldValue2, *fieldValue3, *fieldValue4;
  return 0;
 }
 
-int ndb_cif_put_item_value(colId, fieldValue)
-int colId;
-char *fieldValue;
+int ndb_cif_put_item_value(int colId, char *fieldValue)
 {
   NdbCifRowFormat *pRow;
   int curDatablock, curCategory, curRow, str_len;
@@ -1950,9 +1861,7 @@ char *fieldValue;
   return TRUE;
 }
 
-int ndb_cif_get_category_name_from_item_name(categoryName, itemName)
-char *categoryName;
-char *itemName;
+int ndb_cif_get_category_name_from_item_name(char *categoryName, char *itemName)
 {
   int i, str_len;
 
@@ -1976,9 +1885,7 @@ char *itemName;
 
 }
 
-int ndb_cif_get_item_keyword_from_item_name(itemKeyword, itemName)
-char *itemKeyword;
-char *itemName;
+int ndb_cif_get_item_keyword_from_item_name(char *itemKeyword, char *itemName)
 {
   int i, str_len, curCategory;
 
@@ -2007,8 +1914,7 @@ char *itemName;
 
 }
 
-int ndb_cif_get_datablock_id(datablockName)
-char *datablockName;
+int ndb_cif_get_datablock_id(char *datablockName)
 {
   int i;
 
@@ -2025,9 +1931,7 @@ char *datablockName;
     return 0;
 }
 
-int ndb_cif_get_category_id(datablockName, categoryName)
-char *datablockName;
-char *categoryName;
+int ndb_cif_get_category_id(char *datablockName, char *categoryName)
 {
   int i, datablockId;
 
@@ -2044,10 +1948,7 @@ char *categoryName;
   else return 0;
 }
 
-int ndb_cif_get_column_id(datablockName, categoryName, itemKeyword)
-char *datablockName;
-char *categoryName;
-char *itemKeyword;
+int ndb_cif_get_column_id(char *datablockName, char *categoryName, char *itemKeyword)
 {
   int i, datablockId, catId;
 
@@ -2067,8 +1968,7 @@ char *itemKeyword;
 }
 
 
-void ndb_cif_print_datablock(fp)
-FILE *fp;
+void ndb_cif_print_datablock(FILE *fp)
 {
     int i, j, k;
     if (cifFiles.numDatablock == 0 ||
@@ -2102,8 +2002,7 @@ FILE *fp;
 }
 
 
-void ndb_cif_pretty_print_datablock(fp)
-FILE *fp;
+void ndb_cif_pretty_print_datablock(FILE *fp)
 {
     int i, j, k, l, len;
     int *cwidth;
@@ -2180,9 +2079,7 @@ FILE *fp;
 }
 
 
-void ndb_cif_print_category(fp, category)
-FILE *fp;
-char *category;
+void ndb_cif_print_category(FILE *fp, char *category)
 {
   int i, j, k;
   if (cifFiles.numDatablock == 0 ||
@@ -2210,8 +2107,7 @@ char *category;
 }
 
 
-void ndb_cif_print_datablocks(fp)
-FILE *fp;
+void ndb_cif_print_datablocks(FILE *fp)
 {
   int i, j, k, n;
   if (cifFiles.numDatablock == 0 ||
@@ -2241,10 +2137,7 @@ FILE *fp;
   }
 }  
 
-int get_column_index(blockIndex, categoryIndex, columnName)
-int blockIndex;
-int categoryIndex;
-char *columnName;
+int get_column_index(int blockIndex, int categoryIndex, char *columnName)
   /*
    *  Return the index of for 'columnName' in the data block and category 
    *  specified by 'blockIndex' and 'categoryIndex'.
@@ -2261,9 +2154,7 @@ char *columnName;
     return icol;
 }
 
-int get_category_index(blockIndex, categoryName)
-int blockIndex;
-char *categoryName;
+int get_category_index(int blockIndex, char *categoryName)
   /*
    *  Return the index of for 'categoryName' in the data block 
    *  specified by 'blockIndex'.

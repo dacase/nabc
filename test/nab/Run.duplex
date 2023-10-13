@@ -7,7 +7,7 @@ fi
 
 echo "Running test to make dna duplex:"
 echo ""
-$AMBERHOME/bin/nab -o duplex duplex.nab || error
+../../bin/nab -o duplex duplex.nab || error
 $DO_PARALLEL ./duplex < duplex.in || error
 
 ../dacdif d01.pdb.check d01.pdb
