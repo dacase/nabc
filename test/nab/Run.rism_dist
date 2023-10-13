@@ -1,0 +1,83 @@
+#!/bin/sh
+
+toomany() {
+    echo "${0}: This test requires 1 or 2 processes"
+    echo "for meaningful comparison."
+    exit 0
+}
+
+if [ -n "${DO_PARALLEL}" ] ; then
+    numprocs=`echo $DO_PARALLEL | awk -f ../numprocs.awk `
+    if [ ! \( "$numprocs" -eq "2" -o "$numprocs" -le "1" \) ]; then
+            echo " DO_PARALLEL set to $DO_PARALLEL"
+            toomany 
+    elif [ -n "${MP_PROCS}" ]; then
+        if [  ! \( "$MP_PROCS" -eq "2" -o "$MP_PROCS" -le "1" \) ]; then
+#               --- For IBM AIX ---
+            echo "    MP_PROCS set to "$MP_PROCS
+            toomany 
+        fi
+    fi
+fi
+. ../program_error.sh
+
+if [ "$DO_PARALLEL" != "" ];  then
+    NAB="mpinab"
+else
+    NAB="nab"
+fi
+
+echo "Running test to do basic MD (librism)"
+echo "(this tests the 3D-RISM-KH precision)"
+echo ""
+$AMBERHOME/bin/$NAB -o rismdist rismdist.nab || error
+#valgrind \
+$DO_PARALLEL ./rismdist > rismdist.out || error
+
+../dacdif -w rismdist.out.check rismdist.out
+../dacdif -a 2e-6 guv.O.4.dx.check guv.O.4.dx
+../dacdif -a 2e-6 guv_dT.O.4.dx.check guv_dT.O.4.dx
+../dacdif -a 2e-6 huv.O.4.dx.check huv.O.4.dx
+../dacdif -a 2e-6 cuv.O.4.dx.check cuv.O.4.dx
+../dacdif -a 2e-6 cuv_dT.O.4.dx.check cuv_dT.O.4.dx
+../dacdif -a 2e-6 guv.H1.4.dx.check guv.H1.4.dx
+../dacdif -a 2e-6 guv_dT.H1.4.dx.check guv_dT.H1.4.dx
+../dacdif -a 2e-6 huv.H1.4.dx.check huv.H1.4.dx
+../dacdif -a 2e-6 cuv.H1.4.dx.check cuv.H1.4.dx
+../dacdif -a 2e-6 cuv_dT.H1.4.dx.check cuv_dT.H1.4.dx
+../dacdif -a 2e-6 quv.4.dx.check quv.4.dx
+../dacdif -a 2e-6 chgdist.4.dx.check chgdist.4.dx
+../dacdif -a 2e-6 exchem.H1.4.dx.check exchem.H1.4.dx
+../dacdif -a 2e-6 solvene.H1.4.dx.check solvene.H1.4.dx
+../dacdif -a 2e-6 entropy.H1.4.dx.check entropy.H1.4.dx
+../dacdif -a 2e-6 exchemGF.H1.4.dx.check exchemGF.H1.4.dx
+../dacdif -a 2e-6 solveneGF.H1.4.dx.check solveneGF.H1.4.dx
+../dacdif -a 2e-6 entropyGF.H1.4.dx.check entropyGF.H1.4.dx
+../dacdif -a 2e-6 exchem.O.4.dx.check exchem.O.4.dx
+../dacdif -a 2e-6 solvene.O.4.dx.check solvene.O.4.dx
+../dacdif -a 2e-6 entropy.O.4.dx.check entropy.O.4.dx
+../dacdif -a 2e-6 exchemGF.O.4.dx.check exchemGF.O.4.dx
+../dacdif -a 2e-6 solveneGF.O.4.dx.check solveneGF.O.4.dx
+../dacdif -a 2e-6 entropyGF.O.4.dx.check entropyGF.O.4.dx
+../dacdif -a 2e-6 exchem.4.dx.check exchem.4.dx
+../dacdif -a 2e-6 solvene.4.dx.check solvene.4.dx
+../dacdif -a 2e-6 entropy.4.dx.check entropy.4.dx
+../dacdif -a 2e-6 exchem.mol.4.dx.check exchem.mol.4.dx
+../dacdif -a 2e-6 solvene.mol.4.dx.check solvene.mol.4.dx
+../dacdif -a 2e-6 entropy.mol.4.dx.check entropy.mol.4.dx
+../dacdif -a 2e-6 exchemGF.4.dx.check exchemGF.4.dx
+../dacdif -a 2e-6 solveneGF.4.dx.check solveneGF.4.dx
+../dacdif -a 2e-6 entropyGF.4.dx.check entropyGF.4.dx
+../dacdif -a 2e-6 exchemPCPLUS.4.dx.check exchemPCPLUS.4.dx
+../dacdif -a 2e-6 solvenePCPLUS.4.dx.check solvenePCPLUS.4.dx
+../dacdif -a 2e-6 entropyPCPLUS.4.dx.check entropyPCPLUS.4.dx
+../dacdif -a 2e-6 exchemUC.4.dx.check exchemUC.4.dx
+../dacdif -a 2e-6 solveneUC.4.dx.check solveneUC.4.dx
+../dacdif -a 2e-6 entropyUC.4.dx.check entropyUC.4.dx
+../dacdif -a 2e-6 potUV.H1.4.dx.check potUV.H1.4.dx
+../dacdif -a 2e-6 potUV.O.4.dx.check potUV.O.4.dx
+../dacdif -a 2e-6 potUV.4.dx.check potUV.4.dx
+../dacdif -a 2e-6 potUV.mol.4.dx.check potUV.mol.4.dx
+
+rm -f rismdist rismdist.c *.0.dx
+exit 0
