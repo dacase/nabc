@@ -7,7 +7,7 @@ fi
 
 echo "Running test of sub() and gsub()"
 echo ""
-$AMBERHOME/bin/nab -o gsub_test gsub_test.nab || error
+../../bin/nab -o gsub_test gsub_test.nab || error
 $DO_PARALLEL ./gsub_test > gsub_test.out || error
 
 ../dacdif gsub_test.out.check gsub_test.out

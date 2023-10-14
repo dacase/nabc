@@ -8,7 +8,7 @@ fi
 
 echo "Running test of distance geometry:"
 echo ""
-$AMBERHOME/bin/nab -o dgt dg_gyrate.nab || error
+../../bin/nab -o dgt dg_gyrate.nab || error
 ./dgt > dg_gyrate.out || error
 
 cat dg_test.explain

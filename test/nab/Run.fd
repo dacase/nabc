@@ -10,7 +10,7 @@ fi
 
 echo "Running test of fibre-diffraction module"
 echo ""
-$AMBERHOME/bin/$NAB -o fd fd.nab || error
+../../bin/$NAB -o fd fd.nab || error
 $DO_PARALLEL ./fd "arna" "cgcgcguuau" "rna" > /dev/null || error
 
 ../dacdif fd.pdb.check fd.pdb

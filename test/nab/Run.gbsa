@@ -11,7 +11,7 @@ fi
 echo "Running test to do simple minimization"
 echo "(this tests the LCPO surface area)"
 echo ""
-$AMBERHOME/bin/$NAB -o sff gbrna_sa.nab || error
+../../bin/$NAB -o sff gbrna_sa.nab || error
 $DO_PARALLEL ./sff > gbrna_sa.out || error
 
 ../dacdif gbrna_sa.out.check gbrna_sa.out

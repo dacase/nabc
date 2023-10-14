@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute crambin GB normal modes:"
 echo ""
-$AMBERHOME/bin/$NAB -o crambin crambin.nab || error
+../../bin/$NAB -o crambin crambin.nab || error
 $DO_PARALLEL ./crambin > crambin.out || error
 
 ../dacdif crambin.out.check crambin.out

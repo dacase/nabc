@@ -10,7 +10,7 @@ fi
 
 echo "Running test to compute GB normal modes using DSYEVD:"
 echo ""
-$AMBERHOME/bin/$NAB -o asp_nm1 asp_nm1.nab || error
+../../bin/$NAB -o asp_nm1 asp_nm1.nab || error
 $DO_PARALLEL ./asp_nm1 > asp_nm1.out.tmp || error
 cat asp_nm1.out.tmp | tail -67 > asp_nm1.out
 rm asp_nm1.out.tmp

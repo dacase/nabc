@@ -8,7 +8,7 @@ fi
 
 echo "Running test to computed 3DNA deformation energies:"
 echo ""
-$AMBERHOME/bin/nab -o deform deform.nab || error
+../../bin/nab -o deform deform.nab || error
 ./deform > deform.out || error
 
 ../dacdif deform.out.check deform.out

@@ -10,7 +10,7 @@ fi
 
 echo "Running test on netcdf files"
 echo ""
-$AMBERHOME/bin/$NAB -o tnetcdf tnetcdf.nab || error
+../../bin/$NAB -o tnetcdf tnetcdf.nab || error
 $DO_PARALLEL ./tnetcdf > tnetcdf.out || error
 
 ../dacdif tnetcdf.out.check tnetcdf.out

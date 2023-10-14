@@ -2523,6 +2523,8 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
    /* If the iteration count equals 0, print the header for task 0 only. */
 
    if (*iter == 0 && mytaskid == 0) {
+         fprintf(nabout, "      iter    Total       bad      vdW     elect"
+              "   nonpolar   genBorn      frms\n");
       fflush(nabout);
    }
 

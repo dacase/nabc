@@ -10,7 +10,7 @@ fi
 
 echo "Running test to do molecular dynamics with rattle"
 echo ""
-$AMBERHOME/bin/$NAB -o sff rattle_md.nab || error
+../../bin/$NAB -o sff rattle_md.nab || error
 $DO_PARALLEL ./sff > rattle_md.out || error
 
 ../dacdif rattle_md.out.check rattle_md.out

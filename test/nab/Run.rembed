@@ -8,7 +8,7 @@ fi
 
 echo "Running test of randomized embedding"
 echo ""
-$AMBERHOME/bin/nab -o rembedt rembed.nab || error
+../../bin/nab -o rembedt rembed.nab || error
 ./rembedt > rembed.out.tmp || error
 cat rembed.out.tmp | grep gyration > rembed.out
 rm rembed.out.tmp

@@ -1,28 +1,11 @@
 
 
 test: duplex_test deform_test reflexive_test gsub_test hashed_test shifts_test \
-	sff_test rattle_min_test fd_test gb_test xfin_test gbsa_test gb2_test \
+	sff_test rattle_min_test gb_test xfin_test gbsa_test gb2_test \
 	gb5_test gb8_test gb7_test rattle_md_test rembed_test dhfrndpmtx_test \
 	asp_test aspnb_test prm_test cif_test xmin_test gbnetcdf_test \
 	netcdf_test variable_14test \
-	nmode1_test nmode2_test nmode3_test ips_test pbsa_test
-
-testrism:  \
-	rism_md_test rism_dist rism_hnc rism_ion \
-	rism_ion-noasymp rism_ion_pse3 rism_mdiis0 rism_mdiis1 \
-	rism_sp rism_sp_list rism_xmin rism_selftest_kh \
-	rism_sp_ljtol_bufferfit_fast \
-	rism_sp_ljfit_boxset_fast rism_sp_ljfit_bufferset_fast rism_sp_ljset_bufferset_fast \
-	rism_sp_ljset_bufferfit_fast rism_sp_tree_fast rism_sp_nacl_fast rism_sp_nacl_tree_fast \
-	rism_sp_astol_fast
-
-testrism.dev:\
-	rism_test rism_md_pse1 rism_ion_pse1 rism_list \
-	rism_selftest_pse3 rism_selftest_hnc rism_sp2 \
-	rism_sp_ljtol_bufferfit \
-	rism_sp_ljfit_boxset rism_sp_ljfit_bufferset rism_sp_ljset_bufferset \
-	rism_sp_ljset_bufferfit rism_sp_tree rism_sp_nacl rism_sp_nacl_tree \
-	rism_sp_astol_fast
+	nmode1_test nmode2_test nmode3_test ips_test 
 
 duplex_test::
 	@./Run.duplex
@@ -132,116 +115,3 @@ ips_test::
 pbsa_test::
 	@./Run.pbsa
 
-rism_test::
-	@./Run.rism_min
-
-rism_md_test::
-	@./Run.rism_md
-
-rism_hnc::
-	@./Run.rism_hnc
-
-rism_list::
-	@./Run.rism_list
-
-rism_dist::
-	@./Run.rism_dist
-
-rism_ion::
-	@./Run.rism_ion
-
-rism_nocut::
-	@./Run.rism_md_nocut
-
-rism_md_pse1::
-	@./Run.rism_md_pse1
-
-rism_ion-noasymp::
-	@./Run.rism_ion-noasymp
-
-rism_ion_pse1::
-	@./Run.rism_ion_pse1
-
-rism_ion_pse3::
-	@./Run.rism_ion_pse3
-
-rism_sp::
-	@./Run.rism_sp
-
-rism_sp2::
-	@./Run.rism_sp2
-
-rism_sp_list::
-	@./Run.rism_sp_list
-
-rism_mdiis0::
-	@./Run.rism_mdiis0
-
-rism_mdiis1::
-	@./Run.rism_mdiis1
-
-rism_xmin::
-	@./Run.rism_xmin
-
-rism_selftest_kh::
-	@./Run.rism_selftest_kh
-
-rism_selftest_pse3::
-	@./Run.rism_selftest_pse3
-
-rism_selftest_hnc::
-	@./Run.rism_selftest_hnc
-
-rism_sp_ljtol_bufferfit::
-	@./Run.rism_sp_ljtol_bufferfit
-
-rism_sp_ljfit_boxset::
-	@./Run.rism_sp_ljfit_boxset
-
-rism_sp_ljfit_bufferset::
-	@./Run.rism_sp_ljfit_bufferset
-
-rism_sp_ljset_bufferset::
-	@./Run.rism_sp_ljset_bufferset
-
-rism_sp_ljset_bufferfit::
-	@./Run.rism_sp_ljset_bufferfit
-
-rism_sp_tree:
-	@./Run.rism_sp_tree
-
-rism_sp_nacl:
-	@./Run.rism_sp_nacl
-
-rism_sp_nacl_tree:
-	@./Run.rism_sp_nacl_tree
-
-rism_sp_astol:
-	@./Run.rism_sp_astol
-
-rism_sp_ljtol_bufferfit_fast::
-	@./Run.rism_sp_ljtol_bufferfit_fast
-
-rism_sp_ljfit_boxset_fast::
-	@./Run.rism_sp_ljfit_boxset_fast
-
-rism_sp_ljfit_bufferset_fast::
-	@./Run.rism_sp_ljfit_bufferset_fast
-
-rism_sp_ljset_bufferset_fast::
-	@./Run.rism_sp_ljset_bufferset_fast
-
-rism_sp_ljset_bufferfit_fast::
-	@./Run.rism_sp_ljset_bufferfit_fast
-
-rism_sp_tree_fast:
-	@./Run.rism_sp_tree_fast
-
-rism_sp_nacl_fast:
-	@./Run.rism_sp_nacl_fast
-
-rism_sp_nacl_tree_fast:
-	@./Run.rism_sp_nacl_tree_fast
-
-rism_sp_astol_fast:
-	@./Run.rism_sp_astol_fast

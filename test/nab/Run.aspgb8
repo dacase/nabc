@@ -10,7 +10,7 @@ fi
 
 echo "Running test for Grycuk (gbr6)"
 echo ""
-$AMBERHOME/bin/$NAB -o aspgb8 aspgb8.nab || error
+../../bin/$NAB -o aspgb8 aspgb8.nab || error
 $DO_PARALLEL ./aspgb8 > aspgb8.out || error
 
 echo "Note: Small differences are common and do not necessarily"

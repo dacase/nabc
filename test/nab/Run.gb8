@@ -11,7 +11,7 @@ fi
 echo "Running test to do simple minimization"
 echo "(this tests the GB Neck implementation; gb==8)"
 echo ""
-$AMBERHOME/bin/$NAB -o sff gb8trx.nab || error
+../../bin/$NAB -o sff gb8trx.nab || error
 $DO_PARALLEL ./sff > gb8trx.out || error
 
 ../dacdif gb8trx.out.check gb8trx.out

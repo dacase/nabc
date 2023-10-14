@@ -10,7 +10,7 @@ fi
 
 echo "Running test to do md with netcdf"
 echo ""
-$AMBERHOME/bin/$NAB -o sff gbnetcdf.nab || error
+../../bin/$NAB -o sff gbnetcdf.nab || error
 $DO_PARALLEL ./sff > gbnetcdf.out || error
 
 ../dacdif gbnetcdf.out.check gbnetcdf.out

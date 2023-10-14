@@ -8,7 +8,7 @@ fi
 
 echo  "Running test of hashed arrays:"
 echo ""
-$AMBERHOME/bin/nab -o hashed hash.nab || error
+../../bin/nab -o hashed hash.nab || error
 ./hashed < hash.in > hash.out || error
 
 ../dacdif hash.out.check hash.out

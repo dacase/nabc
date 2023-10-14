@@ -10,7 +10,7 @@ fi
 
 echo "Running test to do simple xmin minimization"
 echo ""
-$AMBERHOME/bin/$NAB -o txmin txmin.nab || error
+../../bin/$NAB -o txmin txmin.nab || error
 $DO_PARALLEL ./txmin > txmin.out || error
 
 ../dacdif -r 1.e-4 txmin.out.check txmin.out
