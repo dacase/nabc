@@ -12,7 +12,7 @@ include ../../config.h
 	@echo "[NABC] nvcc $<"
 	nvcc $(NVFLAGS) -I$(INCDIR) -c $< -o $@
 
-OBJS = conjgrad.o lmodC.o memutil.o nblist.o newton.o nmode.o \
+OBJS = conjgrad.o lmodC.o memutil.o nblist.o nmode.o \
 	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o \
        wallclock.o
 

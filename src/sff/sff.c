@@ -847,6 +847,7 @@ void checkpoint(char *fname, int natom, REAL_T * x, int iter)
 #  include "sff2.c"
 #endif
 #include "mask.c"
+#include "newton.c"
 
 /***********************************************************************
                             MME_INIT_SFF()

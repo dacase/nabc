@@ -3,6 +3,9 @@
 install::
 	cd src && make install
 
+nab::
+	cd src && make nab
+
 test::
 	cd test && make test
 
