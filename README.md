@@ -51,15 +51,13 @@ Mostly GPLv3; see the LICENSE file for full details.
 *  make install   # creates lib/lib{arpack,nabc,sff,lapack,blas}.a
 *  cd test && make test  # still needs comparisons to saved inputs
 
-Note that the above is for nabc/sff; there is also NAB source code, but 
-that is not now working (Oct. 2023).  NAB is a deprecated code, but we may
-be able to get that to be functional as well.
+*  make nab  # optional: only if you want or need the NAB compiler
+*  cd test/nab && make test  # only makes sense if you installed NAB
 
 # Documentation
 
-* See the doc/nabc.pdf file -- but there are some out-of-date things there!
-* Look at the example driver files in the test folder; see if you can modify
-  those to meet your needs.
+* See the doc/nabc.pdf file -- mostly OK, but there are some out-of-date things there!
+* Look at the example driver files in the test folder; see if you can modify those to meet your needs.
 
 # Reporting problems
 

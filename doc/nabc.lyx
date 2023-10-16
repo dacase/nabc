@@ -46463,7 +46463,7 @@ ositions.
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-btprint "btPrintAll"
+btprint "btPrintCited"
 bibfiles "nabc"
 options "jacs"
 
