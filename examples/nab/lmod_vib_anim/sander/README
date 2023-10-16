@@ -1,0 +1,18 @@
+In this directory Run_lmod-vib can be executed to run the LMOD calculation. 
+The system specific parameters can be set in the script. Make sure that 
+   number_lmod_iterations = 1,
+   conflib_size = N,
+   total_low_modes = N,
+   explored_low_modes = N,
+where N is the number of required modes.
+
+The script assumes that the Amber environment variables have been defined,
+e.g., that one of the amber shell files has been sourced:
+. /where/amber/is/installed/amber.sh 
+
+The animated modes are in the output file 
+lmod-vib_trajectory that can be converted to multi-PDB format if 
+necessary.
+$ cpptraj -p dna.prmtop -y lmod-vib_trajectory -x lmod-vib_trajectory.pdb 
+
+lmod-vib_conflib holds the eigenvectors representing the different modes.

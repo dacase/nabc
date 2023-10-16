@@ -1,0 +1,59 @@
+#!/bin/sh
+
+cat > lmod-vib.in <<EOF
+ input for sander for lmod vibrations
+ &cntrl
+   cut     = 999,     
+   rgbmax  = 999,
+   ntx     = 1,     
+   irest   = 0,  
+   ipol    = 0,
+   ntb     = 0,       
+   igb     = 0,
+   imin    = 1,  
+   maxcyc  = 1000, 
+   ntmin   = 4,  
+   drms    = 1e-12,
+   ntpr    = 1,
+ /
+ &ewald
+   eedmeth = 5,
+ /
+ &lmod
+   number_lmod_iterations = 1,
+   conflib_size = 10,
+   total_low_modes = 10,
+   explored_low_modes = 10,
+   number_free_rotrans_modes = 6,
+   lmod_minimize_grms = 1.0,
+
+   arnoldi_dimension = 50,
+   matrix_vector_product_method = 'forward',
+   frequency_eigenvector_recalc = 1,
+
+   number_lmod_moves = 20,
+   lmod_step_size_max = 0.3,
+   lmod_step_size_min = 0.3,
+   lmod_relax_grms    = 10.0,
+
+   number_ligands = 0,
+
+   conflib_filename = 'lmod-vib_conflib',
+   lmod_trajectory_filename = 'lmod-vib_trajectory',
+   lmod_job_title = 'lmod-vib',
+
+   lmod_verbosity = 5,
+
+   lbfgs_memory_depth = 5,
+   xmin_method = 'TNCG',
+   xmin_verbosity = 0,
+ /
+EOF
+
+# Assume Amber environment has been initialized, eg:
+#. /where/amber/is/installed/amber.sh 
+
+rm -f conflib.dat
+mpirun -np 4 ${AMBERHOME}/bin/sander.MPI -O -i lmod-vib.in -o lmod-vib.out \
+   -c dna.rst7 -ref dna.rst7 -p dna.prmtop -r dna-lmod-vib.rst
+

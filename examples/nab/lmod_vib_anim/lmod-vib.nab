@@ -1,0 +1,141 @@
+//   LMOD reverse communication external minimization package.
+//   Written by Istvan Kolossvary.
+
+#include "xmin_opt.h"
+#include "lmod_opt.h"
+
+// M A I N  P R O G R A M  to carry out LMOD vibrational visualization:
+
+struct xmin_opt xo;
+struct lmod_opt lo;
+
+int i, j, k, natm, all_frames, n_frames;
+molecule mol;
+atom ai;
+float ene, grms, glob_min_energy;
+int lig_start[ dynamic ], lig_end[ dynamic ], lig_cent[ dynamic ];
+float x[ dynamic ], g[ dynamic ], x_ref[ dynamic ],
+      conflib[ dynamic ], lmod_traj[ dynamic ];
+float tr_min[ dynamic ], tr_max[ dynamic ], rot_min[ dynamic ],
+      rot_max[ dynamic ];
+string fname,sys_command;
+float dx, dy, dz;
+point dummy;
+
+    if( argc == 1 ) {
+
+        fprintf( nabout, "Usage:  orterun -np n_cores  %s  input_pdb_file  input_prmtop_file  output_file_base_name  ", argv[1] );
+        fprintf( nabout, "number_of_vib_modes (max 200)  number_of_frames_per_half_swing (max 50) > log_file 2>&1 &\n" );
+        exit(0);
+    }
+
+    if( atoi( argv[5] ) > 200 || atoi( argv[6] ) > 50 ) { fprintf( nabout, "Input error!\n" ); exit(1); }
+
+    mol = getpdb( argv[2] );
+    readparm( mol, argv[3] );
+    natm = mol.natoms;
+
+    allocate x[ 3*natm ]; allocate g[ 3*natm ]; allocate x_ref[ 3*natm ];
+
+    setxyz_from_mol( mol, NULL, x );
+
+    // Low-mode vibrational calculation:
+
+    xmin_opt_init( xo );  // set up defaults
+    lmod_opt_init( lo, xo );                    // set up defaults
+
+    lo.niter               = 1;                 // should be kept =1
+    lo.nconf               = atoi( argv[5] );   // nconf=nmod=kmod !!!
+    lo.minim_grms          = 1e0;
+    lo.nmod                = atoi( argv[5] );
+    lo.kmod                = atoi( argv[5] );
+    lo.nrotran_dof         = 6;
+    lo.eig_recalc          = 1;
+    //lo.ndim_arnoldi        = 1.5*(lo.nmod + lo.nrotran_dof);
+    lo.ndim_arnoldi        = 50;
+    lo.lmod_step_size_min  = 0.3;
+    lo.lmod_step_size_max  = 0.3;
+    lo.nof_lmod_steps      = atoi( argv[6] );
+    lo.lmod_relax_grms     = 1e1;
+    lo.print_level         = 5;
+  //xo.maxiter             = 0;                 // linear vibra modes
+    xo.maxiter             = 5000;              // curvilinear  modes
+    xo.grms_tol            = 1e-12;             // only used for initial minimization
+    xo.method              = 3;
+    xo.m_lbfgs             = 5;
+    xo.print_level         = 1;
+    lo.random_seed         = 0;
+
+    all_frames = lo.niter * (lo.kmod +1) * (4*lo.nof_lmod_steps+3);
+
+    allocate conflib[ (lo.kmod +1) * 3*natm ];
+    allocate lmod_traj[ all_frames * 3*natm ];
+
+    setmol_from_xyz( mol, NULL, x );        // load minimized coords into mol
+    setxyz_from_mol( mol, NULL, x_ref );    // save minimized coords in x_ref
+
+    mm_options( "ntpr=1,gb=0,kappa=0.0,cut=999.9,diel=R" );
+    mme_init( mol, NULL, "::ZZZ", dummy, NULL );            // fully flexible molecule
+    mme( x, g, 1 );
+
+    if( mytaskid == 0 ) {
+
+        sys_command = sprintf( "/bin/rm -f conflib.dat" );  // info in conflib.dat irrelevant here
+        system( sys_command );
+    }
+      
+    glob_min_energy = lmod( natm, x, g, ene,
+                            conflib, lmod_traj, lig_start, lig_end, lig_cent,
+                            tr_min, tr_max, rot_min, rot_max, xo, lo );
+
+    // Generate vibrational modes for visualization:
+
+    for( i = 1; i <= all_frames; i = i+1 )
+    {
+        setmol_from_xyz( mol, NULL, lmod_traj[ (i-1)*3*natm + 1 ] );
+        for( ai in mol ) {
+            k = (i-1) / (4*lo.nof_lmod_steps+3);
+            j = ai.tatomnum -1;
+            dx = conflib[k*3*natm + 3*j+1];
+            dy = conflib[k*3*natm + 3*j+2];
+            dz = conflib[k*3*natm + 3*j+3];
+            ai.bfact = 1000*sqrt(dx*dx+dy*dy+dz*dz);  // atomic displacements along eigenvectors are loaded as
+                                                      //  B-factors and scaled to save more significant digits
+        }
+        fname = sprintf( "%s-frame_%04d.pdb", argv[4], i );
+        putpdb( fname, mol );
+    }
+
+    sys_command = sprintf( "sleep 60" );  // wait for NFS if any
+    //system( sys_command );
+
+    // Load the individual pdb files into multi-pdb files representing different vibrational modes
+
+    if( mytaskid == 0 ) {
+
+
+	n_frames = 4*lo.nof_lmod_steps+3;
+	k = 1;  // counter for frames
+
+    for( j = 1; j <= lo.kmod +1; j = j+1 )
+	{
+            sys_command = sprintf( "/bin/rm -f %s-vib-mode_%04d.pdb; touch %s-vib-mode_%04d.pdb", argv[4], j, argv[4], j );
+            system( sys_command );
+
+            for( i = 1; i <= n_frames; i = i+1 )
+            {
+                sys_command = sprintf( "sed -i '1s/^/MODEL%8d\\n/' %s-frame_%04d.pdb", i, argv[4], k );  // escape \n
+                system( sys_command );
+                sys_command = sprintf( "cat '%s-frame_%04d.pdb' >> %s-vib-mode_%04d.pdb", argv[4], k, argv[4], j );
+                system( sys_command );
+                sys_command = sprintf( "echo 'ENDMDL' >> %s-vib-mode_%04d.pdb", argv[4], j );
+                system( sys_command );
+
+	        k = k+1;
+            }
+	}
+
+        sys_command = sprintf( "/bin/rm -f %s-frame_????.pdb conflib.dat", argv[4] );
+        system( sys_command );
+    }
+// E N D  MAIN
