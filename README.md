@@ -64,3 +64,4 @@ Mostly GPLv3; see the LICENSE file for full details.
 # Reporting problems
 
 * Best is to create an issue at github.com/dacase/nabc
+* I've run tests on Ubuntu 22.04 and OSX Ventura (with HomeBrew gcc, intel hardware)
