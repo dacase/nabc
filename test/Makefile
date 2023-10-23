@@ -25,6 +25,7 @@ test_md.MPI:  tmd.MPI
 
 test_nmode:  tnmode
 	./tnmode crambin.parm7 crambin.rst7 > tnmode.out
+	./dacdif tnmode.out.check tnmode.out
 	@/bin/rm -f vecs tnmode tnmode.o
 
 test_mask:  tmask
