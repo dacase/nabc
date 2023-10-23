@@ -1,0 +1,47 @@
+Reading parm file (xfin.parm7)
+title:
+                                                                                
+	mm_options:  ntpr=1
+	mm_options:  gb=1
+	mm_options:  kappa=0.10395
+	mm_options:  rgbmax=99.
+	mm_options:  cut=99.0
+	mm_options:  diel=C
+     bond:      0.000000000
+    angle:    295.341771890
+ dihedral:    142.636208443
+    enb14:     86.724729531
+    eel14:    745.488538672
+      enb:   -163.941127108
+      eel:  -1544.183753989
+      egb:   -693.148948053
+    econs:      0.000000000
+    esurf:      0.000000000
+    Total:  -1131.082580613
+     frms:     14.985803557
+     frms:      9.269044651 (corrected for rattle)
+setting print frequency to 100
+Starting L-BFGS minimisation
+ MIN:  Iter =    0  E =   -1131.08258  RMSG =   9.2690447
+ MIN:  Iter =  100  E =   -1419.78173  RMSG =   0.1235612
+ MIN:  Iter =  200  E =   -1425.29820  RMSG =   0.0730269
+ MIN:  Iter =  300  E =   -1426.44763  RMSG =   0.0558927
+ MIN:  Iter =  400  E =   -1426.53953  RMSG =   0.0089262
+ MIN:  Iter =  500  E =   -1426.54703  RMSG =   0.0015589
+ MIN:  Iter =  600  E =   -1426.54793  RMSG =   0.0009663
+----------------------------------------------------------------
+ END:          :-)  E =   -1426.54794  RMSG =   0.0004688
+
+     bond:      0.000000000
+    angle:     75.457829613
+ dihedral:     90.191619875
+    enb14:     87.519869213
+    eel14:    777.686441138
+      enb:   -182.048075312
+      eel:  -1595.771046309
+      egb:   -679.584573329
+    econs:      0.000000000
+    esurf:      0.000000000
+    Total:  -1426.547935109
+     frms:      5.293699374
+     frms:      0.000468827 (corrected for rattle)

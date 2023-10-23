@@ -6,26 +6,31 @@ SUFFIXES: .c .cu .o
 test:  test_mask test_xmin test_md test_lmod test_nmode
 
 test_xmin:  txmin
-	time ./txmin xfin.parm7 xfin.rst7 foo.rst7
+	./txmin xfin.parm7 xfin.rst7 foo.rst7 > txmin.out
+	./dacdif txmin.out.check txmin.out
 	@/bin/rm -f foo.rst7 txmin txmin.o
 
 test_lmod:  tlmod
-	./tlmod trpcage.parm7 trpcage.rst7
+	./tlmod trpcage.parm7 trpcage.rst7 > tlmod.out
+	./dacdif tlmod.out.check tlmod.out
 	@/bin/rm -f conflib.dat tlmod tlmod.o
 
 test_md:  tmd
-	time ./tmd xfin.parm7 xfin.md1.rst7
-	@/bin/rm -f xfin.md2.x
+	./tmd xfin.parm7 xfin.md1.rst7 > tmd.out
+	./dacdif tmd.out.check tmd.out
+	@/bin/rm -f xfin.md2.x tmd tmd.o
 
 test_md.MPI:  tmd.MPI
 	time mpirun -np 4 ./tmd.MPI xfin.parm7 xfin.md1.rst7
 
 test_nmode:  tnmode
-	./tnmode crambin.parm7 crambin.rst7 > nmode.out
-	@/bin/rm -f vecs
+	./tnmode crambin.parm7 crambin.rst7 > tnmode.out
+	@/bin/rm -f vecs tnmode tnmode.o
 
 test_mask:  tmask
-	./tmask xfin.parm7 xfin.md1.x ":1-3"
+	./tmask xfin.parm7 xfin.md1.x ":1-3" > tmask.out
+	./dacdif tmask.out.check tmask.out
+	@/bin/rm -f tmask tmask.o
 
 test_hcp1:  thcp1
 	./thcp1
