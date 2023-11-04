@@ -23,7 +23,7 @@
 //                                          than just the isotropic 
 //                                          part (under development)
 //                           "readobs"      read observed shifts
-//                           "version2"     use original ring_current strengths
+//                           "version3"     use 1995 ring_current strengths
 //
 //       "calculated[]" is a hashed output array containing the computed
 //           shifts. The key consists of resname:pdb_resnum:atom_name
@@ -80,8 +80,8 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 	do_CSA = (opts =~ "CSA");
 	use_rmd = (opts =~ "rmd");
 	use_lp = 0;					// hard-wired for now
-	version2 = 0;
-    if (opts =~ "version2") version2 = 1;
+	version2 = 1;
+    if (opts =~ "version3") version2 = 0;
 	obs_found = 0;
 	rinfo = (opts =~ "rinfo");
 
@@ -152,7 +152,7 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 		get_lp(m);
 	nwo = 0;					// no waters for now
 
-	if (version2 && strtype[1] == "protein") {
+	if (strtype[1] == "protein") {
 
 //   set up charges like in Osapay & Case's old shifts program:
 

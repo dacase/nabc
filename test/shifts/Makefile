@@ -4,7 +4,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo "====================================================="
 	@echo "Running test for proton shifts in BPTI"
 	@echo
-	../../bin/shifts -version2 -readobs -sander -swap '::H*' 6pti > messages 
+	../../bin/shifts -readobs -sander -swap '::H*' 6pti > messages 
 	@./dacdif -a 1.e-4 6pti.emp.save 6pti.emp
 	@echo "Checking sander input file:"
 	@./dacdif 6pti.shf.save 6pti.shf
@@ -14,7 +14,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo "====================================================="
 	@echo "Running test for proton shifts on myoglobin"
 	@echo
-	../../bin/shifts -version2 ':64-68:H*' 1mbc > messages 
+	../../bin/shifts ':64-68:H*' 1mbc > messages 
 	@./dacdif 1mbc.emp.save 1mbc.emp
 	@-/bin/rm 1mbc.bmrb
 
@@ -24,7 +24,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo
 	../../bin/shifts -reslib -readobs '::H*' 132d  > messages 2> 132d.errs
 	@./dacdif -a 0.015 132d.emp.save 132d.emp
-#	../bin/shifts -readobs -version2 '::H*' 132d  > messages 2> 132d.errs
+#	../bin/shifts -readobs '::H*' 132d  > messages 2> 132d.errs
 #	@./dacdif -a 0.015 132d.noreslib.emp.save 132d.emp
 #	@-/bin/rm 132d.bmrb
 
@@ -32,7 +32,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo =====================================================
 	@echo "Running test for shifts in a protein-DNA duplex"
 	@echo
-	../../bin/shifts -version2 -reslib -noreduce '::H*' 2lef  > messages 2> 2lef.errs
+	../../bin/shifts -reslib -noreduce '::H*' 2lef  > messages 2> 2lef.errs
 	@./dacdif -a 0.015 2lef.emp.save 2lef.emp
 	@-/bin/rm -f 2lef.bmrb messages 2lef.emp.rdb tleap.out 2lef.errs
 
@@ -40,7 +40,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo =====================================================
 	@echo "Running test for HN neural network shifts"
 	@echo
-	../../bin/shifts -version2 -HN 1ehb 
+	../../bin/shifts -HN 1ehb 
 	@./dacdif 1ehb.HN.save 1ehb.HN
 	@-/bin/rm 1ehb.bmrb 1ehb.emp
 
@@ -48,7 +48,7 @@ test: 6pti_test 132d_test 1acf_test 1mbc_test 2lef_test clean
 	@echo =====================================================
 	@echo "Running test for carbon/nitrogen shifts in a protein"
 	@echo
-	../../bin/shifts -version2 -qdb -refine 1acf  
+	../../bin/shifts -qdb -refine 1acf  
 	@sed 's/-0.00/ 0.00/g' 1acf.qdb  > 1acf.out1b
 #	@sed 's/-0.00/ 0.00/g' 1acf.qdb2 > 1acf.out2b
 	@./dacdif ../../src/shifts/examples/1acf.out1 1acf.out1b

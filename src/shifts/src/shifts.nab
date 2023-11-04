@@ -25,7 +25,7 @@ int usage() {
    printf("              all hydrogens.\n");
    printf("\n");
    printf("Options:\n");
-   printf("   -version2  Use original Osapay/Case ring current intensities\n");
+   printf("   -version3  Use modified (1995) ring current intensities\n");
    printf("   -csa       Compute chemical shift anisotropy tensors based on\n");
    printf("              ring and peptide group susceptibilities.*\n");
    printf("   -nocoil    Do not attempt to compare computed shifts to 'random\n");
@@ -105,8 +105,8 @@ for (i = 2; i < argc; i++) {
 		opts += ",CSA";
 		printf("   -csa:  CSA calculation requested\n");
 		continue;
-	} else if (argv[i] == "-version2") {
-		opts += ",version2";
+	} else if (argv[i] == "-version3") {
+		opts += ",version3";
 		continue;
 	} else if (argv[i] == "-reslib") {
 		opts += ",reslib";
