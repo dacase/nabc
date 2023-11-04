@@ -1,4 +1,4 @@
-NABCHOME=/home/case/nabc
+NABCHOME=../../..
 NABFLAGS=""
 
 SUBS= shifts.o shifts_emp.o ring_current.o  get_banis_info.o \
@@ -15,10 +15,10 @@ SUBS= shifts.o shifts_emp.o ring_current.o  get_banis_info.o \
 	$(NABCHOME)/bin/nab -c $(NABFLAGS) $<
 	@/bin/rm -f $*.c
 
-install:  shifts
+install:  $(NABCHOME)/bin/shifts
 
-shifts: $(SUBS)
-	$(NABCHOME)/bin/nab $(NABFLAGS) -o ../bin/shifts $(SUBS) 
+$(NABCHOME)/bin/shifts: $(SUBS)
+	$(NABCHOME)/bin/nab $(NABFLAGS) -o $@ $(SUBS) 
 
 shifts_qdb.o:		shifts_qdb.h
 shifts_emp.o:       shifts_emp.h constants.h map.h
