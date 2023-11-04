@@ -63,9 +63,7 @@ Mostly GPLv3; see the LICENSE file for full details.
 
 * See the doc/nabc.pdf file -- mostly OK, but there are some out-of-date things there!
 * Look at the example driver files in the test folder; see if you can modify those to meet your needs.
-* For more information, see <a
-* href="https://casegroup.rutgers.edu/nab.html">casegroup.rutgers.edu/nab.html</a>
-and href="https://casegroup.rutgers.edu/shifts.html">casegroup.rutgers.edu/shifts.html</a>
+* For more information, see https://casegroup.rutgers.edu/nab.html and https://casegroup.rutgers.edu/shifts.html
 
 # Reporting problems
 
