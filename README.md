@@ -30,8 +30,9 @@ some unique (or at least, unusual) features, including:
 
 This is an attempt to create driver programs in C that interface with SFF
 API.  I have also included a slightly updated version of the NAB compiler
-itself.  Right now it is a one-person (DAC) effort, but let me know if you
-would like to help out.  
+itself, and the SHIFTS package for estimating NMR cheimcal shifts in
+proteins and nucleic acids (since it is built on top of NAB.)  Right now it
+is a one-person (DAC) effort, but let me know if you would like to help out.
 
 # Primary Contributors
 
