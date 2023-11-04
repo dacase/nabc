@@ -23,6 +23,7 @@
 //                                          than just the isotropic 
 //                                          part (under development)
 //                           "readobs"      read observed shifts
+//                           "version2"     use original ring_current strengths
 //
 //       "calculated[]" is a hashed output array containing the computed
 //           shifts. The key consists of resname:pdb_resnum:atom_name
@@ -39,7 +40,6 @@
 //
 
 int write_bmrb_header();
-int write_rdb_header();
 int write_header();
 int write_shifts_header();
 int bonded_atoms() c;
@@ -80,7 +80,8 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 	do_CSA = (opts =~ "CSA");
 	use_rmd = (opts =~ "rmd");
 	use_lp = 0;					// hard-wired for now
-	version2 = 1;				// hard-wired for now
+	version2 = 0;
+    if (opts =~ "version2") version2 = 1;
 	obs_found = 0;
 	rinfo = (opts =~ "rinfo");
 
@@ -576,9 +577,7 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 //
 
 	bmrbf = safe_fopen(bmrbfile, "w");
-    rdbf  = safe_fopen(rdbfile, "w");
 	write_bmrb_header(bmrbf, basename);
-    write_rdb_header(rdbf, basename);
 	if (verbose)
 		write_shifts_header(outf, opts);
 
@@ -625,8 +624,7 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 			else
 				fprintf(outf, "\n");
 		}
-//    finally, print out a star-format file for BMRB, and an rdb-format
-//    file:
+//    finally, print out a star-format file for BMRB:
 
 		i++;
 		aname = fields_p[3];
@@ -646,11 +644,6 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 
 		fprintf(bmrbf, "%5d . %5d   %4s   %-4s  H   %7.2f  .   1\n", i,
 				atoi(fields_p[2]), rname, aname, calc_plus_rc[idp]);
-		fprintf(rdbf, "%4d\t%4s\t%-4s\t%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\t%8.4f\n",
-				atoi(fields_p[2]), rname, aname, calc_plus_rc[idp],
-                calc_plus_rc[idp] - calculated[idp], 
-                shehn_p[idp] + sheha_p[idp], shhm_G6[idp], shhm_G[idp],
-                shhm_A6[idp], shhm_A[idp], shhm_C[idp], shhm_U[idp] );
 
 	}
 
@@ -658,12 +651,11 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 	fprintf(bmrbf, "  stop_\nsave_\n");
 
 	fclose(bmrbf);
-	fclose(rdbf);
 	fclose(outf);
 
-//  sort the rdb file on res, atomname:
+//  create the rdb file from the emp file:
     shiftshome = getenv("NABCHOME");
-    system(shiftshome + "/bin/fix_rdb.sh " + rdbfile);
+    system(shiftshome + "/bin/emp_to_rdb " + outfile + " > " + rdbfile);
 
 //  finally: return the full calculated shifts:
 	for (idp in calculated)

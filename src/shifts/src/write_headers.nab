@@ -42,11 +42,6 @@ if( opts =~ "CSA" ){
 return( 0 );
 };
 
-int     write_rdb_header( file f, string id ){
-   fprintf( f, "res\tresname\tatomname\temp\trc\telec\trG6\trG\trA6\trA\trC\trU\n");
-   fprintf( f, "4N\t8\t8\t8N\t8N\t8N\t8N\t8N\t8N\t8N\t8N\t8N\n");
-};
-
 #define FPF  fprintf( f,
 int		write_bmrb_header( file f, string id ){
 
