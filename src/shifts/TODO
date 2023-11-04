@@ -1,0 +1,10 @@
+1.  make the hash key for proton shifts the same as for heavy atoms
+    (use fullname?)
+
+2.  allow ring-current calculations into heavy atom predictions
+
+3.  try some md-solvated runs
+
+4.  optimize the reference shifts
+
+5.  split off afnmr stuff

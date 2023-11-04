@@ -1,0 +1,447 @@
+data_1624
+
+#######################
+#  Entry information  #
+#######################
+
+
+save_entry_information
+   _Saveframe_category      entry_information
+
+   _Entry_title            
+;
+Secondary structure of the phosphocarrier protein III(Glc), a signal-transducing
+ protein from Escherichia coli, determined by heteronuclear three-dimensional 
+NMR spectroscopy
+;
+
+   loop_
+      _Author_ordinal
+      _Author_family_name
+      _Author_given_name
+      _Author_middle_initials
+      _Author_family_title
+
+       1   Pelton   J.         G.  . 
+       2   Torchia  Dennis     A.  . 
+       3   Meadow   Norman     D.  . 
+       4   Wong     Cing-Yuen  .   . 
+       5   Roseman  Saul       .   . 
+
+   stop_
+
+   _BMRB_accession_number   1624
+   _BMRB_flat_file_name     bmr1624.str
+   _Entry_type              revision
+   _Submission_date         1995-07-31
+   _Accession_date          1996-04-13
+   _Entry_origination       BMRB
+   _NMR_STAR_version        2.1
+   _Experimental_method     NMR
+
+   loop_
+      _Saveframe_category_type
+      _Saveframe_category_type_count
+
+       assigned_chemical_shifts  1  
+
+   stop_
+
+   loop_
+      _Data_type
+      _Data_type_count
+
+      '1H chemical shifts'  13  
+
+   stop_
+
+   loop_
+      _Revision_date
+      _Revision_keyword
+      _Revision_author
+      _Revision_detail
+
+       1999-06-14  revision  BMRB 'Converted to BMRB NMR-STAR V 2.1 format'                
+       1996-04-13  revision  BMRB 'Link to the Protein Data Bank added'                    
+       1996-03-25  reformat  BMRB 'Converted to the BMRB 1996-03-01 STAR flat-file format' 
+       1995-07-31  original  BMRB 'Last release in original BMRB flat-file format'         
+
+   stop_
+
+save_
+
+
+#############################
+#  Citation for this entry  #
+#############################
+
+
+save_entry_citation
+   _Saveframe_category     entry_citation
+
+   _Citation_full         
+;
+ Pelton, J.G., Torchia, Dennis A., Meadow, Norman D., Wong, Cing-Yuen, 
+ Roseman, Saul, 
+ "Secondary structure of the phosphocarrier protein III(Glc), a 
+ signal-transducing protein from Escherichia coli, determined by 
+ heteronuclear three-dimensional NMR spectroscopy,"
+ Proc. Natl. Acad. Sci. U.S.A. 88, 3479-3483 (1991).
+;
+   _Citation_title        
+;
+Secondary structure of the phosphocarrier protein III(Glc), a signal-transducing
+ protein from Escherichia coli, determined by heteronuclear three-dimensional 
+NMR spectroscopy
+;
+   _Citation_status        published
+   _Citation_type          journal
+   _MEDLINE_UI_code        ?
+
+   loop_
+      _Author_ordinal
+      _Author_family_name
+      _Author_given_name
+      _Author_middle_initials
+      _Author_family_title
+
+       1   Pelton   J.         G.  . 
+       2   Torchia  Dennis     A.  . 
+       3   Meadow   Norman     D.  . 
+       4   Wong     Cing-Yuen  .   . 
+       5   Roseman  Saul       .   . 
+
+   stop_
+
+   _Journal_abbreviation  'Proc. Natl. Acad. Sci. U.S.A.'
+   _Journal_volume         88
+   _Page_first             3479
+   _Page_last              3483
+   _Year                   1991
+
+save_
+
+
+##################################
+#  Molecular system description  #
+##################################
+
+
+save_system_glucose_permease
+   _Saveframe_category      molecular_system
+
+   _Mol_system_name        'glucose permease'
+   _Abbreviation_common     ?
+
+   loop_
+      _Mol_system_component_name
+      _Mol_label
+
+      'glucose permease' $glucose_permease 
+
+   stop_
+
+   _System_physical_state   ?
+   _System_oligomer_state   ?
+   _System_paramagnetic     ?
+
+   loop_
+      _Database_name
+      _Database_accession_code
+      _Database_entry_mol_name
+      _Database_entry_details
+
+       PDB  1F3Z "Iiaglc-Zn Complex"                                                                                                                                                                      . 
+       PDB  1F3G "Phosphocarrier Iiiglcfast"                                                                                                                                                              . 
+       PDB  1GLD "F Chain F, Glycerol Kinase (E.C.2.7.1.30) Complexed With The (Escherichia Coli) Glucose-Specific Factor Iii (Iii-Glc), Glycerol-3-Phosphate, Adenosine Diphosphate And Mn(Ii)"          . 
+       PDB  1GLE "F Chain F, Glycerol Kinase (E.C.2.7.1.30) Complexed With The (Escherichia Coli) Glucose-Specific Factor Iii (Iii-Glc), Glycerol-3-Phosphate, Adenosine Diphosphate And Zn(Ii)"          . 
+       PDB  1GLC "F Chain F, Glycerol Kinase (E.C.2.7.1.30) Complexed With The (Escherichia Coli) Glucose-Specific Factor Iii (Iii-Glc), Glycerol-3-Phosphate, Adenosine Diphosphate, Mg(Ii) And Zn(Ii)"  . 
+       PDB  2F3G "A Chain A, Iiaglc Crystal Form Iii"                                                                                                                                                     . 
+       PDB  1GLA "F Chain F, Glycerol Kinase (E.C.2.7.1.30) Complex With Glycerol And The (Escherichia Coli) Glucose-Specific Factor Iii (Iii-Glc)"                                                       . 
+       PDB  1GLB "F Chain F, Glycerol Kinase (E.C.2.7.1.30) Complex With Glycerol, Adp, And The (Escherichia Coli) Glucose-Specific Factor Iii (Iii-Glc)"                                                 . 
+       PDB  1GGR "A Chain A, Complex Of Enzyme Iiaglc And The Histidine-Containing Phosphocarrier Protein Hpr From Escherichia Coli Nmr, Restrained Regularized Mean Structure"                           . 
+
+   stop_
+
+save_
+
+
+    ########################
+    #  Monomeric polymers  #
+    ########################
+
+
+save_glucose_permease
+   _Saveframe_category                          monomeric_polymer
+
+   _Mol_type                                    polymer
+   _Mol_polymer_class                           protein
+   _Name_common                                'glucose permease'
+   _Name_variant                               'enzyme IIIGlc'
+   _Abbreviation_common                         ?
+   
+   	##############################
+   	#  Polymer residue sequence  #
+   	##############################
+   
+   
+   _Residue_count                               168
+   _Mol_residue_sequence                       
+;
+GLFDKLKSLVSDDKKDTGTI
+EIIAPLSGEIVNIEDVPDVV
+FAEKIVGDGIAIKPTGNKMV
+APVDGTIGKIFETNHAFSIE
+SDSGVELFVHFGIDTVELKG
+EGFKRIAEEGQRVKVGDTVI
+EFDLPLLEEKAKSTLTPVVI
+SNMDEIKELIKLSGSVTVGE
+TPVIRIKK
+;
+
+   loop_
+      _Residue_seq_code
+      _Residue_label
+
+         1   GLY     2   LEU     3   PHE     4   ASP     5   LYS 
+         6   LEU     7   LYS     8   SER     9   LEU    10   VAL 
+        11   SER    12   ASP    13   ASP    14   LYS    15   LYS 
+        16   ASP    17   THR    18   GLY    19   THR    20   ILE 
+        21   GLU    22   ILE    23   ILE    24   ALA    25   PRO 
+        26   LEU    27   SER    28   GLY    29   GLU    30   ILE 
+        31   VAL    32   ASN    33   ILE    34   GLU    35   ASP 
+        36   VAL    37   PRO    38   ASP    39   VAL    40   VAL 
+        41   PHE    42   ALA    43   GLU    44   LYS    45   ILE 
+        46   VAL    47   GLY    48   ASP    49   GLY    50   ILE 
+        51   ALA    52   ILE    53   LYS    54   PRO    55   THR 
+        56   GLY    57   ASN    58   LYS    59   MET    60   VAL 
+        61   ALA    62   PRO    63   VAL    64   ASP    65   GLY 
+        66   THR    67   ILE    68   GLY    69   LYS    70   ILE 
+        71   PHE    72   GLU    73   THR    74   ASN    75   HIS 
+        76   ALA    77   PHE    78   SER    79   ILE    80   GLU 
+        81   SER    82   ASP    83   SER    84   GLY    85   VAL 
+        86   GLU    87   LEU    88   PHE    89   VAL    90   HIS 
+        91   PHE    92   GLY    93   ILE    94   ASP    95   THR 
+        96   VAL    97   GLU    98   LEU    99   LYS   100   GLY 
+       101   GLU   102   GLY   103   PHE   104   LYS   105   ARG 
+       106   ILE   107   ALA   108   GLU   109   GLU   110   GLY 
+       111   GLN   112   ARG   113   VAL   114   LYS   115   VAL 
+       116   GLY   117   ASP   118   THR   119   VAL   120   ILE 
+       121   GLU   122   PHE   123   ASP   124   LEU   125   PRO 
+       126   LEU   127   LEU   128   GLU   129   GLU   130   LYS 
+       131   ALA   132   LYS   133   SER   134   THR   135   LEU 
+       136   THR   137   PRO   138   VAL   139   VAL   140   ILE 
+       141   SER   142   ASN   143   MET   144   ASP   145   GLU 
+       146   ILE   147   LYS   148   GLU   149   LEU   150   ILE 
+       151   LYS   152   LEU   153   SER   154   GLY   155   SER 
+       156   VAL   157   THR   158   VAL   159   GLY   160   GLU 
+       161   THR   162   PRO   163   VAL   164   ILE   165   ARG 
+       166   ILE   167   LYS   168   LYS 
+
+   stop_
+
+   _Sequence_homology_query_date                2001-02-12
+   _Sequence_homology_query_revised_last_date   2001-02-12
+
+save_
+
+
+    ####################
+    #  Natural source  #
+    ####################
+
+
+save_natural_source
+   _Saveframe_category   natural_source
+
+
+   loop_
+      _Mol_label
+      _Organism_name_common
+      _NCBI_taxonomy_ID
+      _Genus
+      _Species
+      _Strain
+
+      $glucose_permease  .  ?  Escherichia  coli  generic 
+
+   stop_
+
+save_
+
+
+    #########################
+    #  Experimental source  #
+    #########################
+
+
+save_experimental_source
+   _Saveframe_category   experimental_source
+
+
+   loop_
+      _Mol_label
+      _Production_method
+      _Genus
+      _Species
+      _Strain
+
+      $glucose_permease 'not available'  Escherichia  coli  BL21-(DE3) 
+
+   stop_
+
+save_
+
+
+#####################################
+#  Sample contents and methodology  #
+#####################################
+	 
+    ########################
+    #  Sample description  #
+    ########################
+
+
+save_sample_one
+   _Saveframe_category   sample
+
+   _Sample_type          solution
+
+   loop_
+      _Mol_label
+      _Concentration_value
+      _Concentration_value_units
+      _Isotopic_labeling
+
+       ?  ?  ?  ? 
+
+   stop_
+
+save_
+
+
+#######################
+#  Sample conditions  #
+#######################
+
+
+save_sample_condition_set_one
+   _Saveframe_category   sample_conditions
+
+
+   loop_
+      _Variable_type
+      _Variable_value
+      _Variable_value_error
+      _Variable_value_units
+
+       pH             6.4  .  na 
+       temperature  309    .  K  
+
+   stop_
+
+save_
+
+
+####################
+#  NMR parameters  #
+####################
+
+    ##############################
+    #  Assigned chemical shifts  #
+    ##############################
+
+	################################
+	#  Chemical shift referencing  #
+	################################
+
+
+save_chem_shift_reference_par_set_one
+   _Saveframe_category   chemical_shift_reference
+
+
+   loop_
+      _Mol_common_name
+      _Atom_type
+      _Chem_shift_units
+      _Chem_shift_value
+
+       H2O/HDO  H  ppm  4.67 
+
+   stop_
+
+save_
+
+
+	###################################
+	#  Assigned chemical shift lists  #
+	###################################
+
+###################################################################
+#       Chemical Shift Ambiguity Index Value Definitions          #
+#                                                                 #
+#   Index Value            Definition                             #
+#                                                                 #
+#      1             Unique                                       #
+#      2             Ambiguity of geminal atoms or geminal methyl #
+#                         proton groups                           #
+#      3             Aromatic atoms on opposite sides of the ring #
+#                        (e.g. Tyr HE1 and HE2 protons)           #
+#      4             Intraresidue ambiguities (e.g. Lys HG and    #
+#                         HD protons)                             #
+#      5             Interresidue ambiguities (Lys 12 vs. Lys 27) #
+#      9             Ambiguous, specific ambiguity not defined    #
+#                                                                 #
+###################################################################
+
+
+save_chemical_shift_assignment_data_set_one
+   _Saveframe_category               assigned_chemical_shifts
+
+
+   loop_
+      _Sample_label
+
+      $sample_one 
+
+   stop_
+
+   _Sample_conditions_label         $sample_condition_set_one
+   _Chem_shift_reference_set_label  $chem_shift_reference_par_set_one
+   _Mol_system_component_name       'glucose permease'
+
+   loop_
+      _Atom_shift_assign_ID
+      _Residue_seq_code
+      _Residue_label
+      _Atom_name
+      _Atom_type
+      _Chem_shift_value
+      _Chem_shift_value_error
+      _Chem_shift_ambiguity_code
+
+        1    53   LYS  HA  H  4.7   .  1  
+        2    79   ILE  H   H  9.02  .  1  
+        3    80   GLU  HA  H  5.12  .  1  
+        4    86   GLU  HA  H  5.1   .  1  
+        5    87   LEU  H   H  8.99  .  1  
+        6    89   VAL  HA  H  4.37  .  1  
+        7    90   HIS  HA  H  4.33  .  1  
+        8   138   VAL  HA  H  4.33  .  1  
+        9   143   MET  HA  H  4.43  .  1  
+       10   144   ASP  HA  H  4.48  .  1  
+       11   145   GLU  HA  H  4.44  .  1  
+       12   146   ILE  HA  H  4.42  .  1  
+       13   147   LYS  HA  H  4.48  .  1  
+
+   stop_
+
+   loop_
+      _Chem_shift_value_error
+
+       .02 
+
+   stop_
+
+save_
+

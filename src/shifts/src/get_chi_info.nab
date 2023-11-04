@@ -1,0 +1,119 @@
+int		planep();
+
+int		get_chi_info( molecule m, string anisfile, point chi_c[1], 
+			point chi_v[1], float chi_iso[1], float chi_anis[1], int maxchi )
+{
+
+// Reads general anis info from input file, sets up appropriate
+//    data structures in memory; returns number of anisotropies found
+
+string		line;
+string		fields[ 30 ];
+int			nfields, nchi;
+file		anf;
+point		atom1, atom2, atom3, vect;
+float		dis;
+
+//      Read the general anisotropy input file
+//      Comments start with "#" or "//"
+//      Each non-comment line has either 4 or 5 fields:
+//
+//         Four fields are: scent, svect, chi_iso, chi_anis
+//           scent = atom expression giving center of anisotropy
+//           svect = atom expression giving second point: direction of
+//                   anisotropy is from scent to svect
+//           chi_iso, chi_anis: isotropic and anisotropic parts of the
+//                   susceptibility, in ppm-A**3
+//
+//         Five fields are satom1, satom2, satom3, chi_iso, chi_anis:
+//           satom1,2,3 are three atoms in the ring; center is the center
+//                    of these three, vector is the perpendicular to this
+//                    plane
+//           chi_iso, chi_anis as above
+
+
+nchi = 0;
+anf = fopen( anisfile, "r" );
+if( anf == NULL ) {
+//	printf( "\ngeneral anisotropy file %s empty; ", anisfile );
+	return( 0 );
+} else {
+	printf( "--------------------------------------------------------------");
+	printf( "\nInfo from general chi anisotropy file:\n" );
+	while( line = getline( anf ) ) {
+
+		if( length( line ) == 0 || substr( line,1,1 ) == "#" ||
+			substr( line,1,2 ) == "//" ) {
+			printf( "%s\n", line ); continue; //ignore blanks, #, //
+		}
+
+		nfields = split( line, fields, " " );
+		if( nfields == 4 ){
+			nchi++;
+			assert( nchi <= maxchi );
+
+			setpoint( m, fields[1], chi_c[ nchi ] );
+
+			setpoint( m, fields[2], atom2 );
+			vect = atom2 - chi_c[ nchi ]; 
+			dis = sqrt( vect@vect );
+			chi_v[ nchi ] = vect/dis;    // normalized direction vector
+
+        	chi_iso[ nchi ] = atof( fields[3] );
+        	chi_anis[ nchi ] = atof( fields[4] );
+
+			printf( 
+				"c= %8.3f %8.3f %8.3f v= %8.3f %8.3f %8.3f i= %8.3f a= %8.3f\n",
+				chi_c[ nchi ].x, chi_c[ nchi ].y, chi_c[ nchi ].z,
+				chi_v[ nchi ].x, chi_v[ nchi ].y, chi_v[ nchi ].z,
+				chi_iso[ nchi ], chi_anis[ nchi ] );
+
+		} else if (nfields == 5) {
+			nchi++;
+			assert( nchi <= maxchi );
+
+			setpoint( m, fields[1], atom1 );
+			setpoint( m, fields[2], atom2 );
+			setpoint( m, fields[3], atom3 );
+			planep( atom1, atom2, atom3, chi_v[ nchi ], chi_c[ nchi ], dis );
+
+        	chi_iso[ nchi ] = atof( fields[4] );
+        	chi_anis[ nchi ] = atof( fields[5] );
+
+			printf( 
+				"c= %8.3f %8.3f %8.3f v= %8.3f %8.3f %8.3f i= %8.3f a= %8.3f\n",
+				chi_c[ nchi ].x, chi_c[ nchi ].y, chi_c[ nchi ].z,
+				chi_v[ nchi ].x, chi_v[ nchi ].y, chi_v[ nchi ].z,
+				chi_iso[ nchi ], chi_anis[ nchi ] );
+
+		} else if (nfields == 8) {
+			nchi++;
+			assert( nchi <= maxchi );
+			chi_c[ nchi ].x = atof( fields[1] );
+			chi_c[ nchi ].y = atof( fields[2] );
+			chi_c[ nchi ].z = atof( fields[3] );
+			chi_v[ nchi ].x = atof( fields[4] );
+			chi_v[ nchi ].y = atof( fields[5] );
+			chi_v[ nchi ].z = atof( fields[6] );
+        	chi_iso[ nchi ] = atof( fields[7] );
+        	chi_anis[ nchi ] = atof( fields[8] );
+
+			printf( 
+				"c= %8.3f %8.3f %8.3f v= %8.3f %8.3f %8.3f i= %8.3f a= %8.3f\n",
+				chi_c[ nchi ].x, chi_c[ nchi ].y, chi_c[ nchi ].z,
+				chi_v[ nchi ].x, chi_v[ nchi ].y, chi_v[ nchi ].z,
+				chi_iso[ nchi ], chi_anis[ nchi ] );
+
+		} else {
+
+			fprintf( stderr, "wrong number of fields in %s:\n", anisfile );
+			fprintf( stderr, "%s\n", line );
+			exit( 1 );
+		}
+        
+	}
+	printf( "--------------------------------------------------------------\n");
+	return( nchi );
+		
+}
+};

@@ -1,0 +1,46 @@
+.\"  general page formats:
+.po 1.2i
+.ll 6.3i
+.nr pp 11
+.nr sp 12
+.ls 1
+.sc
+.EQ
+delim ``
+.EN
+.\"  listing macro:
+.de (l
+.br
+.ls 1
+.sp
+.ps 9
+.ft CB
+.in +0.5i
+.nf
+..
+.de )l
+.br
+.ls
+.ps 11
+.sp
+.ft R
+.in -0.5i
+.fi
+..
+.\"  refer stuff
+.so refer.me
+.R1
+join-authors " and " ", " ", and "
+abbreviate-label-ranges
+database refs.db
+no-default-database
+sort-adjacent-labels
+move-punctuation
+bracket-label " [" ] ,
+.R2
+.\"  indexing macro
+.de ix
+.tm \\$1:\\n%
+..
+.\"  get PSPIC macro:
+.mso tmac.pspic

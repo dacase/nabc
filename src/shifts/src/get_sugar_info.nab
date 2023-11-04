@@ -1,0 +1,120 @@
+int		get_sugar_info( molecule m, string strtype[ 1 ], 
+			float h1p[ 1 ], float h2p1[ 1 ], float h2p2[ 1 ],
+			float h3p[ 1 ], float h4p[ 1 ] ){
+
+residue		r;
+string		s;
+float		nu0, nu1, nu2, nu3, nu4, num, den, P, chi;
+int			a_res, rna;
+
+rna = 0;
+for( r in m ){
+	a_res = r.tresnum;
+	if( r.resname != "A" && r.resname != "G" && r.resname != "DT" &&
+	    r.resname != "C" && r.resname != "U" && r.resname != "DA" &&
+        r.resname != "DG" && r.resname != "DC" ) continue;
+
+	s = sprintf("%d", r.strandnum) + ":" + sprintf("%d", r.resnum) + ":";
+	nu0 = torsion( m, s + "C4'", s + "O4'", s + "C1'", s + "C2'" );
+	nu1 = torsion( m, s + "O4'", s + "C1'", s + "C2'", s + "C3'" );
+	nu2 = torsion( m, s + "C1'", s + "C2'", s + "C3'", s + "C4'" );
+	nu3 = torsion( m, s + "C2'", s + "C3'", s + "C4'", s + "O4'" );
+	nu4 = torsion( m, s + "C3'", s + "C4'", s + "O4'", s + "C1'" );
+
+	num = (nu4 + nu1) - (nu3 + nu0);
+	den = 2.*(sin(36.) + sin(72.))*nu2;
+	P = atan2( num, den );
+
+	if( r.resname == "A" || r.resname == "G" || r.resname == "DA" || 
+        r.resname == "DG" )
+		chi = torsion( m, s + "O4'", s + "C1'", s + "N9", s + "C4" );
+	else
+		chi = torsion( m, s + "O4'", s + "C1'", s + "N1", s + "C2" );
+
+
+	printf( "Residue  %s  %d:\n", r.resname, r.resnum );
+	printf( "   nu0 = %8.3f\n", nu0 );
+	printf( "   nu1 = %8.3f\n", nu1 );
+	printf( "   nu2 = %8.3f\n", nu2 );
+	printf( "   nu3 = %8.3f\n", nu3 );
+	printf( "   nu4 = %8.3f\n", nu4 );
+
+	printf( "     P = %8.3f\n\n", P );
+	printf( "   chi = %8.3f\n\n", chi );
+
+#ifdef NEW_PUCKER
+//   fits from DFT results on deoxyribose model, 8/14/96:
+//      indexed by "absolute" residue number
+//   NOTE: For now, using same values for rna; need to calc new values
+
+	if( strtype[ r.strandnum ] == "dna" ){
+		h1p[ a_res ] =  -0.181*cos( P + 16.4 ) + 0.113*cos( 2.*P - 78.3 )
+				- 0.054*cos( 3.*P + 54.5 ) - 0.096;
+
+		h2p1[ a_res ] = -0.180*cos( P - 109.1 ) - 0.148*cos( 2.*P + 81.2 )
+				- 0.110*cos( 3.*P -22.6 ) - 0.154;
+
+		h2p2[ a_res ] = -0.285*cos( P - 5.2 ) - 0.100*cos( 2.*P + 112.1 )
+				+ 0.079*cos( 3.*P + 25.8 ) - 0.294;
+
+		h3p[ a_res ] = 0.446*cos( P + 23.9 ) + 0.182*cos( 2.*P + 129.7 )
+				- 0.061*cos( 3.*P - 35.6 ) + 0.160;
+
+		h4p[ a_res ] = -0.424*cos( P - 46.1 ) - 0.049*cos( 2.*P - 125.2 )
+				+ 0.042*cos( 3.*P + 31.3 ) - 0.327;
+	}
+	else if ( strtype[ r.strandnum ] == "rna" ){
+		rna = 1;
+		h1p[ a_res ] =  -0.28*cos( P - 80.2 ) + 0.09*cos( 2.*P - 105.6 )
+				- 0.07*cos( 3.*P + 49.3 );
+
+		h2p1[ a_res ] = -0.36*cos( P - 16.0 ) - 0.12*cos( 2.*P + 102.2 );
+
+		h2p2[ a_res ] = -0.27*cos( P + 21.8 ) - 0.17*cos( 2.*P + 17.2 );
+
+		h3p[ a_res ] = 0.31*cos( P + 55.6 ) + 0.10*cos( 2.*P + 58.4 )
+				- 0.075*cos( 3.*P - 102.2 );
+
+		h4p[ a_res ] = -0.46*cos( P - 40.7 ) - 0.06*cos( 2.*P - 60.2 )
+				+ 0.05*cos( 3.*P - 82.1 );
+	}
+#else
+//   fits from DFT results on deoxyribose model, 10/13/95:
+//      indexed by "absolute" residue number
+//   NOTE: For now, using same values for rna; need to calc new values
+
+	if( strtype[ r.strandnum ] == "dna" ){
+		h1p[ a_res ] =  -0.28*cos( P - 80.2 ) + 0.09*cos( 2.*P - 105.6 )
+				- 0.07*cos( 3.*P + 49.3 );
+
+		h2p1[ a_res ] = -0.36*cos( P - 16.0 ) - 0.12*cos( 2.*P + 102.2 );
+
+		h2p2[ a_res ] = -0.27*cos( P + 21.8 ) - 0.17*cos( 2.*P + 17.2 );
+
+		h3p[ a_res ] = 0.31*cos( P + 55.6 ) + 0.10*cos( 2.*P + 58.4 )
+				- 0.075*cos( 3.*P - 102.2 );
+
+		h4p[ a_res ] = -0.46*cos( P - 40.7 ) - 0.06*cos( 2.*P - 60.2 )
+				+ 0.05*cos( 3.*P - 82.1 );
+	}
+	else if ( strtype[ r.strandnum ] == "rna" ){
+		rna = 1;
+		h1p[ a_res ] =  -0.28*cos( P - 80.2 ) + 0.09*cos( 2.*P - 105.6 )
+				- 0.07*cos( 3.*P + 49.3 );
+
+		h2p1[ a_res ] = -0.36*cos( P - 16.0 ) - 0.12*cos( 2.*P + 102.2 );
+
+		h2p2[ a_res ] = -0.27*cos( P + 21.8 ) - 0.17*cos( 2.*P + 17.2 );
+
+		h3p[ a_res ] = 0.31*cos( P + 55.6 ) + 0.10*cos( 2.*P + 58.4 )
+				- 0.075*cos( 3.*P - 102.2 );
+
+		h4p[ a_res ] = -0.46*cos( P - 40.7 ) - 0.06*cos( 2.*P - 60.2 )
+				+ 0.05*cos( 3.*P - 82.1 );
+	}
+#endif
+}
+if( rna == 1 ) fprintf( stderr, "NOTE: sugar anis values from DFT calcs on deoxyribose model are being used on a ribose sugar!\n" );
+
+return( 1 );
+};

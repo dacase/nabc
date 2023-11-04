@@ -1,0 +1,477 @@
+.he ''\fR\n(mo/\n(dy/\n(y2''
+\ 
+.sp
+.ps 24
+.nf
+.ce 100
+\fBSHIFTS Users' Manual\fR
+
+.ps 12
+\fB(Version 4.3)\fR
+
+Xiaoping Xu, Seongho Moon and David A. Case
+
+\fIDepartment of Molecular Biology
+The Scripps Research Institute
+La Jolla, CA 92037\fR
+.ce 0
+.fi
+.sp 2
+.hl
+.pp
+This source code and manual is copyright (C) 2001, by Xiaoping Xu, Seongho Moon and
+David A. Case, Department Molecular Biology, The Scripps Research Institute.
+.pp
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 1, or (at your option) any later
+version. The GNU General Public License should be in a file called
+COPYING; if not, write to the Free Software Foundation, Inc.,
+59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+.pp
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.hl
+.pp
+The SHIFTS package includes the functionality of our earlier
+proton-shift-prediction code (versions 3 and earlier), augmented
+with new ideas based
+on density functional calculations on peptides.  The earliest codes were
+written by Klara Ösapay and David Case; later Doree Sitkoff added new ideas
+and subroutines.  Annick Dejaegere and Richard Bryce extended the scope to
+nucleic acids.  Xiaoping Xu then developed an alternative approach that is
+applicable to nitrogen and carbon shifts.  Procedures for fitting ring
+current intensities to results from quantum calculations were developed by
+David Case. SHIFTS 4.3 is an attempt to put all of these ideas into some sort of
+coherent software package.  This version has plenty of rough edges, but we
+hope it will be useful.
+.lp
+The basic literature references are:
+.ip [1]
+K. Osapay and D.A. Case. A new analysis of proton
+chemical shifts in proteins. \fIJ. Am. Chem. Soc.\fB 113,\fR
+9436-9444 (1991).
+.ip [2]
+D.A. Case.  Calibration of ring current effects in proteins and nucleic
+acids.  \fIJ. Biomol. NMR\fB 6,\fR 341-346 (1995).
+.ip [3]
+A.P. Dejaegere, R.A. Bryce and D.A.Case.
+An empirical analysis of proton chemical
+shifts in nucleic acids.  In \fIModeling NMR Chemical Shifts,\fR 
+J.C. Facelli and A.C. de Dios, eds.  (Washington, American Chemical Society, 
+1999), pp. 194-206.
+.ip [4]
+X.P. Xu and D.A. Case.  Automated prediction of \*{15\*}N, \*{13\*}C`alpha`,
+\*{13\*}C`beta` and \*{13\*}C' chemical shifts in proteins using a density
+functional database.  \fIJ. Biomol. NMR\fB 21,\fR 321-333 (2001).
+.ip [5]
+X.P. Xu and D.A. Case. Probing multiple effects on \*{15\*}N,
+\*{13\*}C`alpha`, \*{13\*}C`beta` and \*{13\*}C' chemical shifts in peptides
+using density functional theory.  \fIBiopolymers\fB 65,\fR 408-423 (2002).
+.ip [6]
+S. Moon and D.A. Case.  Probing hydrogen bonding effects on chemical shifts of
+amide hydrogen in proteins using density functional theory and
+artificial neural networks.  (Manuscript in preparation).
+.pp
+Proton shift predictions should be compatible with earlier versions of
+SHIFTS, and should match results reported in references [1] and [3], above.
+Carbon and nitrogen shifts in proteins use the algorithm described in
+references [4] and [5].  Amide proton shifts are computed as described in
+reference [6].
+.sp 1.0i
+.EQ
+delim ``
+.EN
+.sh 1 "Installation."
+.pp
+The \fIshifts\fR package is available on the web at:
+.(l
+http://casegroup.rutgers.edu
+.)l
+(Click on the "SHIFTS" menu item.)
+SHIFTS (version 4) is written in the NAB computer language, so you must first
+download and install NAB, which is also available as a part of AmberTools,
+\fChttp://ambermd.org/#AmberTools\fR.
+.pp
+The first step in installing \fIshifts\fR
+is to extract files using the UNIX commands:
+.(l
+gunzip shifts-4.3.tar.gz
+tar xvf shifts-4.3.tar.gz
+.)l
+The path to this new directory should be defined as  the  environment
+variable  $SHIFTSHOME.
+.(l
+setenv SHIFTSHOME \fIinsert-your-path-here\fC/shifts-4.3
+.)l
+Next, 
+.(l
+make install
+.)l
+will make the required executable files, and put them into \fI$SHIFTSHOME/bin\fR.
+This assumes that NAB has already
+been properly installed, and that the \fInab\fR compiler is in your PATH.
+All of the machine-specific configuration is done during NAB installation,
+so \fIshifts\fR should run on any machine that supports NAB.  Next,
+.(l
+make test
+.)l
+will run some test calculations and report results.
+.he '\fR\n(mo/\n(dy/\n(y2'Overview'%'
+.bp
+.nr ii 1.0i
+.sh 1 "Short overview"
+.pp
+SHIFTS uses empirical formulas to estimate proton chemical shifts in
+proteins and nucleic acids; it can also use a database of density-functional
+shifts to predict \*{15\*}N and \*{13\*}C shifts in proteins.  The basic
+command-line for computing proton shifts is:
+.(l
+\fBshifts\fC [options] atom_expr basename > output\fR
+.)l
+The program
+takes an input pdb-file \fIbasename.pdb\fR, and optionally a file of
+observed shifts \fIbasename.obs\fR.
+Shifts are calculated for atoms matching
+"atom_expr".  Basically, this is a string with three fields, separated by
+the ":" character.  The first field identifies the molecule, the second the
+residue, and the third field the atom.  For example, to compute shifts for
+all protons, set atom_expr to '::H*'; for all Halpha protons in residues
+3-27, set atom_expr to ':3-27:HA'.  (Use single quotes, as in these
+examples, to protect wild-cards
+from shell expansion.)  Full details of atom-expressions are given in the NAB
+documentation.
+.pp
+For example, the following line executes the BPTI test case (assuming you
+are in the $SHIFTSHOME directory):
+.(l
+cd test; ../shifts '::H*' 6pti 
+.)l
+This reads in the file \fI6pti.pdb\fR, a puts human-readable output in
+\fI6pti.emp\fR.
+.pp
+The syntax is slightly different for nitrogen and carbon shifts.
+Here the command line is:
+.(l
+\fBshifts\fC -qdb [options] basename
+.)l
+.pp
+Here "basename" is as described above; the atom-expression is not needed
+(since the \fIqdb\fR option automatically computes N, C`alpha`, C`beta` and C'
+shifts); and the output goes to "basename.qdb" (see below).
+.pp
+Finally, there is a special section for using a neural net model to predict shifts
+for amide protons.  Here the command line is:
+.(l
+\fBshifts\fC -HN '::H' basename
+.)
+Again, input comes from \fIbasename\fR.pdb, and the output goes to
+\fIbasename\fR.HN.
+
+.sh 2 "Options"
+.ip -csa
+If the \fI-csa\fP flag is set, chemical shift anisotropy tensors will be
+computed, based on susceptibilities for rings and peptide groups.  Note that
+this option is not yet fully parameterized: see \fIringinfo.h\fR for
+information about what is being assumed.
+.ip -reslib
+If the \fI-reslib\fP flag is not set, the program will accept coordinates for
+an "arbitrary molecule" in \fIbasename.pdb\fP.  This allows calculations on
+molecules other than proteins or nucleic acids.  Charges will be set to
+zero, so that there will be no electrostatic contributions to the computed
+shifts.
+.br
+Since the protein charge model from Ref. [1] is hard-coded, there is no need to
+set the \fI-reslib\fR flag for proteins.  It is also not needed when \fI-qdb\fR is
+set, since that model ignores charges.  Hence, currently, the \fI-reslib\fR flag
+is only needed for proton shift calculations in nucleic acids, or if one wants to
+investigate a different charge model.
+.ip -nocoil
+If the \fI-nocoil\fP flag is set, the program will not attempt to compare
+the computed shifts to "random coil" reference values.  Otherwise, the
+program will use fragment shifts as reference values: see \fIsbcoil.nab\fR for
+more information.  The option is only relevant when \fI-qdb\fR is not set.
+.ip -readobs
+If this flag is set, the program will read in observed shifts (in the
+file \fIbasename.obs\fR), and will compare these to calculated shifts.
+.ip -details
+When this flag is set, individual contributions to proton shift predictions
+will be printed out.
+.ip -sander
+When this flag is set for proton calculations, an input file appropriate
+for the \fIsander\fR module of AMBER will be output.
+.ip -qdb
+If this flag is set, a "quantum data base" (qdb) approach will be used to
+compute \*{13\*}C and \*{15\*}N shifts in proteins.  Otherwise, emprical
+formulas will be used for proton shifts.
+.ip -refine
+If this flag is set, after computing shifts for the given structure, the
+program will attempt to find side chain `chi sub 1` angles that
+significantly improve the qdb fit.  The results for the original
+structure will be in the file \fIbasename.out1\fR, and the "refined" results
+will be in \fIbasename.out2\fR.  Only applicable if \fI-qdb\fR is also set.
+.ip -HN
+This flag initiates a special module that predicts amide proton shifts in
+accordance with the model in Ref. [6], above.
+
+.sh 2 "Input files"
+.pp
+Basic parameters for the calculations are contained in the header files
+\fIconstants.h\fP and \fIringinfo.h\fP.  These files need to be edited if
+you wish to change the parameterization, add new types of aromatic rings,
+and so on.  There is an experimental option to read a file of bond
+anisotropies; this is not a part of the standard calculations, but might be
+useful in extending the current model.  For now, to use this, you will have
+to read the code to see how it works.
+.pp
+The \fIbasename.pdb\fR file can generally be taken from Brookhaven.  If
+there are several "models" in the file (typical for NMR structures), the
+user must hand-edit the file to select the model of interest.  For proton
+calculations, Only ATOM
+records are considered, so that water molecules and co-factors are ignored.
+For carbon and nitrogen, ATOM records and HETATM records that refer to
+waters are included.
+Ligands and HETATM groups can be present, generally as a separate chain,
+separated with a "TER" card from the polypeptide backbone; see the
+\fItest/1mbc.pdb\fR file for an example.  Ring currents are defined for the
+porphyrin ring, as in reference [1] above; for other
+ligands, you will need to edit the \fIringinfo.h\fR file to establish the rings
+and their intensities.
+.pp
+The optional observed-shifts-file \fIbasename.obs\fR or \fIbasename.str\fR
+is only used here to prepare a list
+that compares calculated and observed shifts.  The format of the input
+file is dicussed in the tutorial below.  The "str" format is taken from the
+BMRB database (see \fChttp://www.bmrb.wisc.edu\fR).
+As an example, a portion of the file for ubiquitin (bmr68.str) is reproduced
+here:
+.(l
+
+  1     1   M           HA          H     4.22      1 
+  2     1   M           HB2         H     2.07      2 
+  3     1   M           HB3         H     2.17      2 
+  4     2   Q           H           H     8.82      1 
+  5     2   Q           HA          H     5.27      1 
+  6     2   Q           HB2         H     1.67      2 
+  7     2   Q           HB3         H     1.88      2 
+  8     2   Q           HG2         H     2.23      1 
+  9     2   Q           HG3         H     2.23      1 
+  10    2   Q           HE21        H     6.71      2 
+  11    2   Q           HE22        H     7.52      2 
+  12    3   I           H           H     8.33      1 
+  13    3   I           HA          H     4.21      1 
+  14    3   I           HB          H     1.8       1 
+  15    3   I           HG12        H     .88       2 
+  16    3   I           HG13        H     1.1       2 
+  17    3   I           HG2         H     .66       1 
+  18    3   I           HD          H     .61       1 
+  19    4   F           H           H     8.57      1 
+  20    4   F           HA          H     5.61      1 
+
+.)l
+.pp
+The columns (in order) are: index number, residue number, residue name,
+atom name, atom symbol, chemical shift, ambiguity type.  The last column
+is ignored (currently).  This information can generally be extracted from
+a BMRB entry (if it exists), or prepared by some other program.
+If it is not convenient for you to prepare shifts in this format, you may
+wish to just run
+\fIshifts\fR with just the pdb file as input, and use a separate program to
+prepare any comparisons you wish to make.
+
+.sh 2 "Output files"
+.pp
+For proton shifts, the basic output comes to \fIbasename.emp\fR;
+the program also produces an NMR-star
+file (\fIbasename.bmrb\fR, similar to that shown above. If there is an
+observed-shift file, a flat-file
+database, \fIbasename.rdb\fR will be created;  the specific format for 
+this matches Walt
+Hobbs' \fIrdb\fR programs (see \fCftp://ftp.rand.org/pub/RDB-hobbs\fR), but
+is ASCII-encoded, and should human-readable as well.
+.pp
+A somewhat different convention is followed for heavy atom shifts.  Here,
+the basic output before any side-chain refinement is sent to
+\fIbasename.qdb\fR, and some extra geometrical information goes to
+\fIbasename.par\fR.  If the \fI-refine\fR flag is set, two additional files
+are created (\fIbasename.qdb2\fR and \fIbasename.par2\fR) that hold the same
+information after refinement.  To see what effect (if any) the sidechain
+refinement has made, the user should \fIdiff\fR these two sets of files.
+
+.sh 2 "Bugs"
+.pp
+As just a program to run, there is not much flexibility in how things are
+calculated.  Basically, if you wish to modify the program to do something
+other than the standard calculations, you are required (and invited!) to 
+modify the code.  We have tried to make the code easy enough to read to
+make this possible.
+.pp
+If the program cannot interpret certain atoms in a pdb file, it will emit
+messages of the form: "unmatched atom in file ...."  This means that these
+atoms are not being used in the calculation.  In many cases this is fine;
+if not, you may need to modify the input pdb-file to fix up atom names, or
+update the residue libraries in NAB to reflect the molecules you
+are working on.
+.pp
+Parameters for DNA and proteins were developed separately, and there is no
+evidence (one way or the other) of how they would work together, say on
+protein-DNA complexes.  Parameters for RNA are just those for DNA, and have
+not be separately optimized or tested.
+.pp
+There is no provision in the \fIobserved-shifts-file\fR for distinguishing
+between situtations where pro-chiral proton pairs are or are not
+stereo-assigned.  For situations where stereo assignments are not available,
+un-commenting the "swap_shifts" command in \fIshifts.nab\fR may be helpful.
+.bp
+.sh 1 "Tutorial: \*{13\*}C and \*{15\*}N chemical shift prediction using SHIFTS"
+.pp
+This tutorial will provide an example of running a \*{13\*}C and \*{15\*}N 
+chemical
+shift prediction for protein profilin (PDB ID: 1ACF).  It is assumed that
+the programs SHIFTS as well as NAB have been installed in you site and the 
+environment for running SHIFTS has been set up, as described above.
+The following
+topics will be covered in this tutorial.
+.(l
+   - Preparation of input file(s) 
+   - Running SHIFTS 
+   - Output files 
+.)l
+.lp
+The input and output files for this example are in the \fItest\fR
+subdirectory: \fI1acf.pdb\fR and \fI1acf.obs\fR are input files, and
+the output files we obtained on our machine are in the \fIexamples\fR
+subdirectory -- you can
+compare your results to these.
+
+.sh 2 "Preparation of input file(s)"
+.pp
+The program takes an input pdb-file basename.pdb, and optionally a file 
+of observed shifts basename.obs.  The basename.pdb file can generally 
+be taken from Brookhaven.  If there are several "models" in the file
+(typical for NMR structures), the user must hand-edit the file to select
+the model of interest.  Only ATOM records and HETATM for water molecules
+are considered.  Ligands can be present but will not be included for 
+calculation in current version.  
+.pp
+For the example of protein profilin, the original pdb-file \fI1acf.pdb\fR is 
+used without any modification.  Then a \fI1acf.obs\fR file was prepared with
+the following format:
+.(l
+   #1ACF.obs
+   #No. res    N        Ca       Cb        C'
+   #------------------------------------------
+   3     Q   118.26    58.53    28.48     0.00
+   4     T   114.00    66.23    68.58     0.00
+   5     Y   119.55    60.68    38.29   177.50
+   6     V   115.86    66.72    32.26   177.10
+   7     D   118.29    57.94    40.88   178.90
+   8     T   115.72    65.55    68.82   175.00
+   9     N   116.09    56.61    39.01   174.20
+  10     L   114.26    55.50    41.90   176.70
+  11     V   122.33    66.35    31.61   179.60
+  ...
+.)l
+.pp
+The optional observed-shifts-file \fI1acf.obs\fR here is used to compare
+calculated and obseved shifts as well as do side-chain orientation 
+refinement.  You may also use a \fI1acf.str\fR file instead: if the program
+doesn't find \fIbasename.obs\fR, it looks for \fIbasename.str\fR.
+As mentioned above, the ".str" format file is like a subset of the data in an
+"NMR -star file from BMRB (see http://www.bmrb.wisc.edu).  The data
+example with .str format is:
+.(l
+   1   ALA  C     C  172.0   .  1
+   1   ALA  CA    C   51.0   .  1
+   1   ALA  HA    H    4.40  .  1
+   1   ALA  CB    C   17.9   .  1
+   1   ALA  HB    H    1.57  .  1
+   2   PRO  C     C  176.8   .  1
+   2   PRO  CA    C   63.1   .  1
+   2   PRO  HA    H    4.62  .  1
+   2   PRO  CB    C   31.9   .  1
+   2   PRO  HB2   H    2.39  .  2
+.)l
+
+.sh 2 "Running SHIFTS"
+.pp
+With input file(s) ready, the running of SHIFTS is pretty easy.  The
+commands are "\fCshifts -qdb
+-noreslib basename\fR" for prediction only; "\fCshifts -qdb -readobs
+-noreslib basename\fR" for comparison of predicted and observed data; 
+and "\fCshifts
+-qdb -refine -noreslib basename\fR" for prediction & observed data and
+side-chain orientation refinement.
+.pp
+Take the protein profilin as the example here and assume you have a 
+directory containing \fI1acf.pdb\fR and \fI1acf.obs\fR.  Then 
+you can run SHIFTS as below:
+.(l
+  alias shifts '$SHIFTSHOME/shifts'
+  shifts -qdb -readobs -noreslib 1acf
+.)l
+After a few seconds running time, you 
+will get two output files, 1acf.out1 and 1acf.par1.
+
+.sh 2 "Output files"
+.pp
+There are two types of output files being formed after running SHIFTS.  One 
+of them is a structural parameter file (.par) with backbone conformational
+parameters (phi and psi), side-chain orientation parameters (chi1 and chi2), 
+and hydrogen bonding information.  Another type is predicted chemical shifts 
+file(s) giving a breakdown of the detailed contributions.  Depending on if an 
+observable shift file is included and if side-chain orientation refinement is 
+selected, the following output files will be given:
+.(l
+ -----------------------------------------------------------------------------
+  flags used         output files                    comment
+ -----------------------------------------------------------------------------
+ -qdb              .par1, .out1           no obs file & no refinement
+ -qdb -readobs     .par1, .out1           obs file included & no refinement
+ -qdb -refine      .par2, .out2,          obs file included & with refinement
+ -----------------------------------------------------------------------------
+.)l
+In the \fI1acf.par1\fR file, the data in columns phi, psi, chi1 and 
+chi2 corresponds
+torsion angles.  H1 means the shortest hydrogen bond length between the i-1 th
+carbonyl oxygen and the NH proton among all possible O(i-1)...HN pairs.  H2 is
+the next shortest distance for the same oxygen as the case in H1.  Similarly, 
+O1 and O2 in the .par file represent the distances between the carbonyl oxygens
+with the shortest and next shortest HB lenthes to the ith nitrogen.  Nw and Ow 
+mean the the hydrogen bonding on the ith nitrogen and the (i-1)th oxygen, 
+respectively, by waters.  'i' in the file is the No. of a residue to which the
+atom belong.
+.pp
+Abbreviations in the output files (for both proton and heavy-atom shifts) are listed here:
+.(l
+Abbreviations for heavy atom shift contributions:
+    bb-p ...... preceding backbone effect
+    bb-s ...... self backbone effect
+    bb-f ...... following backbone effect
+    chi-p ..... preceding chi effect
+    chi-s ..... self chi effect
+    HB-D....... direct HB effect (NH &lt;-)
+    HB-I....... indirect HB effect (C=O &lt;)
+    REF ....... reference shifts for this amino acid
+    pred....... predicted shift = sum of the above
+    obs ....... observed shift (if provided)
+
+    Lines marked "diff" indicate some difference in sequence between the pdb
+    file and the obs file.
+
+Abbreviations for the proton shift contributions:
+    RingCur.... ring currents from aromatic rings
+    El ........ electrostatic contribution (backbone only for now)
+    P_anis .... peptide group anisotropy
+    Const ..... constant constribution
+    RC ........ random coil shift
+    pred ...... predicted shift = sum of the above
+
+    Note that the message "unmatched atom ...OXT" can be ignored.  In the
+    ouptut, shifts for methyl protons are reported as the average for the
+    three protons, and the atom name of the last proton is used; for
+    example, the (averaged) methyl shift for alanine would be labelled
+    "HB3".
+.)l

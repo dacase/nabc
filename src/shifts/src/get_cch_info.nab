@@ -1,0 +1,82 @@
+int             bonded_atoms() c;
+#define MAX_CC 750
+#define MAX_CH 1000
+#define MAX_CN 500
+int		get_cch_info( molecule m,
+		point cc_v[ MAX_CC ], point cc_c[MAX_CC], int ncc,
+		string cc1[ MAX_CC ], string cc2[ MAX_CC ],
+		point ch_v[ MAX_CH ], point ch_c[MAX_CH], int nch,
+		string ch1[ MAX_CH ], string ch2[ MAX_CH ], 
+		point cn_v[ MAX_CN ], point cn_c[MAX_CN], int ncn,
+		string cn1[ MAX_CN ], string cn2[ MAX_CN ] )
+{
+
+	int		i, ni;
+	atom		a, ai[ 10 ];
+	residue		r;
+	
+	float		r_cc, r_ch, r_cn;
+
+//   find C-C, C-H, C-N bonds:  
+//    go through the molecule, find bonded atoms to all C's.
+//		Keep all C-H bonds. Keep all C-C bonds for which
+//		absoute atom number of C(1) is lower than that of C(2)
+//		to avoid double counting. Keep all C-N bonds.
+
+	ncc = nch = ncn = 0;
+	for( r in m ){ for( a in r ){
+
+		if( (substr( a.atomname,1,1) == "C") && (a.atomname != "CL") ) { 
+		  ni = bonded_atoms( a, ai ); // getting connects
+        	  for( i=1; i <= ni; i = i + 1 ){
+//		    fprintf( stderr, "atoms %s - %s\n", a.fullname, ai[ i ].fullname );
+
+		    if( ( substr( ai[ i ].atomname,1,1 ) == "C" ) &&
+			( ai[ i ].atomname != "CL" ) ) {
+		      if( a.tatomnum  < ai[ i ].tatomnum ) {  // got a C-C
+			ncc = ncc + 1;
+			cc1[ ncc ] = a.fullname; cc2[ ncc ] = ai[ i ].fullname;
+//			fprintf( stderr, "ncc: %d  atoms %s - %s\n", ncc, cc1[ ncc ], cc2[ ncc ] );
+    			cc_c[ ncc ] = 0.5*(ai[ i ].pos - a.pos) + a.pos;
+			cc_v[ ncc ] = ai[ i ].pos - a.pos;
+//		 	fprintf( stderr, "  cc_c: %.3f %.3f %.3f\n", cc_c[ ncc ].x, cc_c[ ncc ].y, cc_c[ ncc ].z );
+//		 	fprintf( stderr, "  cc_v: %.3f %.3f %.3f\n", cc_v[ ncc ].x, cc_v[ ncc ].y, cc_v[ ncc ].z );
+			r_cc = sqrt( cc_v[ ncc ] @ cc_v[ ncc ] );
+			cc_v[ ncc ] /= r_cc;
+//		 	fprintf( stderr, "  cc_v_norm: %.3f %.3f %.3f\n", cc_v[ ncc ].x, cc_v[ ncc ].y, cc_v[ ncc ].z );
+		    } }
+
+		    else if ( substr(ai[ i ].atomname,1,1) == "H" ) { // got a C-H
+			nch = nch + 1;
+			ch1[ nch ] = a.fullname; ch2[ nch ] = ai[ i ].fullname;
+//			fprintf( stderr, "nch: %d  atoms %s - %s\n", nch, ch1[ nch ], ch2[ nch ] );
+			ch_v[ nch ] = ai[ i ].pos - a.pos;
+//		 	fprintf( stderr, "  ch_v: %.3f %.3f %.3f\n", ch_v[ nch ].x, ch_v[ nch ].y, ch_v[ nch ].z );
+			r_ch = sqrt( ch_v[ nch ] @ ch_v[ nch ] );
+			ch_v[ nch ] /= r_ch;
+    			ch_c[ nch ] = 0.77*(ch_v[ nch ]) + a.pos;
+//		 	fprintf( stderr, "  ch_v_norm: %.3f %.3f %.3f\n", ch_v[ nch ].x, ch_v[ nch ].y, ch_v[ nch ].z );
+//		 	fprintf( stderr, "    ch_c: %.3f %.3f %.3f\n", ch_c[ nch ].x, ch_c[ nch ].y, ch_c[ nch ].z );
+		    }
+		    else if( ( ( substr(ai[ i ].atomname,1,1) == "N" ) ||
+			       ( substr(ai[ i ].atomname,1,2) == "CL" ) ) &&
+				( a.atomname != "C" ) ) { // skips C(=O)-N
+			ncn = ncn + 1;
+			cn1[ ncn ] = a.fullname; cn2[ ncn ] = ai[ i ].fullname;
+//			fprintf( stderr, "ncn: %d  atoms %s - %s\n", ncn, cn1[ ncn ], cn2[ ncn ] );
+    			cn_c[ ncn ] = (1.0/1.3)*(ai[ i ].pos - a.pos) + a.pos;
+			cn_v[ ncn ] = ai[ i ].pos - a.pos;
+//		 	fprintf( stderr, "  cn_c: %.3f %.3f %.3f\n", cn_c[ ncn ].x, cn_c[ ncn ].y, cn_c[ ncn ].z );
+//		 	fprintf( stderr, "  cn_v: %.3f %.3f %.3f\n", cn_v[ ncn ].x, cn_v[ ncn ].y, cn_v[ ncn ].z );
+			r_cn = sqrt( cn_v[ ncn ] @ cn_v[ ncn ] );
+			cn_v[ ncn ] /= r_cn;
+//		 	fprintf( stderr, "  cn_v_norm: %.3f %.3f %.3f\n", cn_v[ ncn ].x, cn_v[ ncn ].y, cn_v[ ncn ].z );
+		    }
+		} }
+	} }
+
+	fprintf( stderr, "\nfound %d C-C bonds\n", ncc );
+	fprintf( stderr, "\nfound %d C-H bonds\n", nch );
+	fprintf( stderr, "\nfound %d C-N bonds\n", ncn );
+	return( 1 );
+};

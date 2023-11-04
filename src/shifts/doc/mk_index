@@ -1,0 +1,47 @@
+#!/bin/sh
+# use this command to make indices from files which contain the
+# ".ix" macro.  The form of the command is "mk_index <file>", where
+# <file> is the name of the gtroff source with the indexing commands in it.
+# The file that results is named "<file>.index" and contains data
+# for gtroff input.
+
+#  set awk to something that works on your machine:
+AWK=nawk
+
+cat <<eof > $1.index
+.he '\fR\n(mo/\n(dy/\n(y2'Index'%'
+.if o .bp
+.bp
+\ 
+.ce
+.po 1.5i
+.de Lt
+.ne 5
+.sp
+.in 0
+.in 1.0i
+\\\\\$1
+.in 0
+.sp
+..
+.2c
+.nf
+.in 0
+eof
+
+(cat spasm.mac $1 | refer | pic | tbl | eqn -Tps | troff -U -me -Tps 2> index.1) > /dev/null
+grep -v refer index.1 | grep -v warning | grep -v 'standard input' | \
+sort -ut: +0fd -1 +1n | \
+$AWK '
+BEGIN { FS = ":" } 
+{ if (x == $1) y = y ", " $2 }
+{ if (x != $1 ) print y }
+{if (x != $1) y = $1 " " $2 }
+{ x = $1 }
+{ if (toupper(substr($1,1,1)) != last ){
+	last = toupper(substr($1,1,1));
+    printf( ".Lt %s\n", last)
+  }
+}
+END {print y }'  >> $1.index
+/bin/rm index.1

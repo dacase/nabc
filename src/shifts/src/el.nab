@@ -1,0 +1,250 @@
+#define MAXOX 4000
+float       lp_q[ MAXOX ];
+point       lp_pos[ MAXOX ];
+
+int get_lp( molecule m )
+{
+
+atom	ae;
+int 	nox, nlp, nbonds, i;
+point	vec_co, vec_cn, vec_cz, vec_cy;
+point	vec_co1, vec_co2;
+float	vlen;
+atom	neighbors_o[ 8 ], neighbors_c[ 8 ], neighbor_use;
+
+
+nox = 0;
+for( ae in m ) {
+	if( substr( ae.atomname,1,1 ) == "O" ){
+		nox += 1; 		// got an O
+		nlp = 5 * ( nox - 1 );
+
+//		find number of neighbors, charge on neighbors:
+
+		nbonds = bonded_atoms( ae, neighbors_o );
+		if( nbonds == 1 ){ // sp2 oxygen
+		vec_co = ae.pos - neighbors_o[ 1 ].pos ;
+		vlen = sqrt( vec_co @ vec_co );
+		vec_co = vec_co/vlen;
+		lp_pos[ nlp + 1 ] = ae.pos + .4 * vec_co;
+		lp_pos[ nlp + 2 ] = ae.pos + .4 * vec_co;
+
+//	getting 'x' coord = distance perp to 'y' in NMA plane
+
+		nbonds = bonded_atoms( neighbors_o[ 1 ], neighbors_c );
+		for( i=1; i<=nbonds; i++ ) {
+		  if( neighbors_c[ i ] != ae ) 
+			neighbor_use = neighbors_c[ i ];
+		}
+		vec_cn = neighbor_use.pos - neighbors_o[ 1 ].pos;
+		vec_cz = vec_co ^ vec_cn;
+		vec_cy = vec_co ^ vec_cz;
+		vlen = sqrt( vec_cy @ vec_cy );
+		vec_cy = vec_cy/vlen;
+		lp_pos[ nlp + 1] = lp_pos[ nlp + 1] + .69282 * vec_cy;
+		lp_pos[ nlp + 2 ] = lp_pos[ nlp + 2 ] - .69282 * vec_cy;
+		lp_pos[ nlp + 3 ] = neighbors_o[ 1 ].pos;
+
+		lp_q[ nlp + 1] = -0.2;
+		lp_q[ nlp + 2 ] = -0.2;
+		lp_q[ nlp + 3 ] = 0.4 + ae.charge;
+		lp_q[ nlp + 4 ] = 0.0;
+		lp_q[ nlp + 5 ] = 0.0;
+		}
+		if( nbonds == 2 ){ // sp3 oxygen
+
+// getting 'y' coord of lp's = distance from O along C=O.
+
+			vec_co1 = ae.pos - neighbors_o[ 1 ].pos;
+			vec_co1 = vec_co1/ ( sqrt( vec_co1 @ vec_co1 ) );
+			vec_co2 = ae.pos - neighbors_o[ 2 ].pos;
+			vec_co2 = vec_co2/ ( sqrt( vec_co2 @ vec_co2 ) );
+			vec_co = ( vec_co1 + vec_co2 ) / 2;
+			vlen = sqrt( vec_co @ vec_co );
+			vec_co = vec_co/vlen;
+			lp_pos[ nlp + 1 ] = ae.pos + 0.461887 * vec_co;
+			lp_pos[ nlp + 2 ] = ae.pos + 0.461887 * vec_co;
+
+// getting 'x' coord = distance perp to 'y' in NMA plane
+
+			vec_cy = vec_co ^ vec_co1;
+			vlen = sqrt( vec_cy @ vec_cy );
+			vec_cy = vec_cy/vlen;
+			lp_pos[ nlp + 1 ] = lp_pos[ nlp + 1 ] + 0.653192 * vec_cy;
+			lp_pos[ nlp + 2 ] = lp_pos[ nlp + 2 ] - 0.653192 * vec_cy;
+			lp_pos[ nlp + 3 ] = neighbors_o[ 1 ].pos;
+			lp_pos[ nlp + 4 ] = neighbors_o[ 2 ].pos;
+			lp_q[ nlp + 1 ] = lp_q[ nlp + 2 ] = -0.2;
+			lp_q[ nlp + 3 ] = lp_q[ nlp + 4 ] = 
+				(( .4 + ae.charge + 2 * neighbors_o[ 1 ].charge )/2 ) - 
+				neighbors_o[ 1 ].charge;
+		}
+	}
+}
+
+return(0);
+};
+
+float el_gas( atom a, molecule m, string strtype [ 1 ], atom neighbors[ 8 ],
+		point wocoor[ 1 ], int nwo, int woh[ 1 ],
+		int version2, int use_lp )
+{
+
+atom	ae;
+int 	j, nox, nlp, o_flag, skipflag, nat;
+point	hx, ch;
+float	rhx2, rhx, rch, she, sheat, shelp;
+float	dum, multfac;
+
+// Note not set up to do elec contribs to shifts of folate protons
+
+ch = a.pos - neighbors[ 1 ].pos;    //  vector from C to H
+rch = sqrt( ch@ch );
+
+she = 0.; 
+sheat = shelp = 0.0; // what is sheat for?
+nox = 0;
+multfac = 1.0;
+for( ae in m ) {
+	skipflag = 0; o_flag = 0;
+	if( ae.atomname == "O" ){
+		nox +=1; // increment nox
+		o_flag = 1;
+	}
+	if( strtype[ a.strandnum ] == "protein" ){
+		if( version2 ){
+			if( a.atomname == "H" ){
+				if( ae.tresnum == a.tresnum - 1 ){
+					if( ae.atomname == "C" || ae.atomname == "O" ) continue;
+				}
+				if( ae.tresnum == a.tresnum ){
+					if( ae.atomname == "H" || ae.atomname == "N" ||
+				    	ae.atomname == "CA" ) continue;
+				}
+			}else if( ae.tresnum == a.tresnum ){
+				continue;
+			}
+
+		}else{
+
+			if( ( a.atomname == "H" && a.resname == "NME" ) ||
+				a.atomname =~ "H" && a.resname == "NH2" ){
+				if( ae.tresnum == a.tresnum ) continue;
+				else if( ae.tresnum == a.tresnum - 1 ){
+					if( ae.resname == "ACE" ) continue;
+					else if( ae.atomname == "C" || ae.atomname == "O" ) 
+						continue;
+				}
+			}
+			else if ((a.atomname == "H"  || a.atomname == "H1" ||
+				a.atomname == "H2" || a.atomname == "H3" ) &&
+				a.resname != "MTH" ) {
+				if( ae.tresnum == a.tresnum - 1 ){
+					if( ae.atomname == "C" || ae.atomname == "O" ) continue;
+				} 
+				else if( ae.tresnum == a.tresnum ){
+					if ( ae.atomname == "H" || ae.atomname == "N"  ||
+						ae.atomname == "CA"   || ae.atomname == "H1" ||
+						ae.atomname == "H2"   || ae.atomname == "H3" ) continue;
+				}
+			}
+			// ignore self-ring interactions in porphyrin
+			else if( a.resname == "HEM" && a.tresnum == ae.tresnum ){
+				if( ( substr( a.atomname, 3, 1) != "P" ) &&
+					( substr( a.atomname, 1, 2) != "H7" )) { //a in porph ring
+					if( ( length( ae.atomname ) == 2 ) ||
+						( substr( ae.atomname, 3, 1) != "P" ) &&
+						( substr( ae.atomname, 1, 2) != "H7" ))//ae in porph ring
+						continue;
+				}
+			}
+
+			else if( ae.tresnum == a.tresnum && ae.atomname != "H" &&
+				ae.atomname != "N" && ae.atomname != "C" &&
+				ae.atomname != "O" ) continue; 	// side chain proton
+		}
+
+	} else if ( strtype[ a.strandnum ] == "dna" ||
+		strtype[ a.strandnum ] == "rna" ){
+
+//		ignore sugar-sugar and base-base self interactions:
+		if( ae.tresnum == a.tresnum ){
+			if( ae.atomname =~ "'" && a.atomname =~ "'" ) continue;
+
+			if( a.atomname !~ "'" &&           // => a is a base proton
+			( ae.atomname !~ "'" || ae.atomname !~ "P" )) // => ae is base atom
+			continue;
+		}
+
+#if 1
+		// New electrostatic scaling factor from fitting shift parameters for
+		// RNA (JMS 4/17/2014)
+		if (strtype[ a.strandnum ] == "rna") {
+			multfac = 0.0762;
+		} else if (strtype[ a.strandnum ] == "dna") {
+			multfac = 0.1145;
+		}
+#endif
+
+	}
+
+// Now computing fields
+
+// first take care of lone pairs
+
+	if( use_lp && o_flag ){
+		skipflag = 1;
+		for( j=1; j<=5; j++ ){	// cycle thru lp crgs for that O
+			nlp = 5 * ( nox - 1 );
+			if( lp_q[ nlp + j ] == 0.0 ) continue;
+			hx = lp_pos[ nlp + j ] - a.pos;
+			rhx2 = hx@hx;    rhx = sqrt( rhx2 );
+
+//const epsilon:
+
+			she += lp_q[ nlp + j ] * (ch@hx) /( rhx2*rch*rhx );
+			shelp += lp_q[ nlp + j ] * (ch@hx) /( rhx2*rch*rhx );
+
+//eps ~ r:
+
+//			she += ae.charge * 2.0*(ch@hx) /( rhx2*rch*rhx2 );
+		}
+	}
+
+// now do rest of ae's
+
+	if( ae.charge == 0.0 || skipflag ) continue;
+	hx = ae.pos - a.pos;
+	rhx2 = hx@hx;    rhx = sqrt( rhx2 );
+
+#ifdef PRINT_EL
+	dum =  ae.charge * 2.0*(ch@hx) /( rhx2*rch*rhx2 );
+	fprintf( stderr, "%s -> %s: %8.5f  %8.5f  %8.5f %8.5f\n",
+		a.fullname, ae.fullname, rhx, rch, ae.charge, dum );
+#endif
+
+//const epsilon:
+
+	she += ae.charge * (ch@hx) /( rhx2*rch*rhx ) * multfac;
+	sheat += ae.charge * (ch@hx) /( rhx2*rch*rhx ) * multfac;
+
+//eps ~ r:
+//	she += ae.charge * 2.0*(ch@hx) /( rhx2*rch*rhx2 );
+}
+
+// now do water charges
+
+for( nat=1; nat<=nwo; nat++ ){
+	hx = wocoor[ nat ] - a.pos;
+	rhx2 = hx@hx;    rhx = sqrt( rhx2 );
+	if( woh[ nat ] == 1 ){
+		she += -0.72 * (ch@hx) /( rhx2*rch*rhx );
+		sheat += -0.72 * (ch@hx) /( rhx2*rch*rhx );
+	} else {
+		she += 0.36 * (ch@hx) /( rhx2*rch*rhx );
+		sheat += 0.36 * (ch@hx) /( rhx2*rch*rhx );
+	}
+}
+
+	return(she);
+};

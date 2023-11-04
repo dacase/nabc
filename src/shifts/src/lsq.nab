@@ -1,0 +1,235 @@
+//   lsq:  carry out least-squares analysis
+
+//	Usage: lsq n sig x1 x2 .... < input-stream\n
+
+//	n is number of parameters; sig an error parameter
+//	x1, x2...are initial values of the paramters
+//		(If an initial guess is exactly 1.0, that parameter will be fixed)
+//	Each line of the input-stream contains the observed value plus one row 
+//		of the coefficient matrix; that is, each line of the input stream
+//      should have n+1 values.
+
+//	stderr will contain fits and statistics
+//	stdout will have observed and fitted values
+
+#define MAXOBS 3000
+#define MAXVAR 10
+#define MAXJACK 10
+#define MAXBOOT 50
+
+float	x0[MAXVAR],x[MAXVAR],b[MAXOBS],a[MAXOBS,MAXVAR];
+float	sig[MAXOBS];
+float	ystar[MAXVAR],xall[MAXVAR],ybar[MAXVAR],ybar2[MAXVAR];
+int		fix[MAXVAR], ij[MAXOBS], ib[MAXOBS];
+
+int		i,iarg,ier,ijack,iboot,j,n,m,used;
+float	denom, f,chi,chi0,calc,calc0,sig0,chii,chi0i, ave,std;
+
+float	rmsgrad, dfpred;
+int		maxiter;
+
+float lsqfunc( float x[1], float g[1], int niter )
+{
+
+float	f, calc, z, hz2p1, rho, drho;
+int		ivar, iobs, iobsu;
+
+//   hard-wire in here a least squares function to fit, assuming a 
+//   Lorentzian distribution of errors.  Actually, virtually any funtion
+//   can be put here:  just compute the function value in "f" and its
+//   gradient (with respect to x) in "g".
+
+    f = 0.; used = 0;
+    for (ivar = 1; ivar <= n; ++ivar)  g[ivar] = 0.;
+
+    for (iobs = 1; iobs <= m; iobs++) {
+		if( ijack > 0 && ij[iobs] ) continue;
+        if( iboot > 0 ) iobsu = ib[iobs];
+        else iobsu = iobs; 
+        assert( iobsu>0 && iobsu<=m );
+		calc = 0.;
+		for (ivar = 1; ivar <= n; ivar++) {
+		   	calc += a[iobsu, ivar] * x[ivar];
+		}
+		z = (b[iobsu] - calc) / sig[iobsu];
+		hz2p1 = 0.5*z*z + 1.;
+		rho = log(hz2p1);
+		drho = z / hz2p1;
+		for (ivar = 1; ivar <= n; ivar++) {
+			if( fix[ivar] ) continue;
+		   	g[ivar] -= drho * a[iobsu, ivar] / sig[iobsu];
+		}
+		f += rho;
+		used++;
+    }
+//    fprintf( stderr, "lsqfun: %8.4f %8.4f %8.4f %8.4f\n",
+//           x[1],x[2],x[3],f );
+	return( f );
+
+};
+
+//  process command-line arguments:
+
+if ( argc<2 || argv[ 2 ] == "-help" ) {
+	fprintf( stderr, "Usage: lsq n sig x1 x2 .... < input-stream\n" );
+	fprintf( stderr, "\nn is number of parameters; sig an error parameter\n" );
+	fprintf( stderr, "x1, x2...are initial values of the paramters\n" );
+	fprintf( stderr, "   If an initial guess is exactly 1.0, that parameter will be fixed\n" );
+	fprintf( stderr, "\nEach line of the input-stream contains the observed value plus\n" );
+	fprintf( stderr, "one row of the coefficient matrix\n" );
+	fprintf( stderr, "\nstderr will contain fits and statistics;\n");
+	fprintf( stderr, "stdout will have observed and fitted values\n" );
+	exit( 1 );
+}
+
+n = atoi( argv[ 2 ] );
+assert( n <= MAXVAR );
+sig0 = atof( argv[ 3 ] );
+for( iarg=4; iarg<=argc; iarg=iarg+1 ){
+	x0[ iarg-3 ] = atof( argv[ iarg ] );
+}
+ijack = iboot = 0;
+
+//  read in the input data:
+
+m = 0;
+for( i=1;; i=i+1 ){
+	if( scanf( "%lf", b[i] ) == EOF ) break;
+	m = m + 1;
+	assert( m <= MAXOBS );
+	for( j=1; j<=n; j=j+1 ){
+		scanf( "%lf", a[i,j] );
+	}
+	sig[i] = sig0;
+}
+fprintf( stderr, "%d data points, %d variables\n", m, n );
+
+//   get the least-squares fit to the full dataset:
+
+for( j=1; j<=n; j=j+1 ) x[j] = x0[j];
+
+for( i=1; i<=n; i++){
+	if( x[i] == 1.0 ) fix[i] = 1;
+	else fix[i] = 0;
+}
+
+rmsgrad = 0.0001;
+dfpred=0.1;
+maxiter=2000;
+ier = conjgrad( x, n, f, lsqfunc, rmsgrad, dfpred, maxiter );
+if( ier < 0 ){
+	fprintf( stderr, "conjgrad returns %d\n", ier );
+    exit(1);
+}
+
+//  print out the fitted parameters, and the fitted values:
+
+fprintf( stderr, "Cauchy fit of %d parameters with sigma = %8.3f\n\n",
+	n, sig0 );
+fprintf( stderr, "Parameters:  fit         orig\n" );
+for( i=1; i<=n; i=i+1 )
+	fprintf( stderr, "        %12.5f %12.5f\n", x[i], x0[i] ); 
+
+#ifdef STATS
+fprintf( stderr, "\n'      Observed      Calc     Error     Calc0     Error0\n" );
+#endif
+
+chi = 0.;
+chi0 = 0.;
+for( i=1; i<=m; i=i+1 ){
+	calc = 0.0; calc0 = 0.0;
+	for( j=1; j<=n; j=j+1 ){
+		calc = calc + a[i,j]*x[j];
+		calc0 = calc0 + a[i,j]*x0[j];
+	}
+	chii = log(0.5*((b[i]-calc)/sig[i])*((b[i]-calc)/sig[i]) + 1.);
+	chi0i = log(0.5*((b[i]-calc0)/sig[i])*((b[i]-calc0)/sig[i]) + 1.);
+
+#ifdef STATS
+	fprintf( stderr, "%5d%10.5f%10.5f%10.5f%10.5f%10.5f\n",
+		i,b[i],calc,calc-b[i],calc0,calc0-b[i] );
+#endif
+
+	printf( "%12.5f %12.5f\n", b[i], calc );
+	chi += chii; chi0 += chi0i;
+}
+
+fprintf( stderr, "\nError fn:    fit         orig\n        %12.5f %12.5f\n",
+	chi,chi0 );
+
+// skip jackknife analysis for now:
+#if 0
+//
+//  --- now do jackknife analysis, dividing things into MAXJACK segments:
+//
+
+for( i=1; i<=n; i=i+1 ) { xall[i] = x[i]; ybar[i] = 0.0; ybar2[i] = 0.0; }
+#ifdef DEBUG
+fprintf( stderr, "\nParameters:   fit      y-star\n" );
+#endif
+
+for( ijack=1; ijack<=MAXJACK; ijack=ijack+1 ){
+
+	for( i=1; i<=m; i=i+1 ) { ij[i] = MAXJACK*rand2() < 1.0; }
+	for( i=1; i<=n; i++ ) x[i] = xall[i];
+	ier = conjgrad( x, n, f, lsqfunc, rmsgrad, dfpred, maxiter );
+	if( ier < 0 ) fprintf( stderr, "conjgrad returns %d\n", ier );
+
+	for( i=1; i<=n; i++ ){
+		ystar[i] = MAXJACK*xall[i] - (MAXJACK-1)*x[i];
+		ybar[i] += ystar[i];
+		ybar2[i] += ystar[i]*ystar[i];
+	}
+#ifdef DEBUG
+ 	fprintf( stderr, "\njack: %d %d\n", ijack,used );
+ 	for( i=1; i<=n; i=i+1 )
+ 		fprintf( stderr, "        %12.5f %12.5f\n", x[i],ystar[i] );
+#endif
+}
+
+denom = (MAXJACK-1)*MAXJACK;
+for( i=1; i<=n; i++ ){
+	ybar[i] = ybar[i]/MAXJACK;
+	ybar2[i] = sqrt(ybar2[i] - MAXJACK*ybar[i]*ybar[i])/sqrt(denom);
+}
+
+fprintf( stderr, "\nJacknife:     av.          std.  \n" );
+for( i=1; i<=n; i=i+1 )
+	fprintf( stderr, "        %12.5f %12.5f\n", ybar[i], ybar2[i] );
+
+#endif
+
+//
+//  --- now do bootstrap analysis, done MAXBOOT times:
+//
+
+ijack = 0;
+for( i=1; i<=n; i=i+1 ) { ybar[i] = 0.0; ybar2[i] = 0.0; }
+
+for( iboot=1; iboot<=MAXBOOT; iboot=iboot+1 ){
+
+	for( i=1; i<=m; i=i+1 ) ib[i] = m*rand2() + 1; 
+	for( i=1; i<=n; i++ ) x[i] = xall[i];
+	ier = conjgrad( x, n, f, lsqfunc, rmsgrad, dfpred, maxiter );
+	if( ier < 0 ) fprintf( stderr, "conjgrad returns %d\n", ier );
+
+	for( i=1; i<=n; i++ ){
+		ybar[i] += x[i];
+		ybar2[i] += x[i]*x[i];
+	}
+#ifdef DEBUG
+ 	fprintf( stderr, "\nboot: %d\n", iboot );
+ 	for( i=1; i<=n; i=i+1 )
+ 		fprintf( stderr, "        %10.5f\n", x[i] );
+#endif
+}
+
+denom = (MAXBOOT-1)*MAXBOOT;
+fprintf( stderr, "\nBootstrap:    av.          std.  \n" );
+for( i=1; i<=n; i++ ){
+	ave = ybar[i]/MAXBOOT;
+    ybar2[i] = ybar2[i]/MAXBOOT;
+    std = sqrt( ybar2[i] - ave*ave );
+	fprintf( stderr, "        %12.5f %12.5f\n", ave, std );
+}
+

@@ -1,0 +1,135 @@
+int		write_header( file outf ){
+
+fprintf( outf, "=========================================================================================\n");
+fprintf( outf, "     SHIFTS, version 5.6   [X.-P. Xu, S. Moon, J.M. Swails, and D.A. Case, Dec 2018]\n" );
+fprintf( outf, "=========================================================================================\n");
+
+return( 0 );
+};
+
+
+int		write_shifts_header( file outf, string opts ){
+
+fprintf( outf, "\n" );
+fprintf( outf, "=============================================================================\n");
+
+if( opts =~ "CSA" ){
+
+	fprintf( outf, "    Atom         ring      xx       xy       yy       xz       yz       zz" );
+
+}else{
+
+	fprintf( outf, "              Atom       " );
+
+#ifdef VDW
+	fprintf( outf, "RingCur  El   P_anis  B_anis  Vdw " );
+#else
+	fprintf( outf, "RingCur  El   P_anis  " );
+#endif
+
+#ifdef LOC_HN
+	fprintf( outf, "Hn_dist    Hn_ca     Hn_co     " );
+#endif
+
+	fprintf( outf, "Const   RC     pred " );
+	if( opts !~ "noobs" ) fprintf( outf, "   Obs" );
+
+}
+	
+	fprintf( outf, "\n" );
+	fprintf( outf, "=============================================================================\n");
+
+return( 0 );
+};
+
+int     write_rdb_header( file f, string id ){
+   fprintf( f, "res\tresname\tatomname\temp\trc\telec\trG6\trG\trA6\trA\trC\trU\n");
+   fprintf( f, "4N\t8\t8\t8N\t8N\t8N\t8N\t8N\t8N\t8N\t8N\t8N\n");
+};
+
+#define FPF  fprintf( f,
+int		write_bmrb_header( file f, string id ){
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "# entry information saveframe:                                        \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_entry_information\n  _Saveframe_category entry_information\n  _Entry_title\n;\n" );
+
+FPF "  Calculated proton shifts for %s\n;\n", id );
+FPF "  _NMR_STAR_version       2.1.1\n" );
+FPF "  _Experimental_method    'theoretical calculation'\n" );
+FPF "  _Submission_date        %s\n", ftime( "%Y-%m-%d" ) );
+FPF "  stop_\nsave_\n\n" );
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "# contact persons saveframe:                                          \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_contact_persons\n   _Saveframe_category contact_persons\n" );
+FPF "  loop_\n  _Family_name\n  _Given_name\n  _Middle_initials\n  _Department_and_Insitution\n  _Mailing_address\n  _Phone_number\n  _Email_address\n" );
+FPF "  Case David A.\n" );
+FPF ";\n  Dept. of Chemistry & Chemical Biology\n  Rutgers University\n;\n" );
+FPF ";\n  174 Frelinghuysen Rd\n  Piscataway, NJ 08854\n;\n" );
+FPF "  '01 848 445 5885'\n" );
+FPF "  case@biomaps.rutgers.edu\n  stop_\n" );
+FPF "save_\n\n" );
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "# chemical shift reference saveframe:                                 \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_chemical_shift_reference\n" );
+FPF "  _Saveframe_category   chemical_shift_reference\n" );
+
+FPF "  _Details\n;\n   computed shifts are internally referenced to random-coil values,\n   but are reported relative to DSS/TMS\n;\n" );
+
+FPF "  loop_\n    _Atom_type _Atom_isotope_number_Chem_shift_units _Chem_shift_value\n   H 1 ppm 0.0\n stop_\n" );
+FPF "save_\n\n" );
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "#  calculation type saveframe:                                        \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_proton_empirical_shifts\n" );
+FPF "   _Saveframe_category  shifts_calculation_type\n" );
+FPF "  loop_ _Software_label $shifts_v4.3 stop_\n" );
+FPF "  _Calculation_level empirical\n" );
+FPF "  _Chemical_shift_type  diamagnetic\n" );
+FPF "  _Sample_conditions_modeled\n;\n  aqueous solution\n;\n" );
+FPF "  _Chem_shift_reference_set_label shifts_v4.3\nsave_\n\n" );
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "#  atomic coordinates saveframe:                                      \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_%s\n", id );
+FPF "  _Saveframe_category     model_atomic_coordinates\n" );
+FPF "  _Coordinate_set_description\n;\n  Coordinates extracted from PDB entry %s\n;\n", id );
+FPF "  _Model_source_database  PDB\n" );
+FPF "  _Model_source_database_accession_number  %s\n", id );
+FPF "save_\n\n" );
+
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "#  software saveframe:                                                \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_shifts_v4.3\n" );
+FPF "  _Saveframe_category calculation_type\nsave_\n\n" );
+
+FPF "#---------------------------------------------------------------------\n");
+FPF "#  theoretical chemical shifts saveframe:                             \n");
+FPF "#---------------------------------------------------------------------\n");
+
+FPF "save_theoretical_chemical_shifts\n" );
+FPF "  _Saveframe_category   theoretical_chemical_shifts\n" );
+FPF "  _Calculation_type_label  $shifts_v4.3 \n" );
+FPF "  _Model_atomic_coordinates_label  $%s\n", id );
+FPF "  _Mol_system_component_name  %s\n", id );
+
+FPF "  loop_\n    _Atom_shift_assign_ID\n    _Residue_author_seq_code\n    _Residue_seq_code\n    _Residue_label\n    _Atom_name\n    _Atom_type\n    _Chem_shift_value\n    _Chem_shift_value_error\n   _Chem_shift_ambiguity_code\n" );
+
+
+	return(0);
+};

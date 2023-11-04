@@ -1,0 +1,427 @@
+#define MAXP 6
+#define MAXATBIN 1
+int	bonded_atoms() c;
+
+int get_vdwa( molecule m, atom atm[ 1 ],
+		int vdwa[ MAXP, MAXATBIN ], int numnei[ 1 ],
+		string atype[ 1 ], string watfile, point wocoor[ 1 ], int nwo,
+		point wmin, point wmax, int woh[ 1 ],
+		point wato[ MAXP, MAXATBIN ], int numnei_o[ 1 ] )
+{
+	atom	a;
+#ifdef WAT_SOLV
+	atom abin{ dynamic, dynamic ];
+	point	obin[ dynamic, dynamic ];
+	point	amin, amax;
+	float	nbinx, nbiny, nbinz, len;
+	int	binx, biny, binz, binnum, nat, bin, bin2, bin3, nei, bat;
+	int	nei_o, oflag;
+	int	bondlist[ dynamic ], hbin[ dynamic ], natbin[ dynamic ];
+	int	nobin[ dynamic ];
+	atom    ai[ 10 ], aj[ 10 ], ak[ 10 ], ae;
+	int     i, ni, j, nj, k, nk, nfields, nprot, x, y, z, didbin[ dynamic ];
+	string  iline, ifields[ 10 ], ifields1[ 10 ], ifields2[ 10 ], oldstr;
+	string	oline;
+	int	batnum[ dynamic ], nh;
+	file	watf;
+#endif
+
+// Point of this subroutine is to get a list of atoms keyed by their bin
+//    number, and a list of bin numbers for each proton.
+//    Then we cycle thru the molecule. When we find a proton we look up
+//    its bin number, and look in that bin and the surrounding bins 
+//    and get a list of atoms to consider in the vdw calc for that proton.
+//    We exclude from this list those atoms that are connected to the
+//    proton by 3 or less bonds. The final list of nearby atoms gets passed
+//    to the main shifts pgm.
+
+// First assign atypes, fill up atm array which indexes atoms by tatomnum
+
+for( a in m ){
+  if     ( a.resname == "NER" ) atype[ a.tatomnum ] = "n";
+  else if( a.resname == "HER" ) atype[ a.tatomnum ] = "h";
+  else if( a.resname == "CLI" ) atype[ a.tatomnum ] = "n";
+  else atype[ a.tatomnum ] = substr(a.atomname,1,1);
+  atm[ a.tatomnum ] = a;
+}
+
+#if 0
+
+// first run thru and find lowest, highest x,y,z coord
+  len = 6.0;
+  nat = nprot = 0;
+  amin.x = 100000.; amin.y = 100000.; amin.z = 100000.;
+  amax.x = -100000.; amax.y = -100000.; amax.z = -100000.;
+
+#ifdef WAT_SOLV
+  amin.x = wmin.x; amin.y = wmin.y; amin.z = wmin.z;
+  amax.x = wmax.x; amax.y = wmax.y; amax.z = wmax.z;
+#endif
+
+for( a in m ) {
+	nat++;
+	if( a.x < amin.x ) amin.x = a.x;
+	if( a.y < amin.y ) amin.y = a.y;
+	if( a.z < amin.z ) amin.z = a.z;
+	if( a.x > amax.x ) amax.x = a.x;
+	if( a.y > amax.y ) amax.y = a.y;
+	if( a.z > amax.z ) amax.z = a.z;
+	if( atype[ a.tatomnum ] == "H" ) {
+#ifdef WAT_SOLV
+		if( a.resname  == "WAT" ) continue;
+#endif
+		nprot++;
+	}
+}
+
+nbinx = ceil( (amax.x - amin.x)/len ) + 1;
+nbiny = ceil( (amax.y - amin.y)/len ) + 1;
+nbinz = ceil( (amax.z - amin.z)/len ) + 1;
+// printf( "\nfound %.0f xbins, %.0f ybins, %.0f zbins\n\n",
+//			nbinx, nbiny, nbinz );
+
+i = ceil( len*len*len );
+j = nbinx*nbiny*nbinz;
+allocate abin[ j, i ];
+allocate bondlist[ nat ];
+allocate natbin[ j ];
+
+#ifdef WAT_SOLV
+allocate obin[ j, i ];
+allocate nobin[ j ];
+#endif
+
+allocate hbin[ nprot ];
+allocate didbin[ j ];
+allocate batnum[ i ];
+
+// now go thru and bin atoms in bins len A long on each axis
+// save the following info:
+
+// abin[ bin number, atom number in that bin ] = atoms keyed by bin num
+// natbin[ bin number ] counts how many atoms are in each bin
+// hbin[ proton number ] keeps track of the bin number of each proton
+
+// also zeroing bondlist that lists atoms to exclude
+
+for( binx=1; binx <= j; binx++ ){
+	natbin[ binx ] = 0;		// zeroing number of atoms per bin
+
+#ifdef WAT_SOLV
+	nobin[ binx ] = 0;		// zeroing number of water O's per bin
+#endif
+
+	didbin[ binx ] = 0;			// zeroing which bins are done
+}
+
+nprot = 0;
+for( a in m ) {
+	for( binx=0; binx <= nbinx-1; binx++ ){
+		if( a.x >= amin.x + binx*len && a.x < amin.x + (binx+1)*len ){
+			for( biny=0; biny <=nbiny-1; biny++ ){ 
+				if( a.y >= amin.y + (biny)*len && a.y < amin.y + (biny+1)*len ){
+					for( binz=1; binz <=nbinz; binz++ ){ 
+						if( a.z >= amin.z + (binz-1)*len && a.z < amin.z + (binz)*len ){
+							binnum = binx*nbinz*nbiny + biny*nbinz + binz;
+							natbin[ binnum ] += 1;
+							abin[ binnum, natbin[ binnum ] ] = a;
+							bondlist[ a.tatomnum ] = 0;
+							if( atype[ a.tatomnum ] == "H" ){
+
+#ifdef WAT_SOLV
+							if( a.resname  == "WAT" ) continue;
+#endif
+
+								nprot++;
+								hbin[ nprot ] = binnum;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// Now look thru waters and bin them
+
+#ifdef WAT_SOLV
+watf = fopen( watfile, "r" );
+if( watf == NULL )  {
+  printf( "water file is empty; won't calc vdw contribs from file/n", watfile );
+}
+else {
+	for( nat = 1; nat <= nwo;  nat++ ) {
+		oflag = 0;
+		if( woh[ nat ] == 0 ) continue;
+		for( binx=0; binx <= nbinx-1; binx++ ){
+			if( oflag ) continue;
+			if( wocoor[ nat ].x >= amin.x + binx*len &&
+			wocoor[ nat ].x < amin.x + (binx+1)*len )
+			for( biny=0; biny <=nbiny-1; biny++ ){ 
+				if( oflag ) continue;
+				if( wocoor[ nat ].y >= amin.y + (biny)*len &&
+				wocoor[ nat ].y < amin.y + (biny+1)*len )
+				for( binz=1; binz <=nbinz; binz++ ){ 
+					if( oflag ) continue;
+					if( wocoor[ nat ].z >= amin.z + (binz-1)*len &&
+						wocoor[ nat ].z < amin.z + (binz)*len ){
+						binnum = binx*nbinz*nbiny + biny*nbinz + binz;
+						nobin[ binnum ] += 1;
+						obin[ binnum, nobin[ binnum ] ].x = wocoor[ nat ].x;
+						obin[ binnum, nobin[ binnum ] ].y = wocoor[ nat ].y;
+						obin[ binnum, nobin[ binnum ] ].z = wocoor[ nat ].z;
+						oflag = 1;
+					}
+				}
+			}
+		}
+	}
+}
+#endif
+
+// now get a list of atomnumbers of atoms close to the proton
+// cycle through atoms in the proton's bin and each neighboring bin
+// also cycle thru waters in neighboring bins, save locations indexed by prot.
+
+nprot=0;
+for( a in m ){
+	bat=0;
+	if( atype[ a.tatomnum ] != "H" ) continue;
+
+#ifdef WAT_SOLV
+	if( a.resname == "WAT" ) continue;
+#endif
+
+	// figure out which atoms are 3 or less bonds away, mark them.
+
+	bondlist[ a.tatomnum ] = 1;
+	bat++;
+	batnum[ bat ] = a.tatomnum;
+	ni = bonded_atoms( a, ai );          // getting connections
+	for( i=1; i <= ni; i = i + 1 ){
+		bondlist[ ai[ i ].tatomnum ] = 1;
+		bat++;
+		batnum[ bat ] = ai[i].tatomnum;
+		nj = bonded_atoms( ai[ i ], aj );  // next connections
+		for( j = 1; j <= nj; j = j + 1 ){
+			if( aj[ j ].fullname == a.fullname  )  continue;
+                                          // ignore i-j-i
+			bondlist[ aj[ j ].tatomnum ] = 1;
+			bat++;
+			batnum[ bat ] = aj[j].tatomnum;
+			nk = bonded_atoms( aj[ j ], ak );  //next connections
+			for( k = 1; k <= nk; k = k + 1 ){
+				if( ak[ k ].fullname == ai[ i ].fullname  ) continue;
+				bondlist[ ak[ k ].tatomnum ] = 1;
+				bat++;
+				batnum[ bat ] = ak[k].tatomnum;
+			}
+		}
+	}
+	nprot++;
+	assert( nprot < MAXP );
+	x = nbinz*nbiny;
+	y = nbinz;
+	z = 1;
+	bin = hbin[ nprot ];
+	didbin[ bin ] = 1;
+	nei = nei_o = 0;
+	for( nat=1; nat <= natbin[ bin ]; nat++ ){
+		if( bondlist[ abin[ bin, nat ].tatomnum ] != 1 ){
+			nei++;
+			assert( nei < MAXATBIN );
+			vdwa[ nprot, nei ] = abin[ bin, nat ].tatomnum;
+		}
+	}
+
+#ifdef WAT_SOLV
+	for( nat=1; nat <= nobin[ bin ]; nat++ ){
+		nei_o++;
+		wato[ nprot, nei_o ] = obin[ bin, nat ];
+	}
+#endif
+
+	for( bin=hbin[ nprot ] - x; bin <= hbin[ nprot ] + x; bin = bin + 2*x ){
+		if( bin >= 1 && bin <= nbinx*nbiny*nbinz && didbin[ bin ] == 0 ){
+			didbin[ bin ] = 1;
+			for( nat=1; nat <= natbin[ bin ]; nat++ ){
+				if( bondlist[ abin[ bin, nat ].tatomnum ] != 1 ){
+					nei++;
+					assert( nei < MAXATBIN );
+					vdwa[ nprot, nei ] = abin[ bin, nat ].tatomnum;
+				}
+			}
+
+#ifdef WAT_SOLV
+			for( nat=1; nat <= nobin[ bin ]; nat++ ){
+				nei_o++;
+				wato[ nprot, nei_o ] = obin[ bin, nat ];
+			}
+#endif
+
+		}
+
+		for( bin2=bin - y; bin2 <= bin + y; bin2 = bin2 + 2*y ){
+			if( bin2 >= 1 && bin2 <= nbinx*nbiny*nbinz && didbin[ bin2 ] == 0 ){
+				didbin[ bin2 ] = 1;
+				for( nat=1; nat <= natbin[ bin2 ]; nat++ ){
+					if( bondlist[ abin[ bin2, nat ].tatomnum ] != 1 ){
+						nei++;
+						assert( nei < MAXATBIN );
+						vdwa[ nprot, nei ] = abin[ bin2, nat ].tatomnum;
+					}
+				}
+
+#ifdef WAT_SOLV
+				for( nat=1; nat <= nobin[ bin2 ]; nat++ ){
+					nei_o++;
+					wato[ nprot, nei_o ] = obin[ bin2, nat ];
+				}
+#endif
+
+			}
+
+			for( bin3=bin2 - z; bin3 <= bin2 + z; bin3 = bin3 + 2*z ){
+				if( bin3 >= 1 && bin3 <= nbinx*nbiny*nbinz && didbin[ bin3 ] == 0 ){
+					didbin[ bin3 ] = 1;
+					for( nat=1; nat <= natbin[ bin3 ]; nat++ ){
+						if( bondlist[ abin[ bin3, nat ].tatomnum ] != 1 ){
+							nei++;
+							assert( nei < MAXATBIN );
+							vdwa[ nprot, nei ] = abin[ bin3, nat ].tatomnum;
+						}
+					}
+
+#ifdef WAT_SOLV
+					for( nat=1; nat <= nobin[ bin3 ]; nat++ ){
+						nei_o++;
+						wato[ nprot, nei_o ] = obin[ bin3, nat ];
+					}
+#endif
+
+				}
+			}
+		}
+		for( bin2=bin - z; bin2 <= bin + z; bin2 = bin2 + 2*z ){
+			if( bin2 >= 1 && bin2 <= nbinx*nbiny*nbinz && didbin[ bin2 ] == 0 ){
+				didbin[ bin2 ] = 1;
+				for( nat=1; nat <= natbin[ bin2 ]; nat++ ){
+					if( bondlist[ abin[ bin2, nat ].tatomnum ] != 1 ){
+						nei++;
+						assert( nei < MAXATBIN );
+						vdwa[ nprot, nei ] = abin[ bin2, nat ].tatomnum;
+					}
+				}
+
+#ifdef WAT_SOLV
+				for( nat=1; nat <= nobin[ bin2 ]; nat++ ){
+					nei_o++;
+					wato[ nprot, nei_o ] = obin[ bin2, nat ];
+				}
+#endif
+
+			}
+		}
+	}
+	for( bin=hbin[ nprot ] - y; bin <= hbin[ nprot ] + y; bin = bin + 2*y ){
+		if( bin >= 1 && bin <= nbinx*nbiny*nbinz && didbin[ bin ] == 0 ){
+			didbin[ bin ] = 1;
+			for( nat=1; nat <= natbin[ bin ]; nat++ ){
+				if( bondlist[ abin[ bin, nat ].tatomnum ] != 1 ){
+					nei++;
+					assert( nei < MAXATBIN );
+					vdwa[ nprot, nei ] = abin[ bin, nat ].tatomnum;
+				}
+			}
+
+#ifdef WAT_SOLV
+			for( nat=1; nat <= nobin[ bin ]; nat++ ){
+				nei_o++;
+				wato[ nprot, nei_o ] = obin[ bin, nat ];
+			}
+#endif
+
+		}
+		for( bin2= bin - z; bin2 <= bin + z; bin2 = bin2 + 2*z ){
+			if( bin2 >= 1 && bin2 <= nbinx*nbiny*nbinz && didbin[ bin2 ] == 0 ){
+				didbin[ bin2 ] = 1;
+				for( nat=1; nat <= natbin[ bin2 ]; nat++ ){
+					if( bondlist[ abin[ bin2, nat ].tatomnum ] != 1 ){
+						nei++;
+						assert( nei < MAXATBIN );
+						vdwa[ nprot, nei ] = abin[ bin2, nat ].tatomnum;
+					}
+				}
+
+#ifdef WAT_SOLV
+				for( nat=1; nat <= nobin[ bin2 ]; nat++ ){
+					nei_o++;
+					wato[ nprot, nei_o ] = obin[ bin2, nat ];
+				}
+#endif
+
+			}
+		}
+	}
+	for( bin=hbin[ nprot ] - z; bin <= hbin[ nprot ] + z; bin = bin + 2*z ){
+		if( bin >= 1 && bin <= nbinx*nbiny*nbinz && didbin[ bin ] == 0 ){
+			didbin[ bin ] = 1;
+			for( nat=1; nat <= natbin[ bin ]; nat++ ){
+				if( bondlist[ abin[ bin, nat ].tatomnum ] != 1 ){
+					nei++;
+					assert( nei < MAXATBIN );
+					vdwa[ nprot, nei ] = abin[ bin, nat ].tatomnum;
+				}
+			}
+
+#ifdef WAT_SOLV
+			for( nat=1; nat <= nobin[ bin ]; nat++ ){
+				nei_o++;
+				wato[ nprot, nei_o ] = obin[ bin, nat ];
+			}
+#endif
+
+		}
+	}
+	numnei[ nprot ] = nei;
+
+#ifdef WAT_SOLV
+	numnei_o[ nprot ] = nei_o;
+#endif
+
+	for( i=1; i<=bat; i++ ){
+		bondlist[ batnum[ i ] ] = 0;
+	}
+	for( binx=1; binx <= nbinx*biny*nbinz; binx++ ){
+		didbin[ binx ] = 0;			// zeroing which bins are done
+	}
+}
+
+deallocate bondlist;
+deallocate abin;
+deallocate hbin;
+deallocate natbin;
+deallocate didbin;
+
+#ifdef WAT_SOLV
+deallocate obin; deallocate nobin;
+#endif
+
+
+//nprot=0;
+//for( a in m ){
+//  if( atype[ a.tatomnum ] == "H" ){
+//    nprot++;
+//    fprintf( stderr, "numnei: %d\n", numnei[ nprot ] );
+//    for( nat=0; nat <= numnei[ nprot ]; nat++ ){
+//      fprintf( stderr, "   vdwa %d\n", vdwa[ nprot, nat ] );
+//      fprintf( stderr, "   atm %s  nat: %d nei %s\n", a.atomname, nat, atm[ vdwa[ nprot, nat ]] );
+//    }
+//} }
+//fprintf( stderr, "\n\n" );
+
+#endif
+
+return( 1 );
+};

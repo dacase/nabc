@@ -1,0 +1,511 @@
+int             bonded_atoms() c;
+int		skiprings();
+int		get_banis_info( string banisfile, string neighfile, 
+		molecule m, point aa_v[ 1 ], point aa_c[1], int naa,
+		int aa1[ 1 ], int aa2[ 1 ],
+		float hFly_aa[ 1 ], int btype[ 1 ] )
+{
+
+// Reads bond anis info from input file, goes through molecule to
+//	find all such bonds, their vectors, centers, and names of
+//	participating atoms.
+
+	string          iline, jline;
+	string          ifields[ 30 ], ifields1[ 30 ], ifields2[ 30 ];
+	string          jfields[ 30 ];
+	string          at[ dynamic, dynamic ];
+	string		aa1_nam[dynamic], aa2_nam[dynamic];
+	int             nb, nfields, i, ni, nj, nn, nni, didntdoit;
+	int		bi, nnei[ hashed ], npair[ dynamic ];
+	file            banf, neif;
+	atom		a, a2, ai[ 8 ], aj[ 8 ];
+	float		cent[ dynamic ], hFly[ dynamic ];
+	string		nei[ dynamic, dynamic ];
+
+//      Read bond anisotropy inp file
+        nb = 0;
+        banf = fopen( banisfile, "r" );
+        if( banf == NULL ) {
+//        printf( "\nbond anisotropy file %s empty; ", banisfile );
+//        printf( "will not compute bond anisotropies\n" );
+          return( 0 );
+        } else {
+
+	    allocate aa1_nam[ 5000 ];
+	    allocate aa2_nam[ 5000 ];
+	    allocate at[ m.natoms, 2 ];
+	    allocate npair[ m.natoms ];
+	    allocate cent[ m.natoms ];
+	    allocate hFly[ m.natoms ];
+	    allocate nei[ m.natoms, 2 ];
+
+	  printf( "\nHeader from bond anisotropy file:\n" );
+          while( iline = getline( banf ) ) {
+            if( length( iline ) == 0 || substr( iline,1,1 ) == "#" ||
+		substr( iline,1,2 ) == "//" ) {
+                printf( "%s\n", iline ); continue; //ignore blanks, #, //
+            }
+	    nfields = split( iline, ifields1, "#" );
+            nfields = split( ifields1[ 1 ], ifields2, "//" );
+            nfields = split( ifields2[ 1 ], ifields, " " );
+            if( nfields != 0 ) {
+                jline = "";             // getting rid of internal spaces
+                for( i=1; i<=nfields; i++ ) {
+                  jline = jline + ifields[ i ]; // results in jline
+                }
+            }
+            else {
+                printf( "%s\n", ifields2[ 1 ] );
+		jline=ifields2[ 1 ]; continue;
+            }
+ 
+//      now getting info out
+                nfields = split( jline, jfields, "	" );
+                if( nfields < 4 ) {
+                        fprintf( stderr, "\nnot enough fields in input file %s, line %s; \n", banisfile, jline );
+                        fprintf( stderr, "      setting bond anis contribution to 0.0\n");
+          		deallocate at; deallocate npair;
+	  		deallocate cent; deallocate hFly; deallocate nei;
+			deallocate aa1_nam; deallocate aa2_nam;
+                        return( 0 );
+                }
+                else {
+                  nb += 1;
+                  at[ nb, 1 ] = jfields[ 1 ];
+                  at[ nb, 2 ] = jfields[ 2 ];
+                  hFly[ nb ] = atof( jfields[ 3 ] );
+                  cent[ nb ] = atof( jfields[ 4 ] );
+		  npair[ nb ] = 0; 	// initializing #pairs found
+						// in molecule
+                }
+          }
+        }
+ 
+//      print out params
+        printf( "Including the following bond anisotropies:\n" );
+	printf( "  (center denotes distance of center from atom_1)\n" );
+        for( i=1; i<=nb; i++ ) {
+            printf( "atom_1: %s\tatom_2: %s\tanis: %.3f\tcenter: %.3f\n",
+                     at[ i, 1 ], at[ i, 2 ], hFly[ i ], cent[ i ] );
+        }
+
+//   find all of the bonds:  
+//		When at1 and at2 are identical, keep all bonds for which
+//		absoute atom number of at1 is lower than that of at_2
+//		to avoid double counting.
+
+// Here are requirements for number of neighbors for each bond partner
+// that might be encountered in the bond anisotropy input file:
+// We'll use this info to deternime whether we've got a single bond.
+
+nnei[ "H" ] = 1;
+nnei[ "C" ] = 4;
+nnei[ "N" ] = 3;
+nnei[ "O" ] = 2;
+nnei[ "S" ] = 2;
+nnei[ "F" ] = 1;
+
+	naa = 0;
+	for( a in m ){
+	  for( bi=1; bi<=nb; bi++ ){
+
+// if length of at1 and at2 are only 1 character:
+// Note this will pick out double, triple bonds as well as single ones!
+	    if( substr( a.atomname,1,1) == at[ bi, 1 ] ) {
+	      if( at[ bi, 1 ] == "C" && a.resname == "CL" ) continue;
+	      if( at[ bi, 1 ] == "N" && a.resname == "NE" ) continue;
+		
+	      ni = bonded_atoms( a, ai ); // getting connects
+              for( i=1; i <= ni; i++ ){
+//	    	if( substr( a.atomname, 1,1 ) == "S" ) fprintf( stderr, "atoms %s - %s\n", a.fullname, ai[ i ].fullname );
+	    	if( substr( ai[ i ].atomname,1,1 ) == at[ bi, 2 ] ){
+							// got one
+              	  if( at[ bi, 2 ] == "C" && ai[ i ].resname == "CL" )
+					continue;
+              	  if( at[ bi, 2 ] == "N" && ai[ i ].resname == "NE" )
+					continue;
+
+	      	  if( at[ bi, 1 ] == at[ bi, 2 ] &&
+		      a.tatomnum  > ai[ i ].tatomnum ) 
+				continue; 	// wont count X-X twice
+		  if( skiprings( a.resname, a.tresnum, ai[ i ].tresnum,
+			a.atomname, ai[ i ].atomname ) ) continue;
+// now check that at least one partner has full set of neighbors
+//      so that we think we are dealing with a single bond.
+		  if( ni != nnei[ at[ bi, 1 ] ] ) {
+		    nj = bonded_atoms( ai[ i ], aj ); // get connects
+		    if( nj != nnei[ at[ bi, 2 ] ] ) continue;
+		  }
+// got one
+		  naa = naa + 1;
+		  npair[ bi ] += 1;
+		  aa1[ naa ] = a.tatomnum; 
+		  aa2[ naa ] = ai[ i ].tatomnum;
+		  aa1_nam[ naa ] = a.fullname; 
+		  aa2_nam[ naa ] = ai[ i ].fullname;
+		  btype[ naa ] = bi;
+//		  fprintf( stderr, "naa: %d  atoms %s - %s\n", naa, aa1_nam[ naa ], aa2_nam[ naa ] );
+		  aa_v[ naa ] = ai[ i ].pos - a.pos;
+//		  fprintf( stderr, "    aa_v: %.3f %.3f %.3f\n", aa_v[ naa ].x,
+//			aa_v[ naa ].y, aa_v[ naa ].z );
+		  aa_v[ naa ] /= sqrt( aa_v[ naa ] @ aa_v[ naa ] );
+//		  fprintf( stderr, "    aa_v: %.3f %.3f %.3f\n", aa_v[ naa ].x,
+//			aa_v[ naa ].y, aa_v[ naa ].z );
+		  if( at[ bi, 1 ] == at[ bi, 2 ] )
+					// put anis cntr at actual cntr
+		    	aa_c[ naa ] = ( a.pos + ai[ i ].pos ) / 2.;
+		  else 
+			aa_c[ naa ] = a.pos + cent[ bi ] * aa_v[ naa ]; 
+		  hFly_aa[ naa ] = hFly[ bi ];
+
+//		 	fprintf( stderr, "  residue: %s at1 %s at2 %s\n", a.resname, a.atomname, ai[ i ].atomname );
+//		 	fprintf( stderr, "  aa_c: %.3f %.3f %.3f\n", aa_c[ naa ].x, aa_c[ naa ].y, aa_c[ naa ].z );
+//		 	fprintf( stderr, "  aa_v: %.3f %.3f %.3f\n", aa_v[ naa ].x, aa_v[ naa ].y, aa_v[ naa ].z );
+	} } } } }  
+
+// Now check through the input list of bonds
+	nn = 0;
+        neif = fopen( neighfile, "r" );
+        if( neif == NULL ) {
+          printf( "\nbonded atoms file %s empty; ", neighfile );
+          printf( "assuming all bonded atoms are known from getpdb\n" );
+        }
+ 
+        else {
+	  printf( "\nHeader from bonded atom list file:\n" );
+          while( iline = getline( neif ) ) {
+            if( length( iline ) == 0 || substr( iline,1,1 ) == "#" ||
+		substr( iline,1,2 ) == "//" ) {
+                printf( "%s\n", iline ); continue; //ignore blanks, #, //
+            }
+	    nfields = split( iline, ifields1, "#" );
+            nfields = split( ifields1[ 1 ], ifields2, "//" );
+            nfields = split( ifields2[ 1 ], ifields, " " );
+            if( nfields != 0 ) {
+                jline = "";             // getting rid of internal spaces
+                for( i=1; i<=nfields; i++ ) {
+                  jline = jline + ifields[ i ]; // results in jline
+                }
+            }
+            else {
+                printf( "%s\n", ifields2[ 1 ] );
+		jline=ifields2[ 1 ]; continue;
+            }
+ 
+//      now getting info out
+            nfields = split( jline, jfields, "	" );
+            if( nfields != 2 ) {
+                  fprintf( stderr, "\nnot thr right amount of fields in input file %s, line %s; \n", neighfile, jline );
+                  fprintf( stderr, "      ignoring that line\n");
+            }
+            else {
+	      didntdoit = 1;
+	      for( ni=1; ni<=naa; ni++ ) {
+		if(
+		 (aa1_nam[ ni ] == jfields[ 1 ] && aa2_nam[ ni ] == jfields[ 2 ]) ||
+		 (aa1_nam[ ni ] == jfields[ 2 ] && aa2_nam[ ni ] == jfields[ 1 ]) ) {
+		     didntdoit = 0;
+		     printf( "Already computed anisotropy from bonded atoms %s and %s\n", jfields[ 1 ], jfields[ 2 ] );
+	      } }
+
+	      if( nn > 0 ) { 
+ 	       for( nj=1; nj<=nn; nj++ ) { 
+	        if( 
+		 (nei[ nj,1 ] == jfields[ 1 ] && nei[ nj,2 ] == jfields[ 2 ])||
+		 (nei[ nj,1 ] == jfields[ 2 ] && nei[ nj,2 ] == jfields[ 1 ]) )
+		  { 
+		     didntdoit = 0;
+		     printf( "Already computed anisotropy from bonded atoms %s and %s\n", jfields[ 1 ], jfields[ 2 ] );
+	      } } }
+	      if( didntdoit ) {
+		  nn += 1;
+                  nei[ nn, 1 ] = jfields[ 1 ];
+                  nei[ nn, 2 ] = jfields[ 2 ];
+		  printf( "Also computing anisotropy from bonded atoms %s and %s\n",
+				nei[ nn, 1 ], nei[ nn, 2 ] );
+	      }
+          } }
+ 
+	  for( a in m ) {
+	   for( nni=1; nni<=nn; nni++ ){
+//	    printf( "a.fullname: %s nei: %s \n", a.fullname, nei[ nni, 1 ] );
+	    if( a.fullname == nei[ nni, 1 ] ) {	// we found a partner
+	      for( a2 in m ) {	// searching for bonded atom
+	        if( a2.fullname == nei[ nni, 2 ] ) { // got a pair
+	          for( bi=1; bi<=nb; bi++ ){
+
+// if length of at1 and at2 are only 1 character:
+// Note this will pick out double, triple bonds as well as single ones!
+	    	    if( substr( a.atomname,1,1) == at[ bi, 1 ] ) {
+	      	      if( at[ bi, 1 ] == "C" && a.resname == "CL" ) continue;
+	      	      if( at[ bi, 1 ] == "N" && a.resname == "NE" ) continue;
+	    	      if( substr( a2.atomname,1,1 ) == at[ bi, 2 ] ){
+							// got one
+              	        if( at[ bi, 2 ] == "C" && a2.resname == "CL" )
+				continue;
+              	        if( at[ bi, 2 ] == "N" && a2.resname == "NE" )
+				continue;
+
+	      	        if( at[ bi, 1 ] == at[ bi, 2 ] &&
+		      		a.tatomnum  > a2.tatomnum ) 
+					continue; 	// wont count X-X twice
+		        if( skiprings( a.resname, a.tresnum, a2.tresnum,
+				a.atomname, a2.atomname ) ) continue;
+		
+// got one
+		         naa = naa + 1;
+		         npair[ bi ] += 1;
+		         aa1[ naa ] = a.tatomnum;
+			 aa2[ naa ] = a2.tatomnum;
+		         aa1_nam[ naa ] = a.fullname;
+			 aa2_nam[ naa ] = a2.fullname;
+		  	 btype[ naa ] = bi;
+//		          fprintf( stderr, "naa: %d  atoms %s - %s\n", naa, aa1_nam[ naa ], aa2_nam[ naa ] );
+		         aa_v[ naa ] = a2.pos - a.pos;
+		         aa_v[ naa ] /= sqrt( aa_v[ naa ] @ aa_v[ naa ] );
+		         if( at[ bi, 1 ] == at[ bi, 2 ] )	
+					// put anis cntr at actual cntr
+		          aa_c[ naa ] = ( a.pos + a2.pos ) / 2.;
+		         else 
+    		    	  aa_c[ naa ] = a.pos + cent[ bi ] * aa_v[ naa ]; 
+			 }
+		         hFly_aa[ naa ] = hFly[ bi ];
+
+//		 	  fprintf( stderr, "  residue: %s at1 %s at2 %s\n", a.resname, a.atomname, a2.atomname );
+//		 	  fprintf( stderr, "  aa_c: %.3f %.3f %.3f\n", aa_c[ naa ].x, aa_c[ naa ].y, aa_c[ naa ].z );
+//		 	  fprintf( stderr, "  aa_v: %.3f %.3f %.3f\n", aa_v[ naa ].x, aa_v[ naa ].y, aa_v[ naa ].z );
+		   } } }
+	    } } } } 
+	}
+
+// done.
+
+	printf( "\n" );
+	for( bi=1; bi<=nb; bi=bi+1 ){
+	  printf( "found %d %s-%s bonds\n",
+		npair[ bi ], at[ bi, 1 ], at[ bi, 2 ] );
+	}
+
+//	fprintf( stderr, "	deallocation\n" );
+        deallocate at; deallocate npair;
+	deallocate cent; deallocate hFly; deallocate nei;
+	deallocate aa1_nam; deallocate aa2_nam;
+	return( 1 );
+};
+
+int	skiprings( string a1_res, int a1_num, int a2_num,
+			string a1_aname, string a2_aname )
+{
+
+	if( a1_res == "PHE"  && a1_num == a2_num  &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "CD1" || a1_aname == "HD1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "CZ" || a1_aname == "HZ" ||
+			a1_aname == "CE2" || a1_aname == "HE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "CD1" || a2_aname == "HD1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "CZ" || a2_aname == "HZ" ||
+			a2_aname == "CE2" || a2_aname == "HE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if( a1_res == "TYR"  && a1_num == a2_num &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "CD1" || a1_aname == "HD1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "CZ" ||
+			a1_aname == "CE2" || a1_aname == "HE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "CD1" || a2_aname == "HD1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "CZ" ||
+			a2_aname == "CE2" || a2_aname == "HE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if( a1_res == "HID"  && a1_num == a2_num  &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "ND1" || a1_aname == "HD1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "NE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "ND1" || a2_aname == "HD1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "NE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if( a1_res == "HIE"  && a1_num == a2_num &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "ND1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "NE2" || a1_aname == "HE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "ND1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "NE2" || a2_aname == "HE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if( a1_res == "HIP"  && a1_num == a2_num &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "ND1" || a1_aname == "HD1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "NE2" || a1_aname == "HE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "ND1" || a2_aname == "HD1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "NE2" || a2_aname == "HE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if( a1_res == "HIS"  && a1_num == a2_num &&
+		      ((a1_aname == "CG" ||
+			a1_aname == "ND1" || a1_aname == "HD1" ||
+			a1_aname == "CE1" || a1_aname == "HE1" ||
+			a1_aname == "NE2" || a1_aname == "HE2" ||
+			a1_aname == "CD2" || a1_aname == "HD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "ND1" || a2_aname == "HD1" ||
+			a2_aname == "CE1" || a2_aname == "HE1" ||
+			a2_aname == "NE2" || a2_aname == "HE2" ||
+			a2_aname == "CD2" || a2_aname == "HD2" )))
+				return(1);
+	else if((( a1_res == "TRP"  && a1_num == a2_num ) ||
+	         ( a1_res == "WRP"  && a1_num == a2_num ))&&
+		      ((a1_aname == "CG" ||
+			a1_aname == "CD1" || a1_aname == "HD1" ||
+			a1_aname == "NE1" || a1_aname == "HE1" ||
+			a1_aname == "CE2" ||
+			a1_aname == "CZ2" || a1_aname == "HZ2" ||
+			a1_aname == "CH2" || a1_aname == "HH2" ||
+			a1_aname == "CZ3" || a1_aname == "HZ3" ||
+			a1_aname == "CE3" || a1_aname == "HE3" ||
+			a1_aname == "CD2" ) &&
+		       (a2_aname == "CG" ||
+			a2_aname == "CD1" || a2_aname == "HD1" ||
+			a2_aname == "NE1" || a2_aname == "HE1" ||
+			a2_aname == "CE2" ||
+			a2_aname == "CZ2" || a2_aname == "HZ2" ||
+			a2_aname == "CH2" || a2_aname == "HH2" ||
+			a2_aname == "CZ3" || a2_aname == "HZ3" ||
+			a2_aname == "CE3" || a2_aname == "HE3" ||
+			a2_aname == "CD2" )))
+				return(1);
+	else if( a1_res == "DT"  && a1_num == a2_num  &&
+		      ((a1_aname == "N1" ||
+			a1_aname == "C6" || a1_aname == "H6" ||
+			a1_aname == "C5" || a1_aname == "C7" ||
+			a1_aname == "H71" || a1_aname == "H72" ||
+			a1_aname == "H73" ||
+			a1_aname == "C4" || a1_aname == "O4" ||
+			a1_aname == "N3" || a1_aname == "H3" ||
+			a1_aname == "C2" || a1_aname == "O2" ) &&
+		       (a2_aname == "N1" ||
+			a2_aname == "C6" || a2_aname == "H6" ||
+			a2_aname == "C5" || a2_aname == "C7" ||
+			a2_aname == "H71" || a2_aname == "H72" ||
+			a2_aname == "H73" ||
+			a2_aname == "C4" || a2_aname == "O4" ||
+			a2_aname == "N4" || a2_aname == "H3" ||
+			a2_aname == "C4" || a2_aname == "O2" )))
+				return(1);
+	else if( a1_res == "U"  && a1_num == a2_num  &&
+		      ((a1_aname == "N1" ||
+			a1_aname == "C6" || a1_aname == "H6" ||
+			a1_aname == "C5" || a1_aname == "H5" ||
+			a1_aname == "C4" || a1_aname == "O4" ||
+			a1_aname == "N3" || a1_aname == "H3" ||
+			a1_aname == "C2" || a1_aname == "O2" ) &&
+		       (a2_aname == "N1" ||
+			a2_aname == "C6" || a2_aname == "H6" ||
+			a2_aname == "C5" || a2_aname == "H5" ||
+			a2_aname == "C4" || a2_aname == "O4" ||
+			a2_aname == "N3" || a2_aname == "H3" ||
+			a2_aname == "C2" || a2_aname == "O2" )))
+				return(1);
+	else if( (a1_res == "C" || a1_res == "DC")  && a1_num == a2_num &&
+		      ((a1_aname == "N1" ||
+			a1_aname == "C6" || a1_aname == "H6" ||
+			a1_aname == "C5" || a1_aname == "H5" ||
+			a1_aname == "C4" || a1_aname == "N4" ||
+			a1_aname == "H41" || a1_aname == "H42" ||
+			a1_aname == "N3" ||
+			a1_aname == "C2" || a1_aname == "O2" ) &&
+		       (a2_aname == "N1" ||
+			a2_aname == "C6" || a2_aname == "H6" ||
+			a2_aname == "C5" || a2_aname == "H5" ||
+			a2_aname == "C4" || a2_aname == "N4" ||
+			a2_aname == "H41" || a2_aname == "H42" ||
+			a2_aname == "N3" ||
+			a2_aname == "C2" || a2_aname == "O2" )))
+				return(1);
+	else if( (a1_res == "G" || a1_res == "DG")  && a1_num == a2_num &&
+		      ((a1_aname == "N9" ||
+			a1_aname == "C8" || a1_aname == "H8" ||
+			a1_aname == "N7" || a1_aname == "C5" ||
+			a1_aname == "C6" || a1_aname == "O6" ||
+			a1_aname == "N1" || a1_aname == "H1" ||
+			a1_aname == "C2" || a1_aname == "N2" ||
+			a1_aname == "H21" || a1_aname == "H22" ||
+			a1_aname == "N3" || a1_aname == "C4" ) &&
+		       (a2_aname == "N9" ||
+			a2_aname == "C8" || a2_aname == "H8" ||
+			a2_aname == "N7" || a2_aname == "C5" ||
+			a2_aname == "C6" || a2_aname == "O6" ||
+			a2_aname == "N1" || a2_aname == "H1" ||
+			a2_aname == "C2" || a2_aname == "N2" ||
+			a2_aname == "H21" || a2_aname == "H22" ||
+			a2_aname == "N3" || a2_aname == "C4" )))
+				return(1);
+	else if( (a1_res == "A" || a1_res == "DA")  && a1_num == a2_num  &&
+		      ((a1_aname == "N9" ||
+			a1_aname == "C8" || a1_aname == "H8" ||
+			a1_aname == "N7" || a1_aname == "C5" ||
+			a1_aname == "C6" || a1_aname == "N6" ||
+			a1_aname == "H61" || a1_aname == "H62" ||
+			a1_aname == "N1" ||
+			a1_aname == "C2" || a1_aname == "H2" ||
+			a1_aname == "N3" || a1_aname == "C4" ) &&
+		       (a2_aname == "N9" ||
+			a2_aname == "C8" || a2_aname == "H8" ||
+			a2_aname == "N7" || a2_aname == "C5" ||
+			a2_aname == "C6" || a2_aname == "N6" ||
+			a2_aname == "H61" || a2_aname == "H62" ||
+			a2_aname == "N1" ||
+			a2_aname == "C2" || a2_aname == "H2" ||
+			a2_aname == "N3" || a2_aname == "C4" )))
+				return(1);
+	else if( a1_res == "FOL"  && a1_num == a2_num &&
+		      ((a1_aname == "N1"   || a1_aname == "NH2"  ||
+			a1_aname == "HH21" || a1_aname == "HH22" ||
+			a1_aname == "C2"   || a1_aname == "N3"   ||
+			a1_aname == "H3"   || a1_aname == "C4"   ||
+			a1_aname == "OH4"  || a1_aname == "C4A"  ||
+			a1_aname == "C8A"  || a1_aname == "N5"   ||
+			a1_aname == "C6"   || a1_aname == "C7"   ||
+			a1_aname == "H7"   || a1_aname == "N8"   ||
+			a1_aname == "C11"  || a1_aname == "C12"  ||
+			a1_aname == "C13"  || a1_aname == "C14"  ||
+			a1_aname == "C15"  || a1_aname == "C16"  ||
+			a1_aname == "H40"  || a1_aname == "H41"  ||
+			a1_aname == "H43"  || a1_aname == "H44"  ) &&
+		       (a1_aname == "N1"   || a1_aname == "NH2"  ||
+			a1_aname == "HH21" || a1_aname == "HH22" ||
+			a1_aname == "C2"   || a1_aname == "N3"   ||
+			a1_aname == "H3"   || a1_aname == "C4"   ||
+			a1_aname == "OH4"  || a1_aname == "C4A"  ||
+			a1_aname == "C8A"  || a1_aname == "N5"   ||
+			a1_aname == "C6"   || a1_aname == "C7"   ||
+			a1_aname == "H7"   || a1_aname == "N8"   ||
+			a1_aname == "C11"  || a1_aname == "C12"  ||
+			a1_aname == "C13"  || a1_aname == "C14"  ||
+			a1_aname == "C15"  || a1_aname == "C16"  ||
+			a1_aname == "H40"  || a1_aname == "H41"  ||
+			a1_aname == "H43"  || a1_aname == "H44"  )))
+				return(1);
+  	else if( a1_res == "HEM"  && a1_num == a2_num ) return(1);
+  	else return(0);
+};

@@ -1,0 +1,495 @@
+%A B.E. Hingerty
+%A Samuel Figueroa
+%A Thomas L. Hayden
+%A Suse Broyde
+%T Prediction of DNA Structure from Sequence: A Build-up Technique
+%J Biopolymers
+%V 28
+%N 7
+%P 1195-1222
+%D 1989
+
+%A D.A. Erie
+%A K.J. Breslauer
+%A W.K. Olson
+%T A Monte Carlo Method for Generating Structures of Short Single-Stranded DNA Sequenes
+%J Biopolymers
+%V 33
+%N 1
+%P 75-105
+%D 1993
+
+%A D.A. Pearlman
+%A Sung-Hou Kim
+%T Conformational Studies of Nucleic Acids I. A Rapid and Direct Method for Generating Coordinates from the Pseudorotation Angle
+%J J. Biomol. Struct. Dyn.
+%V 3
+%N 1
+%P 85-98
+%D 1985
+
+%A D.A. Pearlman
+%A Sung-Hou Kim
+%T Conformational Studies of Nucleic Acids II. The Conformational Energetics of Commonly Occurring Nucleosides
+%J J. Biomol. Struct. Dyn.
+%V 3
+%N 1
+%P 99-125
+%D 1985
+
+%A D.A. Pearlman
+%A S.-H. Kim
+%T Conformational Studies of Nucleic Acids: III. Empirical Multiple Correlation Functions for Nucleic Acid Torsion Angles
+%J J. Biomol. Struct. Dyn.
+%V 4
+%N 1
+%P 49-67
+%D 1986
+
+%A D.A. Pearlman
+%A S.-H. Kim
+%T Conformational Studies of Nucleic Acids: IV. The Conformational Energetics of Oligonucleotides: d(ApApApA) and ApApApA
+%J J. Biomol. Struct. Dyn.
+%V 4
+%N 1
+%P 69-98
+%D 1986
+
+%A D.A. Pearlman
+%A S.-H. Kim
+%T Conformational Studies of Nueleic Acids. V. Sequence Specificities of in the Conformational Energetics of Oligonucleotides: The Homo-Tetramers.
+%J Biopolymers
+%V 27
+%N 1
+%P 59-77
+%D 1988
+
+%A T. Schlick
+%T A Modular Strategy for Generating Starting Conformations and Data Structures of Polynucleotide Helices for Potential Energy Calculations
+%J J. Computat. Chem.
+%V 9
+%N 8
+%P 861-889
+%D 1988
+
+%A J. Gabarro-Arpa
+%A J.A.H. Cognet
+%A M. Le Bret
+%T Object Command Language: a formalism to build molecule models and to analyze structural parameters in macromolecules, with applications to nucleic acids
+%J J. Mol. Graph.
+%V 10
+%P 166-173
+%D 1992
+
+%A R. Lavery
+%T DNA Flexibility Under Control: The Jumna Algorithms and its Application to BZ Junctions
+%B Unusual DNA Structures
+%E R. D. Wells
+%E S. C. Harvey
+%I Springer-Verlag
+%C New York
+%D 1988
+
+%A L. X. Shen
+%A Ignacio Tinoco, Jr
+%T The Structure of an RNA Pseudoknot that Causes Efficient Frameshift in Mouse Mammary Tumor Virus
+%J J. Mol. Biol.
+%V 247
+%N 5
+%P 963-978
+%D 1995
+
+%A J.M. Hubbard
+%A J.E. Hearst
+%T Predicting the Three-Dimensional Folding of Transfer RNA with a Computer Modeling Protocol
+%J Biochemsitry
+%V 30
+%N 22
+%P 5458-5465
+%D 1991
+
+%A S.-H. Chou
+%A L. Zhu
+%A B.R. Reid
+%T The Unusual Structure of the Human Centromere (GGA)\\*{2\\*} Motif
+%J J. Mol. Biol.
+%V 244
+%N 3
+%P 259-268
+%D 1994
+
+%A M. Levitt
+%T Detailed Molecular Model for Transfer Ribonucleic Acid
+%J Nature
+%V 224
+%P 759-763
+%D 1969
+
+%A M.S. Babcock
+%A E.P.D. Pednault
+%A W.K. Olson
+%T Nucleic Acid Structure Analysis
+%J J. Mol. Biol.
+%V 237
+%P 125-156
+%D 1994
+
+%A J.M. Hubbard
+%A J.E. Hearst
+%T Computer Modeling 16S Ribosomal RNA
+%J J. Mol. Biol.
+%V 221
+%N 3
+%P 889-907
+%D 1991
+
+%A F. Major
+%A M. Turcotte
+%A D. Gautheret
+%A G. Lapalme
+%A E. Fillon
+%A R. Cedergren
+%T The Combination of Symbolic and Numerical Computation for Three-Dimensional Modeling of RNA
+%J Science
+%V 253
+%N 5025
+%P 1255-1260
+%D 1991
+
+%A T. Schlick
+%A W. K. Olson
+%T Supercoiled DNA Energetics and Dynamics by Computer Simulation
+%J J. Mol. Biol.
+%V 223
+%N 4
+%P 1089-1119
+%D 1992
+
+%A R. E. Dickerson
+%T Definitions and Nomenclature of Nucleic Acid Structure Parameters
+%J J. Biomol. Struct. Dyn.
+%V 6
+%N 4
+%P 627-634
+%D 1989
+
+%A S. R. Holbrook
+%A J. L. Sussman
+%A R.W. Warrant
+%A S.-H. Kim
+%T Crystal Structure of Yeast Phenylalanine Transfer RNA II. Structural Features and and Functional Implications
+%J J. Mol. Biol.
+%V 123
+%P 631-660
+%D 1978
+
+%A B. N. Conner
+%A C. Yoon
+%A J. L Dickerson
+%A R. E. Dickerson
+%T Helix Geometry and Hydration in an A-DNA Tetramer: \&\*{I\*}C-C-G-G
+%J J. Mol. Biol.
+%V 174
+%P 663-695
+%D 1984
+
+%A M. Le Bret
+%A J. Gabarro-Arpa
+%A J. C. Gilbert
+%A C. Lemarechal
+%T MORCAD an object-oriented molecular modeling package
+%J J. Chim. Phys.
+%V 88
+%P 2489-2496
+%D 1991
+
+%A V. B. Zhurkin
+%A Yu. P. Lysov
+%A V. I. Ivanov
+%T Different Families of Double Stranded Conformations of DNA as Revealed by Computer Calculations
+%J Biopolymers
+%V 17
+%P 277-312
+%D 1978
+
+%A A. T. Bru\\*:nger
+%T X-PLOR: A System for Cystallography and NMR, Version 3.1
+%I Yale University
+%C New Haven, CT
+%D 1992
+
+%A J. R. Wyatt
+%A J. D. Puglisi
+%A I. Tinoco Jr.
+%T RNA Pseudoknots. Stability and Loop Size Requirements
+%J J. Mol. Biol.
+%V 214
+%P 455-470
+%D 1990
+
+%A J. D. Puglisi
+%A J. R. Wyatt
+%A I. Tinoco Jr.
+%T Conformation of an RNA Pseudoknot
+%J J. Mol. Biol.
+%V 214
+%P 437-453
+%D 1990
+
+%A G. Kuila
+%A J. A. Fee
+%A J. R. Schoonover
+%A W. H. Woodruff
+%T Resonance Raman Spectra of the [2Fe-2S] Clusters of the Rieske Protein form \\fIThermus\\fR and Phthalate Dioxygenase from \\fIPseudomonas\\fR
+%J J. Am. Chem. Soc.
+%V 109
+%P 1559-1561
+%D 1987
+
+%A R. J. Gurbiel
+%A C. J. Batie
+%A M. Sivaraja
+%A A. E. True
+%A J. A. Fee
+%A B. M. Hoffman
+%A D. P. Ballou
+%T Electron-Nuclear Double Resonance Spectroscopy of \\&\\*{15\\*}N-Enriched Phthalate Dioxygenase from \\fIPseudomonas cepacia\\fR Proves that Two Histidines Are Coordinated to the [2Fe-2S] Rieske-Type Clusters
+%J Biochemistry
+%P 4861-4871
+%D 1989
+
+%A E. Davidson
+%A T. Ohnishi
+%A E. Atta-Asafo-Adjei
+%A F. Daldal
+%T Potential Ligands to the [2Fe-2S] Rieske Cluster of the Cytochrome \\fbc\\fR\\*[1\\*] Complex of \\fIRhodobacter capsulatus\\fR Probed by Site-Directed Mutagenesis
+%J Biochemistry
+%V 31
+%P 3342-3351
+%D 1992
+
+%A B. Lewin
+%T Organization of Nucleosomes in Chromatin
+%B Genes IV
+%I Cell Press
+%C Cambridge, Mass.
+%D 1990
+%P 409-425
+
+%A W. H. Press
+%A S. A. Teukolsky
+%A W. T. Vettering
+%A B. P. Flannery
+%T Interpolation and Extrapolation
+%B Numerical Recipes in C
+%I Cambridge
+%C New York
+%D 1992
+%P 113-117
+
+%A V. B. Zhurkin
+%A G Raghunathan
+%A N. B. Ulynaov
+%A R. D. Camerini-Otero
+%A R. L. Jernigan
+%T A Parallel DNA Triplex as a Model for the Intermediate in Homologous Recombination
+%J Journal of Molecular Biology
+%V 239
+%P 181-200
+%D 1994
+
+%A W. Saenger
+%B Principles of Nucleic Acid Structure
+%I Springer-Verlag
+%C New York
+%D 1984
+%P 120
+%A M. Turcotte
+%A G. Lapalme
+%A F. Major
+%T Exploring the conformations of nucleic acids
+%J J. Funct. Program.
+%V 5
+%P 443-460
+%D 1995
+
+%A C.-S. Tung
+%A E.S. Carter, II
+%T Nucleic acid modeling tool (NAMOT): an interactive graphic tool for
+modeling nucleic acid structures
+%J CABIOS
+%V 10
+%P 427-433
+%D 1994
+
+%A E.S. Carter, II
+%A C.-S. Tung
+%T NAMOT2--a redesigned nucleic acid modeling tool: construction of
+non-canonical DNA structures
+%J CABIOS
+%V 12
+%P 25-30
+%D 1996
+
+%A R. Lavery
+%A K. Zakrzewska
+%A H. Skelnar
+%T JUMNA (junction minimisation of nucleic acids)
+%J Comp. Phys. Commun.
+%V 91
+%P 135-158
+%D 1995
+
+%A G.M. Crippen
+%A T.F. Havel
+%T Distance Geometry and Molecular Conformation
+%D 1988
+%I Research Studies Press
+%C Taunton, England
+%K distance geometry book
+
+%A D.C. Spellmeyer
+%A A.K. Wong
+%A M.J. Bower
+%A J.M. Blaney
+%T Conformational analysis using distance geometry methods
+%J J. Mol. Graph. Model.
+%V 15
+%P 18-36
+%D 1997
+
+%A M.E. Hodsdon
+%A J.W. Ponder
+%A D.P. Cistola
+%T The NMR solution structure of intestinal fatty acid-binding protein
+complexed with palmitate: Application of a novel distance geometry algorithm
+%J J. Mol. Biol.
+%V 264
+%P 585-602
+%D 1996
+
+%A T. Macke
+%A S.-M. Chen
+%A W.J. Chazin
+%T Analysis of the structure and dynamics of synthetic 32 base-pair models
+of
+the Holliday junction intermediate in genetic recombination
+%B Structure and Function, Volume 1: Nucleic Acids
+%E R.H. Sarma
+%E M.H. Sarma
+%C Albany
+%I Adenine Press
+%D 1992
+%P 213-227
+
+%A B.C.M. Potts
+%A J. Smith
+%A M. Akke
+%A T.J. Macke
+%A K. Okazaki
+%A H. Hidaka
+%A D.A. Case
+%A W.J. Chazin
+%T The structure of calcyclin reveals a novel homodimeric fold S100
+Ca\*{2+\*}-binding proteins
+%J Nature Struct. Biol.
+%V 2
+%P 790-796
+%D 1995
+
+%A J.J. Love
+%A X. Li
+%A D.A. Case
+%A K. Giese
+%A R. Grosschedl
+%A P.E. Wright
+%T DNA recognition and bending by the architectural transcription factor
+LEF-1: NMR structure of the HMG domain complexed with DNA
+%J Nature
+%V 376
+%P 791-795
+%D 1995
+
+%A R.J. Gurbiel
+%A P.E. Doan
+%A G.T. Gassner
+%A T.J. Macke
+%A D.A. Case
+%A T. Ohnishi
+%A J.A. Fee
+%A D.P. Ballou
+%A B.M. Hoffman
+%T Active site structure of Rieske-type proteins: Electron nuclear double
+resonance studies of isotopically labeled phthalate dioxygenase from
+\fIPseudomonas cepacia\fR and Rieske protein from \fIRhodobacter
+capsulatus\fR and molecular modeling studies of a Rieske center
+%J Biochemistry
+%V 35
+%P 7834-7845
+%D 1996
+
+%A T.J. Macke
+%T NAB, a Language for Molecular Manipulation
+%O Ph.D. thesis, The Scripps Research Institute
+%D 1996
+
+%A D. Gautheret
+%A F. Major
+%A R. Cedergren
+%T Modeling the three-dimensional structure of RNA using discrete
+nucleotide conformational sets
+%J J. Mol. Biol.
+%V 229
+%P 1049-1064
+%D 1993
+
+%A R. Tan
+%A S. Harvey
+%T Molecular Mechanics Model of Supercoiled DNA
+%J J. Mol. Biol.
+%V 205
+%P 573-591
+%D 1989
+
+%A T.F. Havel
+%T An evaluation of computational strategies for use in the
+determination of protein structure from distance constraints obtained
+by nuclear magnetic resonance
+%J Prog. Biophys. Mol. Biol.
+%V 56
+%P 43-78
+%D 1991
+%K progress review distance geometry DGII
+
+%A J. Kuszewski
+%A M. Nilges
+%A A.T. Brünger
+%T Sampling and efficiency of metric matrix distance geometry:
+A novel partial metrization algorithm
+%J J. Biomolec. NMR
+%V 2
+%P 33-56
+%D 1992
+%K brunger partial metrization
+
+%A B.L. deGroot
+%A D.M.F. van\0Aalten
+%A R.M. Scheek
+%A A. Amadei
+%A G. Vriend
+%A H.J.C. Berendsen
+%T Prediction of protein conformational freedom from distance constraints
+%J Proteins
+%V 29
+%P 240-251
+%D 1997
+
+%A T.F. Havel
+%A I.D. Kuntz
+%A G.M. Crippen
+%T The theory and practice of distance geometry
+%J Bull. Math. Biol.
+%V 45
+%P 665-720
+%D 1983
+

@@ -1,0 +1,103 @@
+float	ax_susc( point p, point rc, point rn, float chi_iso,
+				float chi_anis, float sigma[ 3,3 ], int iso_only )
+
+//  general routine to compute shift tensors at a probe point "p", given
+//  the center and principal axis of the remote group ("rc" and "rn"),
+//  the the groups isotropic susceptibility "chi_iso" and its anisotropy
+//  (along rn minus perpendicular to rn) "chi_aniso".  Returns the
+//  isotropic shift as the function value, and the full shielding tensor
+//  in "sigma".
+
+{
+
+int		i,j,k;
+float	costheta,sintheta,phi,sinphi,cosphi,sh_iso;
+float	chig[ 3,3 ], rr[ 3,3 ];
+float	dr, rm5, chi_diag;
+point	ar;
+
+chi_diag = chi_iso - chi_anis/3.;
+
+if ( iso_only ){   // just do the isotropic shift:
+
+	ar = p - rc;
+	dr = sqrt( ar @ ar );
+	costheta = (rn @ ar )/dr;
+	sh_iso = chi_anis*(costheta*costheta - 1./3.)/(dr*dr*dr);
+	return( sh_iso );
+
+}
+
+//		Here for the full sigma shielding tensor calculation:
+
+//		First, get the angles of the ring normal with respect to the global
+//		axis system:
+
+#if 0
+costheta = rn.z; sintheta = sqrt( 1. - costheta*costheta);
+if( fabs( rn.x ) < 1.e-6 && fabs( rn.y ) < 1.e-6  )
+	phi = 0.0;
+else
+	phi = atan2( rn.y, rn.x );
+sinphi = sin( phi ); cosphi = cos( phi );
+
+//		We assume that the susceptibility tensor of the group is the 
+//		sum of two components: an isotropic part, with chi_diag along
+//		the diagonal, and an second (anisotropic) part, which is all zeroes
+//		except for a chi_anis component in the "zz" direction in the
+//		axis system where "z" points along the unique axis of the group.
+//		(The isotropic part will not contribute to the isotropic shift;
+//		the anisotropic contribution should roughly be the same as the
+//		usual "ring_current" model, except for deviations from point
+//		dipole behavior at short distances.)
+
+//		Convert this local susceptibility tensor to the global frame:
+
+chig[ 1,1 ] = chi_anis*sintheta*sintheta*cosphi*cosphi + 
+				chi_diag;
+chig[ 1,2 ] = chi_anis*sintheta*sintheta*sinphi*cosphi;
+chig[ 1,3 ] = -chi_anis*sintheta*costheta*cosphi;
+chig[ 2,1 ] = chig[ 1,2 ];
+chig[ 2,2 ] = chi_anis*sintheta*sintheta*sinphi*sinphi +
+				chi_diag;
+chig[ 2,3 ] = -chi_anis*sintheta*costheta*sinphi;
+chig[ 3,1 ] = chig[ 1,3 ];
+chig[ 3,2 ] = chig[ 2,3 ];
+chig[ 3,3 ] = chi_anis*costheta*costheta + chi_diag;
+#else
+chig[ 1,1 ] = chi_anis*rn.x*rn.x + chi_diag;
+chig[ 1,2 ] = chi_anis*rn.x*rn.y;
+chig[ 1,3 ] = chi_anis*rn.x*rn.z;
+chig[ 2,1 ] = chig[ 1,2 ];
+chig[ 2,2 ] = chi_anis*rn.y*rn.y + chi_diag;
+chig[ 2,3 ] = chi_anis*rn.y*rn.z;
+chig[ 3,1 ] = chig[ 1,3 ];
+chig[ 3,2 ] = chig[ 2,3 ];
+chig[ 3,3 ] = chi_anis*rn.z*rn.z + chi_diag;
+#endif
+
+//		Next, get the geometric component of the McConnell equation:
+
+ar = p - rc;
+dr = sqrt( ar @ ar );
+rm5 = 1./(dr*dr*dr*dr*dr);
+
+rr[ 1,1 ] = rm5*(dr*dr - 3.*ar.x*ar.x);
+rr[ 2,2 ] = rm5*(dr*dr - 3.*ar.y*ar.y);
+rr[ 3,3 ] = rm5*(dr*dr - 3.*ar.z*ar.z);
+rr[ 1,2 ] = rr[ 2,1 ] = -3.0*rm5*ar.x*ar.y;
+rr[ 1,3 ] = rr[ 3,1 ] = -3.0*rm5*ar.x*ar.z;
+rr[ 2,3 ] = rr[ 3,2 ] = -3.0*rm5*ar.y*ar.z;
+
+for( i=1; i<=3; i++ ){
+	for( j=1; j<=3; j++ ){
+		sigma[ i,j ] = 0.0;
+		for( k=1; k<=3; k++ ){
+			sigma[ i,j ] += chig[ i,k ]*rr[ k,j ];
+		}
+	}
+}
+sh_iso = -( sigma[1,1] + sigma[2,2] + sigma[3,3] )/3.0;
+return( sh_iso );
+
+};

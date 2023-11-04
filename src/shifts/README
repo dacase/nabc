@@ -1,0 +1,44 @@
+
+   The "shifts" program will compute proton shifts for proteins and
+nucleic acids using a structural model from an input pdb file, and
+empirical formulas for structural effects on shifts.  It can also
+calculate shifts for N, Calpha, Cbeta and C' in proteins, using a
+quantum-mechanical database to derive structural shifts.  
+
+   More information (including installation instructions) is in the 
+Users' Manual in ./doc/shifts.pdf.  Examples of input and output files 
+(for carbon and nitrogen shifts) are in the ./examples subdirectory.
+The tests also provide examples of how the program works.
+
+=============================================================================
+
+   To install:  First, install AmberTools20, which can be obtained at
+http://ambermd.org.  Be sure to set your AMBERHOME environment variable
+as described in the AmberTools20 installation instructions.  Next, set
+the SHIFTSHOME environment variable to this directory.  Then, in this
+directory, "make install", followed by "make test" will compile 
+the program and run tests.
+
+You may wish to add $SHIFTSHOME/bin to your PATH.
+
+Sample input and output files are in the "test" subdirectory.  More
+documentation is Users' Manual, in ./doc/shifts.pdf.
+
+=============================================================================
+
+   Comments, questions, bug-reports to david.case@rutgers.edu
+
+==============================================================================
+
+   This program is free software; you can redistribute it and/or modify it
+   under the terms of the GNU General Public License as published by the
+   Free Software Foundation; either version 2, or (at your option) any later
+   version. The GNU General Public License should be in a file called
+   COPYING; if not, write to the Free Software Foundation, Inc., 675 Mass
+   Ave, Cambridge, MA 02139, USA.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+

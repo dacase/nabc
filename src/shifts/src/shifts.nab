@@ -1,0 +1,371 @@
+//
+//============================================================================
+//
+//   Compute proton chemical shifts, using a pdb-file to get the
+//      molecular geometry, and empirical formulas to do the calculations.
+//
+//   See $SHIFTSHOME/doc/shifts.pdf for instructions on use.
+//
+//============================================================================
+//
+
+int usage() {
+   printf("shifts [Options] [<expression>] <basename>\n");
+   printf("\n");
+   printf("Arguments\n");
+   printf("   <basename>\n");
+   printf("              The base name of the system you wish to analyze.\n");
+   printf("              The <basename>.pdb file is used as the starting\n");
+   printf("              structure. <basename>.obs must be present if the\n");
+   printf("              -readobs flag (below) is used. The predicted shifts\n");
+   printf("              are printed to <basename>.emp.\n");
+   printf("   <expression>\n");
+   printf("              The NAB atom expression used to select atoms to\n");
+   printf("              compute chemical shifts for. \"::H*\" will select\n");
+   printf("              all hydrogens.\n");
+   printf("\n");
+   printf("Options:\n");
+   printf("   -csa       Compute chemical shift anisotropy tensors based on\n");
+   printf("              ring and peptide group susceptibilities.*\n");
+   printf("   -nocoil    Do not attempt to compare computed shifts to 'random\n");
+   printf("              coil' reference values. Only valid without -qdb\n");
+   printf("   -reslib    Use an Amber residue library; good for nucleic acids;\n");
+   printf("              needed for electrostatic effects in non-proteins\n");
+   printf("   -noreduce  Don't run reduce: assume all protons in input file are OK\n");
+   printf("   -readobs   Read observed shifts (<basename>.obs) and compare\n");
+   printf("              with predicted shifts.\n");
+   printf("   -details   Print out individual contributions to each shift.\n");
+   printf("   -sander    Write out a sander input file based on calculated\n");
+   printf("              shifts.\n");
+   printf("   -qdb       Use a 'quantum database' approach for 13C and 15N\n");
+   printf("              shifts in proteins.\n");
+   printf("   -refine    Try to find side-chain angles that improve qdb fit\n");
+   printf("   -HN        Use a module that predicts amide proton shifts.\n");
+   printf("\n");
+   printf("*The CSA approach is not yet fully parametrized.\n");
+   printf("\n");
+   printf("This program computes chemical shifts for proteins and nucleic\n");
+   printf("acids based on empirical formulas. See the shifts manual for\n");
+   printf("more details and citations.\n");
+
+   return 1;
+};
+
+#define MAXSTRAND 5000
+#define MAXRES 1000
+int shifts_emp();
+int GetStruct();
+int ReadQdb();
+int CalCorrect();
+int CalCorrect_HN();
+int RefineChi();
+int GetObsShift();
+int PrintQdbResults();
+int PrintQdbResults_HN();
+int PrintStructParams();
+int read_obs_shifts();
+
+int  i, isys;
+string opts, opts2, oline, basename, pdbfile, pdbnewfile, task, leaprc, rcmd;
+string pdbnewfile1;
+file pdbf, pdbnewf, pdbforig;
+float N[MAXRES], CA[MAXRES], CB[MAXRES], CO[MAXRES];
+
+molecule m;
+atom a;
+residue r;
+string strtype[MAXSTRAND];
+//  #define USE_RLB 1
+#ifdef USE_RLB
+string rlb[4], seq[MAXSTRAND], strname[MAXSTRAND];
+#endif
+float calc[hashed], obs[hashed], calc2[hashed];
+string atom_expr, prevres;
+string idp;
+
+basename = argv[argc];
+pdbfile = basename + ".pdb";
+pdbnewfile = basename + ".atom";
+pdbnewfile1 = basename + ".atom1";
+opts = "verbose";
+
+//
+//============================================================================
+//
+//  process command line:
+
+task = "emp"; // by default, do the empirical proton shifts
+
+if (argc < 3)
+   exit(usage());
+
+for (i = 2; i < argc; i++) {
+	if (argv[i] == "-csa") {
+		opts += ",CSA";
+		printf("   -csa:  CSA calculation requested\n");
+		continue;
+	} else if (argv[i] == "-reslib") {
+		opts += ",reslib";
+		continue;
+	} else if (argv[i] == "-rinfo") {
+		opts += ",rinfo";
+		printf("   -rinfo:  ring current info read from ringinfo.in\n");
+		continue;
+	} else if (argv[i] == "-rmd") {
+		opts += ",rmd";
+		printf("   -rmd:  use ring magnetic dipole approx.\n");
+		continue;
+	} else if (argv[i] == "-details") {
+		opts += ",details";
+		printf("   -details:  detailed breakdown of shifts written\n");
+		continue;
+	} else if (argv[i] == "-swap") {
+		opts += ",swap";
+		printf("   -swap:  Pro-chiral calc. shifts will be swapped\n");
+		continue;
+	} else if (argv[i] == "-sander") {
+		opts += ",sander";
+		printf("   -sander:  Input for Amber will be written\n");
+		continue;
+	} else if (argv[i] == "-nocoil") {
+		opts += ",nocoil";
+		printf("   -nocoil:  random-coil values will not be used\n");
+		continue;
+	} else if (argv[i] == "-refine") {
+		opts += ",readobs,refine";
+		continue;
+	} else if (argv[i] == "-readobs") {
+		opts += ",readobs";
+		continue;
+	} else if (argv[i] == "-noreduce") {
+		opts += ",noreduce";
+		continue;
+	} else if (argv[i] == "-qdb") {
+        task = "qdb";
+		continue;
+	} else if (argv[i] == "-HN") {
+        task = "HN";
+		continue;
+	} else if (argv[i] =~ ":") {
+		atom_expr = argv[i];
+		printf("   shifts will be computed for atoms matching %s\n", atom_expr);
+    } else if (argv[i] == "--help" || argv[i] == "-h" || argv[i] == "-help") {
+      exit(usage());
+	} else {
+		printf("   argument not recognized: %s\n\n", argv[i]);
+      exit(usage());
+	}
+}
+
+//
+//============================================================================
+//
+
+pdbforig = fopen(pdbfile, "r");
+if (pdbforig == NULL) {
+	fprintf(stderr, "empty or non-existent pdb file %s\n", pdbfile);
+	exit(1);
+}
+fclose( pdbforig );
+
+if (task == "qdb" || opts =~ "noreduce"){  // no need to modify pdb file:
+
+    rcmd = "cat " + pdbfile + " > " + pdbnewfile1;
+    isys = system( rcmd );
+
+}else{ //  run input pdb file through reduce to add/update hydrogen positions:
+
+#if 1
+    rcmd = getenv("AMBERHOME") + "/bin/reduce -build -nuclear -DB " +
+       getenv("AMBERHOME") + "/dat/reduce_wwPDB_het_dict.txt " + pdbfile + 
+       " > " + pdbnewfile1 + " 2> reduce.info";
+    // fprintf( stderr, "running: %s\n", rcmd );
+#else
+    rcmd = getenv("AMBERHOME") + "/bin/pdb4amber -d --reduce -i " +
+       pdbfile + " > " + pdbnewfile1 + " 2> pdb4amber.info";
+    fprintf( stderr, "running: %s\n", rcmd );
+#endif
+    isys = system( rcmd );
+    //assert( isys== 0 );
+}
+
+//  go through and just select ATOM records (ignoring HETATM):  this is
+//  certainly helpful for an "automatic" shift calcultion, where properties
+//  of the hetatm groups might not be known.
+
+pdbf = fopen(pdbnewfile1, "r");
+if (pdbf == NULL) {
+	fprintf(stderr, "empty or non-existent pdb file %s\n", pdbfile);
+	exit(1);
+}
+
+pdbnewf = safe_fopen(pdbnewfile, "w");
+
+if (task == "qdb" || task == "HN") {	// include waters for qdb calculation
+    prevres = "";
+	while (oline = getline(pdbf)) {
+		if (substr(oline, 1, 4) == "ATOM" ||
+			(substr(oline, 1, 6) == "HETATM" && substr(oline, 18, 3) == "HOH")
+			|| ( substr(oline, 1, 3) == "TER" && prevres != "WAT" )
+			|| substr(oline, 1, 3) == "END"){
+			    fprintf(pdbnewf, "%s\n", oline);
+                prevres = substr(oline,18,3);
+                if( prevres == "HOH" ) prevres = "WAT";
+        }
+	}
+} else {	// leave out all HETATM and water cards for empirical calculation
+	while (oline = getline(pdbf)) {
+        if( (substr( oline, 1, 4 ) == "ATOM" &&
+             substr(oline,18,3) != "WAT" && substr(oline,18,3) != "HOH")||
+			substr(oline, 1, 3) == "TER" || substr(oline, 1, 3) == "END")
+			fprintf(pdbnewf, "%s\n", oline);
+	}
+}
+
+fclose(pdbnewf);
+fclose(pdbf);
+
+//
+//============================================================================
+//
+
+if (opts =~ "reslib") {
+
+	//
+	//   call getpdb_prm to set up the molecule according to a standard library
+
+    leaprc = "oldff/leaprc.ff14SB";
+	m = getpdb_prm( pdbnewfile, leaprc, "", 0 );
+	assert( m.nstrands <= MAXSTRAND );
+
+	//  heuristic to get the strandtype, here just for the first residue:
+
+	strtype[ 1 ] = "protein";
+	for( a in m ){
+		if( a.atomname == "O2'" ){
+			strtype[ 1 ] = "rna";  break;
+		}
+		if( a.atomname == "O1P" ) strtype[ 1 ] = "dna"; // version 2 name
+		if( a.atomname == "OP1" ) strtype[ 1 ] = "dna"; // version 3 name
+	}
+
+    // remove the "5" and "3" endings from residue names:
+    for( r in m ){
+        if( r.resname == "G5" ) r.resname = "G";
+        if( r.resname == "U5" ) r.resname = "U";
+        if( r.resname == "C5" ) r.resname = "C";
+        if( r.resname == "A5" ) r.resname = "A";
+        if( r.resname == "G3" ) r.resname = "G";
+        if( r.resname == "U3" ) r.resname = "U";
+        if( r.resname == "C3" ) r.resname = "C";
+        if( r.resname == "A3" ) r.resname = "A";
+        if( r.resname == "DG5" ) r.resname = "DG";
+        if( r.resname == "DT5" ) r.resname = "DT";
+        if( r.resname == "DC5" ) r.resname = "DC";
+        if( r.resname == "DA5" ) r.resname = "DA";
+        if( r.resname == "DG3" ) r.resname = "DG";
+        if( r.resname == "DT3" ) r.resname = "DT";
+        if( r.resname == "DC3" ) r.resname = "DC";
+        if( r.resname == "DA3" ) r.resname = "DA";
+    }
+
+	// really awful kludge to make all strands the same type:
+	for (i = 2; i <= m.nstrands; i++) {
+		strtype[i] = strtype[ 1 ];
+	}
+
+} else {
+
+//   get pretty arbitrary molecule: won't have any charges, and
+//   could have problems identifying peptides, etc.
+
+	m = getpdb(pdbnewfile);
+	strtype[1] = "protein";
+
+	// We still want to be able to identify nucleic acid structures if we don't
+	// use -reslib, so look for that here
+	for (r in m) {
+		 if (r.resname == "G" || r.resname == "C" ||
+		     r.resname == "A" || r.resname == "U" ||
+			  r.resname == "RG" || r.resname == "RC" ||
+			  r.resname == "RA" || r.resname == "RU") {
+			  strtype[1] = "rna";
+		 }
+		 if (r.resname == "DG" || r.resname == "DC" ||
+		     r.resname == "DA" || r.resname == "DT") {
+			  strtype[1] = "dna";
+		 }
+	}
+
+	// really awful kludge to make all strands the same type:
+	for (i = 2; i <= m.nstrands; i++) {
+		strtype[i] = strtype[1];
+	}
+}
+
+unlink(pdbnewfile);
+unlink(pdbnewfile1);
+
+//
+//============================================================================
+//
+
+if (task == "emp") {
+	shifts_emp(m, basename, atom_expr, strtype, calc, opts);
+}
+
+//
+//============================================================================
+//
+
+if (task == "qdb") {
+
+	GetStruct(m, basename);
+	PrintStructParams(basename + ".par1");
+	ReadQdb();
+	if (opts =~ "readobs" || opts =~ "refine")
+		GetObsShift(basename, obs, N, CA, CB, CO);
+	CalCorrect(calc);
+
+#if 0
+//  test expanding to add ringcurrents
+	for (idp in calc) {
+		if (idp =~ ":N")
+			printf("%s\t%8.3f\n", idp, calc[idp]);
+	}
+	opts = "noelec,nopep,noconst,nocoil,noobs";
+	shifts_emp(m, basename, "::N", strtype, calc2, opts);
+	for (idp in calc2) {
+		if (idp =~ ":N")
+			printf("%s\t%8.3f\n", idp, calc2[idp]);
+	}
+	exit(0);
+#endif
+
+	PrintQdbResults( basename + ".qdb", opts );
+
+	if( opts =~ "refine" ){
+	  RefineChi();
+	  CalCorrect ( calc );
+	  PrintQdbResults( basename + ".qdb2", opts );
+	  PrintStructParams( basename + ".par2" );
+	}
+}
+
+//
+//============================================================================
+//
+
+if (task == "HN") {
+
+	GetStruct(m, basename);
+	CalCorrect_HN(calc);
+
+    opts2 = "verbose";
+	if (opts =~ "readobs" ){
+        read_obs_shifts( "p", basename + ".obs", obs );
+    }
+    shifts_emp( m, basename, "::H", strtype, calc2, opts2 );
+    PrintQdbResults_HN( basename + ".HN", opts, calc2, obs );
+
+}
