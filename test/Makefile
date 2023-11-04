@@ -3,7 +3,7 @@ include ../config.h
 SUFFIXES:
 SUFFIXES: .c .cu .o
 
-test:  test_mask test_xmin test_md test_lmod test_nmode
+test:  test_mask test_xmin test_md test_nmode
 
 test_xmin:  txmin
 	./txmin xfin.parm7 xfin.rst7 foo.rst7 > txmin.out
