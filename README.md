@@ -5,7 +5,7 @@ but convert the "NAB" part to C.  Optionally, one can also install the
 original NAB compiler.
 
 # More complete summary
-The AmberTools package (https://ambermd.org) contains a molecular
+The AmberTools package (https://ambermd.org) formerly contained a molecular
 maniupulation language, NAB (Nucleic Acid Builder, written primarily by Tom
 Macke) that interfaces to SFF (Simple Force Field, created originally by
 Dave Case).
@@ -49,19 +49,23 @@ Mostly GPLv3; see the LICENSE file for full details.
 
 # How to install
 
-*  ./configure --help   # then run configure with the options you want; no options is the most common choice
-*  make install   # creates lib/lib{arpack,nabc,sff,lapack,blas}.a
+*  ./configure --help   *# then run configure with the options you want; no options is the most common choice*
+*  make install   *# creates lib/lib{arpack,nabc,sff,lapack,blas}.a*
 *  cd test && make test  
-
-*  make nab  # optional: only if you want or need the NAB compiler
-*  cd test/nab && make test  # only makes sense if you installed NAB
-
-*  make shifts  # optional: requires nab
+*
+*  make nab  *# optional: only if you want or need the NAB compiler*
+*  cd test/nab && make test  *# only makes sense if you installed NAB*
+*
+*  make shifts  *# optional: requires nab*
+*  cd test/shifts && make test  *# only makes sense if you installed shifts*
 
 # Documentation
 
 * See the doc/nabc.pdf file -- mostly OK, but there are some out-of-date things there!
 * Look at the example driver files in the test folder; see if you can modify those to meet your needs.
+* For more information, see <a
+* href="https://casegroup.rutgers.edu/nab.html">casegroup.rutgers.edu/nab.html</a>
+and href="https://casegroup.rutgers.edu/shifts.html">casegroup.rutgers.edu/shifts.html</a>
 
 # Reporting problems
 
