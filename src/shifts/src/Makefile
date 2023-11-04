@@ -16,6 +16,7 @@ SUBS= shifts.o shifts_emp.o ring_current.o  get_banis_info.o \
 	@/bin/rm -f $*.c
 
 install:  $(NABCHOME)/bin/shifts
+	cp fix_rdb.sh emp_to_rdb details_to_rdb $(NABCHOME)/bin
 
 $(NABCHOME)/bin/shifts: $(SUBS)
 	$(NABCHOME)/bin/nab $(NABFLAGS) -o $@ $(SUBS) 

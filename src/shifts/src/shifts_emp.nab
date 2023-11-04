@@ -662,7 +662,7 @@ int shifts_emp(molecule m, string basename, string atom_expr,
 	fclose(outf);
 
 //  sort the rdb file on res, atomname:
-    shiftshome = getenv("SHIFTSHOME");
+    shiftshome = getenv("NABCHOME");
     system(shiftshome + "/bin/fix_rdb.sh " + rdbfile);
 
 //  finally: return the full calculated shifts:

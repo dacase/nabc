@@ -56,6 +56,8 @@ Mostly GPLv3; see the LICENSE file for full details.
 *  make nab  # optional: only if you want or need the NAB compiler
 *  cd test/nab && make test  # only makes sense if you installed NAB
 
+*  make shifts  # optional: requires nab
+
 # Documentation
 
 * See the doc/nabc.pdf file -- mostly OK, but there are some out-of-date things there!

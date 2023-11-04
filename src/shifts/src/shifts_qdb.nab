@@ -13,11 +13,11 @@ int ReadQdb()					//   read in the quantum database
 	int i, j;
 	string line, prefix;
 
-	if (!(prefix = getenv("SHIFTSHOME"))) {
-		fprintf(stderr, "SHIFTSHOME not defined.\n");
+	if (!(prefix = getenv("NABCHOME"))) {
+		fprintf(stderr, "NABCHOME not defined.\n");
 		exit(1);
 	}
-	prefix += "/lib/qdb/";
+	prefix += "/src/shifts/lib/qdb/";
 
 	db = safe_fopen(prefix + "A_s_bb_N", "r");
 	i = 0;
