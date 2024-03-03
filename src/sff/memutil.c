@@ -19,6 +19,15 @@ REAL_T	*vector( size_t nl, size_t nh )
 	return( v - nl );
 }
 
+REAL_T	*longvector( size_t nl, long long int nh )
+{
+	REAL_T	*v;
+
+	v = ( REAL_T * )malloc( ( nh - nl + 1 ) * sizeof( REAL_T ) );
+	if( !v ) nrerror( "allocation failure in vector()" );
+	return( v - nl );
+}
+
 int	*ivector( int nl, int nh )
 {
 	int	*v;
@@ -87,6 +96,11 @@ int	**imatrix( int nrl, int nrh, int ncl, int nch )
 }
 
 void	free_vector( REAL_T *v, size_t nl, size_t nh )
+{
+    free( v + nl );
+}
+
+void	free_longvector( REAL_T *v, size_t nl, long long int nh )
 {
     free( v + nl );
 }

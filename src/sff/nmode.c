@@ -2386,8 +2386,10 @@ int nmode(REAL_T * x, int n,
          jobz = 'N';
       uplo = 'U';
       lwork = 1 + 6 * ncopy + 2 * ncopy * ncopy;
+      long long int longwork = 1 + 6 * ncopy + 2 * ncopy *ncopy;
       liwork = 3 + 5 * ncopy;
-      work = vector(0, lwork);
+      // work = vector(0, lwork);
+      work = longvector(0, longwork);
       iwork = ivector(0, liwork);
       k = 0;
       v = vector(1, ncopy);
