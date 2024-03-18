@@ -1,10 +1,11 @@
 
 # Jargon-filled summary
 This is conversion of AmberTool's NAB/SFF functionality, to keep the "SFF" part,
-but convert the "NAB" part to C.
+but convert the "NAB" part to C.  Optionally, one can also install the
+original NAB compiler.
 
 # More complete summary
-The AmberTools package (https://ambermd.org) contains a molecular
+The AmberTools package (https://ambermd.org) formerly contained a molecular
 maniupulation language, NAB (Nucleic Acid Builder, written primarily by Tom
 Macke) that interfaces to SFF (Simple Force Field, created originally by
 Dave Case).
@@ -13,7 +14,7 @@ The NAB language is expressive for some things, especially for short
 programs -- its original design was to serve as a "molecular AWK".  But it
 doesn't scale well to larger projects, requires users to learn a new,
 C-like, language that isn't quite C, and doesn't do a good job of catching
-syntax errors at compile time..
+syntax errors at compile time.
 
 The companion SFF library is written in C, and has a lot of nice features.
 It provides a lightweight code for carrying out simulations of non-periodic
@@ -28,8 +29,10 @@ some unique (or at least, unusual) features, including:
 * CPU parallelization via both MPI and OpenMP.
 
 This is an attempt to create driver programs in C that interface with SFF
-API.  Right now it is a one-person (DAC) effort, but let me know if you
-would like to help out.  
+API.  I have also included a slightly updated version of the NAB compiler
+itself, and the SHIFTS package for estimating NMR cheimcal shifts in
+proteins and nucleic acids (since it is built on top of NAB.)  Right now it
+is a one-person (DAC) effort, but let me know if you would like to help out.
 
 # Primary Contributors
 
@@ -44,3 +47,26 @@ would like to help out.
 
 # License
 Mostly GPLv3; see the LICENSE file for full details.
+
+# How to install
+
+*  ./configure --help   *# then run configure with the options you want; no options is the most common choice*
+*  make install   *# creates lib/lib{arpack,nabc,sff,lapack,blas}.a*
+*  cd test && make test  
+*
+*  make nab  *# optional: only if you want or need the NAB compiler*
+*  cd test/nab && make test  *# only makes sense if you installed NAB*
+*
+*  make shifts  *# optional: requires nab*
+*  cd test/shifts && make test  *# only makes sense if you installed shifts*
+
+# Documentation
+
+* See the doc/nabc.pdf file -- mostly OK, but there are some out-of-date things there!
+* Look at the example driver files in the test folder; see if you can modify those to meet your needs.
+* For more information, see https://casegroup.rutgers.edu/nab.html and https://casegroup.rutgers.edu/shifts.html
+
+# Reporting problems
+
+* Best is to create an issue at github.com/dacase/nabc
+* I've run tests on Ubuntu 22.04 and OSX Ventura (with HomeBrew gcc, intel hardware)

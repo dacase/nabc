@@ -2,7 +2,7 @@
 
 %{
 #include "nab.h"
-#include "y.tab.h"
+#include "nabgrm.tab.h"
 #include "cgen.h"
 #include <string.h>
 #include <stdlib.h>

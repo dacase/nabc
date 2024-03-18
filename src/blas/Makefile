@@ -1,4 +1,4 @@
-include ../config.h
+include ../../config.h
 SHELL=/bin/sh
 SRCDIR=..
 VPATH=
@@ -13,19 +13,15 @@ OBJS=    dasum.o daxpy.o dcabs1.o dcopy.o ddot.o \
          dswap.o dsymm.o dsymv.o dsyr.o dsyr2.o dsyr2k.o \
          dsyrk.o dtbmv.o dtbsv.o dtpmv.o dtpsv.o dtrmm.o \
          dtrmv.o dtrsm.o dtrsv.o dummy.o dzasum.o dznrm2.o \
-         idamax.o isamax.o lsame.o xerbla.o \
-         scopy.o sswap.o sscal.o sasum.o snrm2.o sdot.o ssyr2k.o \
-         saxpy.o sgemv.o ssyr2.o ssymv.o sgemm.o strmm.o strmv.o sger.o \
-         zher2k.o zswap.o zgemv.o zhemv.o zscal.o zdotc.o zaxpy.o \
-         zher2.o zdscal.o ztrmv.o zcopy.o ztrmm.o zgemm.o zgerc.o
+         idamax.o isamax.o lsame.o xerbla.o 
 
-install: $(LIBDIR)/libblas.a
+libblas: $(LIBDIR)/libblas.a
 
 $(LIBDIR)/libblas.a: $(OBJS)
-	@echo "[BLAS]  AR $@"
-	$(VB)$(AR) libblas.a $(OBJS) > /dev/null
-	$(VB)$(RANLIB) libblas.a
-	$(VB)mv libblas.a $(LIBDIR)
+	@echo "[LAPACK]  AR $@"
+	$(VB)/bin/rm -f $@
+	$(VB)$(AR) $@ $(OBJS) > /dev/null
+	$(VB)$(RANLIB) $@
 
 skip:
 	@echo "skipping compilation of BLAS"

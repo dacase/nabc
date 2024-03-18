@@ -1,0 +1,4675 @@
+
+// compute chemical shifts from a quantum chemistry database
+
+// written by X.P. Xu,  Fall, 2000
+//    (converted to nab by D.A. Case, Dec. 2000)
+
+#include "shifts_qdb.h"
+
+int ReadQdb()					//   read in the quantum database
+{
+
+	file db;
+	int i, j;
+	string line, prefix;
+
+	if (!(prefix = getenv("NABCHOME"))) {
+		fprintf(stderr, "NABCHOME not defined.\n");
+		exit(1);
+	}
+	prefix += "/src/shifts/lib/qdb/";
+
+	db = safe_fopen(prefix + "A_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_s_N_bb[i, 1], A_s_N_bb[i, 2], A_s_N_bb[i, 3], A_s_N_bb[i,
+																		4],
+			   A_s_N_bb[i, 5], A_s_N_bb[i, 6], A_s_N_bb[i, 7], A_s_N_bb[i,
+																		8],
+			   A_s_N_bb[i, 9], A_s_N_bb[i, 10], A_s_N_bb[i, 11],
+			   A_s_N_bb[i, 12], A_s_N_bb[i, 13], A_s_N_bb[i, 14],
+			   A_s_N_bb[i, 15], A_s_N_bb[i, 16], A_s_N_bb[i, 17],
+			   A_s_N_bb[i, 18], A_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_s_Ca_bb[i, 1], A_s_Ca_bb[i, 2], A_s_Ca_bb[i, 3],
+			   A_s_Ca_bb[i, 4], A_s_Ca_bb[i, 5], A_s_Ca_bb[i, 6],
+			   A_s_Ca_bb[i, 7], A_s_Ca_bb[i, 8], A_s_Ca_bb[i, 9],
+			   A_s_Ca_bb[i, 10], A_s_Ca_bb[i, 11], A_s_Ca_bb[i, 12],
+			   A_s_Ca_bb[i, 13], A_s_Ca_bb[i, 14], A_s_Ca_bb[i, 15],
+			   A_s_Ca_bb[i, 16], A_s_Ca_bb[i, 17], A_s_Ca_bb[i, 18],
+			   A_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_s_Cb_bb[i, 1], A_s_Cb_bb[i, 2], A_s_Cb_bb[i, 3],
+			   A_s_Cb_bb[i, 4], A_s_Cb_bb[i, 5], A_s_Cb_bb[i, 6],
+			   A_s_Cb_bb[i, 7], A_s_Cb_bb[i, 8], A_s_Cb_bb[i, 9],
+			   A_s_Cb_bb[i, 10], A_s_Cb_bb[i, 11], A_s_Cb_bb[i, 12],
+			   A_s_Cb_bb[i, 13], A_s_Cb_bb[i, 14], A_s_Cb_bb[i, 15],
+			   A_s_Cb_bb[i, 16], A_s_Cb_bb[i, 17], A_s_Cb_bb[i, 18],
+			   A_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_s_CO_bb[i, 1], A_s_CO_bb[i, 2], A_s_CO_bb[i, 3],
+			   A_s_CO_bb[i, 4], A_s_CO_bb[i, 5], A_s_CO_bb[i, 6],
+			   A_s_CO_bb[i, 7], A_s_CO_bb[i, 8], A_s_CO_bb[i, 9],
+			   A_s_CO_bb[i, 10], A_s_CO_bb[i, 11], A_s_CO_bb[i, 12],
+			   A_s_CO_bb[i, 13], A_s_CO_bb[i, 14], A_s_CO_bb[i, 15],
+			   A_s_CO_bb[i, 16], A_s_CO_bb[i, 17], A_s_CO_bb[i, 18],
+			   A_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "A_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_h_N_bb[i, 1], A_h_N_bb[i, 2], A_h_N_bb[i, 3], A_h_N_bb[i,
+																		4],
+			   A_h_N_bb[i, 5], A_h_N_bb[i, 6], A_h_N_bb[i, 7], A_h_N_bb[i,
+																		8],
+			   A_h_N_bb[i, 9], A_h_N_bb[i, 10], A_h_N_bb[i, 11],
+			   A_h_N_bb[i, 12], A_h_N_bb[i, 13], A_h_N_bb[i, 14],
+			   A_h_N_bb[i, 15], A_h_N_bb[i, 16], A_h_N_bb[i, 17],
+			   A_h_N_bb[i, 18], A_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_h_Ca_bb[i, 1], A_h_Ca_bb[i, 2], A_h_Ca_bb[i, 3],
+			   A_h_Ca_bb[i, 4], A_h_Ca_bb[i, 5], A_h_Ca_bb[i, 6],
+			   A_h_Ca_bb[i, 7], A_h_Ca_bb[i, 8], A_h_Ca_bb[i, 9],
+			   A_h_Ca_bb[i, 10], A_h_Ca_bb[i, 11], A_h_Ca_bb[i, 12],
+			   A_h_Ca_bb[i, 13], A_h_Ca_bb[i, 14], A_h_Ca_bb[i, 15],
+			   A_h_Ca_bb[i, 16], A_h_Ca_bb[i, 17], A_h_Ca_bb[i, 18],
+			   A_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_h_Cb_bb[i, 1], A_h_Cb_bb[i, 2], A_h_Cb_bb[i, 3],
+			   A_h_Cb_bb[i, 4], A_h_Cb_bb[i, 5], A_h_Cb_bb[i, 6],
+			   A_h_Cb_bb[i, 7], A_h_Cb_bb[i, 8], A_h_Cb_bb[i, 9],
+			   A_h_Cb_bb[i, 10], A_h_Cb_bb[i, 11], A_h_Cb_bb[i, 12],
+			   A_h_Cb_bb[i, 13], A_h_Cb_bb[i, 14], A_h_Cb_bb[i, 15],
+			   A_h_Cb_bb[i, 16], A_h_Cb_bb[i, 17], A_h_Cb_bb[i, 18],
+			   A_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_h_CO_bb[i, 1], A_h_CO_bb[i, 2], A_h_CO_bb[i, 3],
+			   A_h_CO_bb[i, 4], A_h_CO_bb[i, 5], A_h_CO_bb[i, 6],
+			   A_h_CO_bb[i, 7], A_h_CO_bb[i, 8], A_h_CO_bb[i, 9],
+			   A_h_CO_bb[i, 10], A_h_CO_bb[i, 11], A_h_CO_bb[i, 12],
+			   A_h_CO_bb[i, 13], A_h_CO_bb[i, 14], A_h_CO_bb[i, 15],
+			   A_h_CO_bb[i, 16], A_h_CO_bb[i, 17], A_h_CO_bb[i, 18],
+			   A_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_n_N_bb[i, 1], A_n_N_bb[i, 2], A_n_N_bb[i, 3], A_n_N_bb[i,
+																		4],
+			   A_n_N_bb[i, 5], A_n_N_bb[i, 6], A_n_N_bb[i, 7], A_n_N_bb[i,
+																		8],
+			   A_n_N_bb[i, 9], A_n_N_bb[i, 10], A_n_N_bb[i, 11],
+			   A_n_N_bb[i, 12], A_n_N_bb[i, 13], A_n_N_bb[i, 14],
+			   A_n_N_bb[i, 15], A_n_N_bb[i, 16], A_n_N_bb[i, 17],
+			   A_n_N_bb[i, 18], A_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_n_Ca_bb[i, 1], A_n_Ca_bb[i, 2], A_n_Ca_bb[i, 3],
+			   A_n_Ca_bb[i, 4], A_n_Ca_bb[i, 5], A_n_Ca_bb[i, 6],
+			   A_n_Ca_bb[i, 7], A_n_Ca_bb[i, 8], A_n_Ca_bb[i, 9],
+			   A_n_Ca_bb[i, 10], A_n_Ca_bb[i, 11], A_n_Ca_bb[i, 12],
+			   A_n_Ca_bb[i, 13], A_n_Ca_bb[i, 14], A_n_Ca_bb[i, 15],
+			   A_n_Ca_bb[i, 16], A_n_Ca_bb[i, 17], A_n_Ca_bb[i, 18],
+			   A_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_n_Cb_bb[i, 1], A_n_Cb_bb[i, 2], A_n_Cb_bb[i, 3],
+			   A_n_Cb_bb[i, 4], A_n_Cb_bb[i, 5], A_n_Cb_bb[i, 6],
+			   A_n_Cb_bb[i, 7], A_n_Cb_bb[i, 8], A_n_Cb_bb[i, 9],
+			   A_n_Cb_bb[i, 10], A_n_Cb_bb[i, 11], A_n_Cb_bb[i, 12],
+			   A_n_Cb_bb[i, 13], A_n_Cb_bb[i, 14], A_n_Cb_bb[i, 15],
+			   A_n_Cb_bb[i, 16], A_n_Cb_bb[i, 17], A_n_Cb_bb[i, 18],
+			   A_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_n_CO_bb[i, 1], A_n_CO_bb[i, 2], A_n_CO_bb[i, 3],
+			   A_n_CO_bb[i, 4], A_n_CO_bb[i, 5], A_n_CO_bb[i, 6],
+			   A_n_CO_bb[i, 7], A_n_CO_bb[i, 8], A_n_CO_bb[i, 9],
+			   A_n_CO_bb[i, 10], A_n_CO_bb[i, 11], A_n_CO_bb[i, 12],
+			   A_n_CO_bb[i, 13], A_n_CO_bb[i, 14], A_n_CO_bb[i, 15],
+			   A_n_CO_bb[i, 16], A_n_CO_bb[i, 17], A_n_CO_bb[i, 18],
+			   A_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_s_N_bb[i, 1], G_s_N_bb[i, 2], G_s_N_bb[i, 3], G_s_N_bb[i,
+																		4],
+			   G_s_N_bb[i, 5], G_s_N_bb[i, 6], G_s_N_bb[i, 7], G_s_N_bb[i,
+																		8],
+			   G_s_N_bb[i, 9], G_s_N_bb[i, 10], G_s_N_bb[i, 11],
+			   G_s_N_bb[i, 12], G_s_N_bb[i, 13], G_s_N_bb[i, 14],
+			   G_s_N_bb[i, 15], G_s_N_bb[i, 16], G_s_N_bb[i, 17],
+			   G_s_N_bb[i, 18], G_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_s_Ca_bb[i, 1], G_s_Ca_bb[i, 2], G_s_Ca_bb[i, 3],
+			   G_s_Ca_bb[i, 4], G_s_Ca_bb[i, 5], G_s_Ca_bb[i, 6],
+			   G_s_Ca_bb[i, 7], G_s_Ca_bb[i, 8], G_s_Ca_bb[i, 9],
+			   G_s_Ca_bb[i, 10], G_s_Ca_bb[i, 11], G_s_Ca_bb[i, 12],
+			   G_s_Ca_bb[i, 13], G_s_Ca_bb[i, 14], G_s_Ca_bb[i, 15],
+			   G_s_Ca_bb[i, 16], G_s_Ca_bb[i, 17], G_s_Ca_bb[i, 18],
+			   G_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_s_Cb_bb[i, 1], G_s_Cb_bb[i, 2], G_s_Cb_bb[i, 3],
+			   G_s_Cb_bb[i, 4], G_s_Cb_bb[i, 5], G_s_Cb_bb[i, 6],
+			   G_s_Cb_bb[i, 7], G_s_Cb_bb[i, 8], G_s_Cb_bb[i, 9],
+			   G_s_Cb_bb[i, 10], G_s_Cb_bb[i, 11], G_s_Cb_bb[i, 12],
+			   G_s_Cb_bb[i, 13], G_s_Cb_bb[i, 14], G_s_Cb_bb[i, 15],
+			   G_s_Cb_bb[i, 16], G_s_Cb_bb[i, 17], G_s_Cb_bb[i, 18],
+			   G_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_s_CO_bb[i, 1], G_s_CO_bb[i, 2], G_s_CO_bb[i, 3],
+			   G_s_CO_bb[i, 4], G_s_CO_bb[i, 5], G_s_CO_bb[i, 6],
+			   G_s_CO_bb[i, 7], G_s_CO_bb[i, 8], G_s_CO_bb[i, 9],
+			   G_s_CO_bb[i, 10], G_s_CO_bb[i, 11], G_s_CO_bb[i, 12],
+			   G_s_CO_bb[i, 13], G_s_CO_bb[i, 14], G_s_CO_bb[i, 15],
+			   G_s_CO_bb[i, 16], G_s_CO_bb[i, 17], G_s_CO_bb[i, 18],
+			   G_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "G_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_h_N_bb[i, 1], G_h_N_bb[i, 2], G_h_N_bb[i, 3], G_h_N_bb[i,
+																		4],
+			   G_h_N_bb[i, 5], G_h_N_bb[i, 6], G_h_N_bb[i, 7], G_h_N_bb[i,
+																		8],
+			   G_h_N_bb[i, 9], G_h_N_bb[i, 10], G_h_N_bb[i, 11],
+			   G_h_N_bb[i, 12], G_h_N_bb[i, 13], G_h_N_bb[i, 14],
+			   G_h_N_bb[i, 15], G_h_N_bb[i, 16], G_h_N_bb[i, 17],
+			   G_h_N_bb[i, 18], G_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_h_Ca_bb[i, 1], G_h_Ca_bb[i, 2], G_h_Ca_bb[i, 3],
+			   G_h_Ca_bb[i, 4], G_h_Ca_bb[i, 5], G_h_Ca_bb[i, 6],
+			   G_h_Ca_bb[i, 7], G_h_Ca_bb[i, 8], G_h_Ca_bb[i, 9],
+			   G_h_Ca_bb[i, 10], G_h_Ca_bb[i, 11], G_h_Ca_bb[i, 12],
+			   G_h_Ca_bb[i, 13], G_h_Ca_bb[i, 14], G_h_Ca_bb[i, 15],
+			   G_h_Ca_bb[i, 16], G_h_Ca_bb[i, 17], G_h_Ca_bb[i, 18],
+			   G_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_h_Cb_bb[i, 1], G_h_Cb_bb[i, 2], G_h_Cb_bb[i, 3],
+			   G_h_Cb_bb[i, 4], G_h_Cb_bb[i, 5], G_h_Cb_bb[i, 6],
+			   G_h_Cb_bb[i, 7], G_h_Cb_bb[i, 8], G_h_Cb_bb[i, 9],
+			   G_h_Cb_bb[i, 10], G_h_Cb_bb[i, 11], G_h_Cb_bb[i, 12],
+			   G_h_Cb_bb[i, 13], G_h_Cb_bb[i, 14], G_h_Cb_bb[i, 15],
+			   G_h_Cb_bb[i, 16], G_h_Cb_bb[i, 17], G_h_Cb_bb[i, 18],
+			   G_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_h_CO_bb[i, 1], G_h_CO_bb[i, 2], G_h_CO_bb[i, 3],
+			   G_h_CO_bb[i, 4], G_h_CO_bb[i, 5], G_h_CO_bb[i, 6],
+			   G_h_CO_bb[i, 7], G_h_CO_bb[i, 8], G_h_CO_bb[i, 9],
+			   G_h_CO_bb[i, 10], G_h_CO_bb[i, 11], G_h_CO_bb[i, 12],
+			   G_h_CO_bb[i, 13], G_h_CO_bb[i, 14], G_h_CO_bb[i, 15],
+			   G_h_CO_bb[i, 16], G_h_CO_bb[i, 17], G_h_CO_bb[i, 18],
+			   G_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_n_N_bb[i, 1], G_n_N_bb[i, 2], G_n_N_bb[i, 3], G_n_N_bb[i,
+																		4],
+			   G_n_N_bb[i, 5], G_n_N_bb[i, 6], G_n_N_bb[i, 7], G_n_N_bb[i,
+																		8],
+			   G_n_N_bb[i, 9], G_n_N_bb[i, 10], G_n_N_bb[i, 11],
+			   G_n_N_bb[i, 12], G_n_N_bb[i, 13], G_n_N_bb[i, 14],
+			   G_n_N_bb[i, 15], G_n_N_bb[i, 16], G_n_N_bb[i, 17],
+			   G_n_N_bb[i, 18], G_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_n_Ca_bb[i, 1], G_n_Ca_bb[i, 2], G_n_Ca_bb[i, 3],
+			   G_n_Ca_bb[i, 4], G_n_Ca_bb[i, 5], G_n_Ca_bb[i, 6],
+			   G_n_Ca_bb[i, 7], G_n_Ca_bb[i, 8], G_n_Ca_bb[i, 9],
+			   G_n_Ca_bb[i, 10], G_n_Ca_bb[i, 11], G_n_Ca_bb[i, 12],
+			   G_n_Ca_bb[i, 13], G_n_Ca_bb[i, 14], G_n_Ca_bb[i, 15],
+			   G_n_Ca_bb[i, 16], G_n_Ca_bb[i, 17], G_n_Ca_bb[i, 18],
+			   G_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_n_Cb_bb[i, 1], G_n_Cb_bb[i, 2], G_n_Cb_bb[i, 3],
+			   G_n_Cb_bb[i, 4], G_n_Cb_bb[i, 5], G_n_Cb_bb[i, 6],
+			   G_n_Cb_bb[i, 7], G_n_Cb_bb[i, 8], G_n_Cb_bb[i, 9],
+			   G_n_Cb_bb[i, 10], G_n_Cb_bb[i, 11], G_n_Cb_bb[i, 12],
+			   G_n_Cb_bb[i, 13], G_n_Cb_bb[i, 14], G_n_Cb_bb[i, 15],
+			   G_n_Cb_bb[i, 16], G_n_Cb_bb[i, 17], G_n_Cb_bb[i, 18],
+			   G_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_n_CO_bb[i, 1], G_n_CO_bb[i, 2], G_n_CO_bb[i, 3],
+			   G_n_CO_bb[i, 4], G_n_CO_bb[i, 5], G_n_CO_bb[i, 6],
+			   G_n_CO_bb[i, 7], G_n_CO_bb[i, 8], G_n_CO_bb[i, 9],
+			   G_n_CO_bb[i, 10], G_n_CO_bb[i, 11], G_n_CO_bb[i, 12],
+			   G_n_CO_bb[i, 13], G_n_CO_bb[i, 14], G_n_CO_bb[i, 15],
+			   G_n_CO_bb[i, 16], G_n_CO_bb[i, 17], G_n_CO_bb[i, 18],
+			   G_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_s_N_bb[i, 1], Q_s_N_bb[i, 2], Q_s_N_bb[i, 3], Q_s_N_bb[i,
+																		4],
+			   Q_s_N_bb[i, 5], Q_s_N_bb[i, 6], Q_s_N_bb[i, 7], Q_s_N_bb[i,
+																		8],
+			   Q_s_N_bb[i, 9], Q_s_N_bb[i, 10], Q_s_N_bb[i, 11],
+			   Q_s_N_bb[i, 12], Q_s_N_bb[i, 13], Q_s_N_bb[i, 14],
+			   Q_s_N_bb[i, 15], Q_s_N_bb[i, 16], Q_s_N_bb[i, 17],
+			   Q_s_N_bb[i, 18], Q_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_s_Ca_bb[i, 1], Q_s_Ca_bb[i, 2], Q_s_Ca_bb[i, 3],
+			   Q_s_Ca_bb[i, 4], Q_s_Ca_bb[i, 5], Q_s_Ca_bb[i, 6],
+			   Q_s_Ca_bb[i, 7], Q_s_Ca_bb[i, 8], Q_s_Ca_bb[i, 9],
+			   Q_s_Ca_bb[i, 10], Q_s_Ca_bb[i, 11], Q_s_Ca_bb[i, 12],
+			   Q_s_Ca_bb[i, 13], Q_s_Ca_bb[i, 14], Q_s_Ca_bb[i, 15],
+			   Q_s_Ca_bb[i, 16], Q_s_Ca_bb[i, 17], Q_s_Ca_bb[i, 18],
+			   Q_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_s_Cb_bb[i, 1], Q_s_Cb_bb[i, 2], Q_s_Cb_bb[i, 3],
+			   Q_s_Cb_bb[i, 4], Q_s_Cb_bb[i, 5], Q_s_Cb_bb[i, 6],
+			   Q_s_Cb_bb[i, 7], Q_s_Cb_bb[i, 8], Q_s_Cb_bb[i, 9],
+			   Q_s_Cb_bb[i, 10], Q_s_Cb_bb[i, 11], Q_s_Cb_bb[i, 12],
+			   Q_s_Cb_bb[i, 13], Q_s_Cb_bb[i, 14], Q_s_Cb_bb[i, 15],
+			   Q_s_Cb_bb[i, 16], Q_s_Cb_bb[i, 17], Q_s_Cb_bb[i, 18],
+			   Q_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_s_CO_bb[i, 1], Q_s_CO_bb[i, 2], Q_s_CO_bb[i, 3],
+			   Q_s_CO_bb[i, 4], Q_s_CO_bb[i, 5], Q_s_CO_bb[i, 6],
+			   Q_s_CO_bb[i, 7], Q_s_CO_bb[i, 8], Q_s_CO_bb[i, 9],
+			   Q_s_CO_bb[i, 10], Q_s_CO_bb[i, 11], Q_s_CO_bb[i, 12],
+			   Q_s_CO_bb[i, 13], Q_s_CO_bb[i, 14], Q_s_CO_bb[i, 15],
+			   Q_s_CO_bb[i, 16], Q_s_CO_bb[i, 17], Q_s_CO_bb[i, 18],
+			   Q_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "Q_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_h_N_bb[i, 1], Q_h_N_bb[i, 2], Q_h_N_bb[i, 3], Q_h_N_bb[i,
+																		4],
+			   Q_h_N_bb[i, 5], Q_h_N_bb[i, 6], Q_h_N_bb[i, 7], Q_h_N_bb[i,
+																		8],
+			   Q_h_N_bb[i, 9], Q_h_N_bb[i, 10], Q_h_N_bb[i, 11],
+			   Q_h_N_bb[i, 12], Q_h_N_bb[i, 13], Q_h_N_bb[i, 14],
+			   Q_h_N_bb[i, 15], Q_h_N_bb[i, 16], Q_h_N_bb[i, 17],
+			   Q_h_N_bb[i, 18], Q_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_h_Ca_bb[i, 1], Q_h_Ca_bb[i, 2], Q_h_Ca_bb[i, 3],
+			   Q_h_Ca_bb[i, 4], Q_h_Ca_bb[i, 5], Q_h_Ca_bb[i, 6],
+			   Q_h_Ca_bb[i, 7], Q_h_Ca_bb[i, 8], Q_h_Ca_bb[i, 9],
+			   Q_h_Ca_bb[i, 10], Q_h_Ca_bb[i, 11], Q_h_Ca_bb[i, 12],
+			   Q_h_Ca_bb[i, 13], Q_h_Ca_bb[i, 14], Q_h_Ca_bb[i, 15],
+			   Q_h_Ca_bb[i, 16], Q_h_Ca_bb[i, 17], Q_h_Ca_bb[i, 18],
+			   Q_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_h_Cb_bb[i, 1], Q_h_Cb_bb[i, 2], Q_h_Cb_bb[i, 3],
+			   Q_h_Cb_bb[i, 4], Q_h_Cb_bb[i, 5], Q_h_Cb_bb[i, 6],
+			   Q_h_Cb_bb[i, 7], Q_h_Cb_bb[i, 8], Q_h_Cb_bb[i, 9],
+			   Q_h_Cb_bb[i, 10], Q_h_Cb_bb[i, 11], Q_h_Cb_bb[i, 12],
+			   Q_h_Cb_bb[i, 13], Q_h_Cb_bb[i, 14], Q_h_Cb_bb[i, 15],
+			   Q_h_Cb_bb[i, 16], Q_h_Cb_bb[i, 17], Q_h_Cb_bb[i, 18],
+			   Q_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_h_CO_bb[i, 1], Q_h_CO_bb[i, 2], Q_h_CO_bb[i, 3],
+			   Q_h_CO_bb[i, 4], Q_h_CO_bb[i, 5], Q_h_CO_bb[i, 6],
+			   Q_h_CO_bb[i, 7], Q_h_CO_bb[i, 8], Q_h_CO_bb[i, 9],
+			   Q_h_CO_bb[i, 10], Q_h_CO_bb[i, 11], Q_h_CO_bb[i, 12],
+			   Q_h_CO_bb[i, 13], Q_h_CO_bb[i, 14], Q_h_CO_bb[i, 15],
+			   Q_h_CO_bb[i, 16], Q_h_CO_bb[i, 17], Q_h_CO_bb[i, 18],
+			   Q_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_n_N_bb[i, 1], Q_n_N_bb[i, 2], Q_n_N_bb[i, 3], Q_n_N_bb[i,
+																		4],
+			   Q_n_N_bb[i, 5], Q_n_N_bb[i, 6], Q_n_N_bb[i, 7], Q_n_N_bb[i,
+																		8],
+			   Q_n_N_bb[i, 9], Q_n_N_bb[i, 10], Q_n_N_bb[i, 11],
+			   Q_n_N_bb[i, 12], Q_n_N_bb[i, 13], Q_n_N_bb[i, 14],
+			   Q_n_N_bb[i, 15], Q_n_N_bb[i, 16], Q_n_N_bb[i, 17],
+			   Q_n_N_bb[i, 18], Q_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_n_Ca_bb[i, 1], Q_n_Ca_bb[i, 2], Q_n_Ca_bb[i, 3],
+			   Q_n_Ca_bb[i, 4], Q_n_Ca_bb[i, 5], Q_n_Ca_bb[i, 6],
+			   Q_n_Ca_bb[i, 7], Q_n_Ca_bb[i, 8], Q_n_Ca_bb[i, 9],
+			   Q_n_Ca_bb[i, 10], Q_n_Ca_bb[i, 11], Q_n_Ca_bb[i, 12],
+			   Q_n_Ca_bb[i, 13], Q_n_Ca_bb[i, 14], Q_n_Ca_bb[i, 15],
+			   Q_n_Ca_bb[i, 16], Q_n_Ca_bb[i, 17], Q_n_Ca_bb[i, 18],
+			   Q_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_n_bb_Cb", "r");
+	i = 0;
+	db = safe_fopen(prefix + "Q_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_n_Cb_bb[i, 1], Q_n_Cb_bb[i, 2], Q_n_Cb_bb[i, 3],
+			   Q_n_Cb_bb[i, 4], Q_n_Cb_bb[i, 5], Q_n_Cb_bb[i, 6],
+			   Q_n_Cb_bb[i, 7], Q_n_Cb_bb[i, 8], Q_n_Cb_bb[i, 9],
+			   Q_n_Cb_bb[i, 10], Q_n_Cb_bb[i, 11], Q_n_Cb_bb[i, 12],
+			   Q_n_Cb_bb[i, 13], Q_n_Cb_bb[i, 14], Q_n_Cb_bb[i, 15],
+			   Q_n_Cb_bb[i, 16], Q_n_Cb_bb[i, 17], Q_n_Cb_bb[i, 18],
+			   Q_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_n_CO_bb[i, 1], Q_n_CO_bb[i, 2], Q_n_CO_bb[i, 3],
+			   Q_n_CO_bb[i, 4], Q_n_CO_bb[i, 5], Q_n_CO_bb[i, 6],
+			   Q_n_CO_bb[i, 7], Q_n_CO_bb[i, 8], Q_n_CO_bb[i, 9],
+			   Q_n_CO_bb[i, 10], Q_n_CO_bb[i, 11], Q_n_CO_bb[i, 12],
+			   Q_n_CO_bb[i, 13], Q_n_CO_bb[i, 14], Q_n_CO_bb[i, 15],
+			   Q_n_CO_bb[i, 16], Q_n_CO_bb[i, 17], Q_n_CO_bb[i, 18],
+			   Q_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_s_N_bb[i, 1], F_s_N_bb[i, 2], F_s_N_bb[i, 3], F_s_N_bb[i,
+																		4],
+			   F_s_N_bb[i, 5], F_s_N_bb[i, 6], F_s_N_bb[i, 7], F_s_N_bb[i,
+																		8],
+			   F_s_N_bb[i, 9], F_s_N_bb[i, 10], F_s_N_bb[i, 11],
+			   F_s_N_bb[i, 12], F_s_N_bb[i, 13], F_s_N_bb[i, 14],
+			   F_s_N_bb[i, 15], F_s_N_bb[i, 16], F_s_N_bb[i, 17],
+			   F_s_N_bb[i, 18], F_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_s_Ca_bb[i, 1], F_s_Ca_bb[i, 2], F_s_Ca_bb[i, 3],
+			   F_s_Ca_bb[i, 4], F_s_Ca_bb[i, 5], F_s_Ca_bb[i, 6],
+			   F_s_Ca_bb[i, 7], F_s_Ca_bb[i, 8], F_s_Ca_bb[i, 9],
+			   F_s_Ca_bb[i, 10], F_s_Ca_bb[i, 11], F_s_Ca_bb[i, 12],
+			   F_s_Ca_bb[i, 13], F_s_Ca_bb[i, 14], F_s_Ca_bb[i, 15],
+			   F_s_Ca_bb[i, 16], F_s_Ca_bb[i, 17], F_s_Ca_bb[i, 18],
+			   F_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_s_Cb_bb[i, 1], F_s_Cb_bb[i, 2], F_s_Cb_bb[i, 3],
+			   F_s_Cb_bb[i, 4], F_s_Cb_bb[i, 5], F_s_Cb_bb[i, 6],
+			   F_s_Cb_bb[i, 7], F_s_Cb_bb[i, 8], F_s_Cb_bb[i, 9],
+			   F_s_Cb_bb[i, 10], F_s_Cb_bb[i, 11], F_s_Cb_bb[i, 12],
+			   F_s_Cb_bb[i, 13], F_s_Cb_bb[i, 14], F_s_Cb_bb[i, 15],
+			   F_s_Cb_bb[i, 16], F_s_Cb_bb[i, 17], F_s_Cb_bb[i, 18],
+			   F_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_s_CO_bb[i, 1], F_s_CO_bb[i, 2], F_s_CO_bb[i, 3],
+			   F_s_CO_bb[i, 4], F_s_CO_bb[i, 5], F_s_CO_bb[i, 6],
+			   F_s_CO_bb[i, 7], F_s_CO_bb[i, 8], F_s_CO_bb[i, 9],
+			   F_s_CO_bb[i, 10], F_s_CO_bb[i, 11], F_s_CO_bb[i, 12],
+			   F_s_CO_bb[i, 13], F_s_CO_bb[i, 14], F_s_CO_bb[i, 15],
+			   F_s_CO_bb[i, 16], F_s_CO_bb[i, 17], F_s_CO_bb[i, 18],
+			   F_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "F_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_h_N_bb[i, 1], F_h_N_bb[i, 2], F_h_N_bb[i, 3], F_h_N_bb[i,
+																		4],
+			   F_h_N_bb[i, 5], F_h_N_bb[i, 6], F_h_N_bb[i, 7], F_h_N_bb[i,
+																		8],
+			   F_h_N_bb[i, 9], F_h_N_bb[i, 10], F_h_N_bb[i, 11],
+			   F_h_N_bb[i, 12], F_h_N_bb[i, 13], F_h_N_bb[i, 14],
+			   F_h_N_bb[i, 15], F_h_N_bb[i, 16], F_h_N_bb[i, 17],
+			   F_h_N_bb[i, 18], F_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_h_Ca_bb[i, 1], F_h_Ca_bb[i, 2], F_h_Ca_bb[i, 3],
+			   F_h_Ca_bb[i, 4], F_h_Ca_bb[i, 5], F_h_Ca_bb[i, 6],
+			   F_h_Ca_bb[i, 7], F_h_Ca_bb[i, 8], F_h_Ca_bb[i, 9],
+			   F_h_Ca_bb[i, 10], F_h_Ca_bb[i, 11], F_h_Ca_bb[i, 12],
+			   F_h_Ca_bb[i, 13], F_h_Ca_bb[i, 14], F_h_Ca_bb[i, 15],
+			   F_h_Ca_bb[i, 16], F_h_Ca_bb[i, 17], F_h_Ca_bb[i, 18],
+			   F_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_h_Cb_bb[i, 1], F_h_Cb_bb[i, 2], F_h_Cb_bb[i, 3],
+			   F_h_Cb_bb[i, 4], F_h_Cb_bb[i, 5], F_h_Cb_bb[i, 6],
+			   F_h_Cb_bb[i, 7], F_h_Cb_bb[i, 8], F_h_Cb_bb[i, 9],
+			   F_h_Cb_bb[i, 10], F_h_Cb_bb[i, 11], F_h_Cb_bb[i, 12],
+			   F_h_Cb_bb[i, 13], F_h_Cb_bb[i, 14], F_h_Cb_bb[i, 15],
+			   F_h_Cb_bb[i, 16], F_h_Cb_bb[i, 17], F_h_Cb_bb[i, 18],
+			   F_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_h_CO_bb[i, 1], F_h_CO_bb[i, 2], F_h_CO_bb[i, 3],
+			   F_h_CO_bb[i, 4], F_h_CO_bb[i, 5], F_h_CO_bb[i, 6],
+			   F_h_CO_bb[i, 7], F_h_CO_bb[i, 8], F_h_CO_bb[i, 9],
+			   F_h_CO_bb[i, 10], F_h_CO_bb[i, 11], F_h_CO_bb[i, 12],
+			   F_h_CO_bb[i, 13], F_h_CO_bb[i, 14], F_h_CO_bb[i, 15],
+			   F_h_CO_bb[i, 16], F_h_CO_bb[i, 17], F_h_CO_bb[i, 18],
+			   F_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_n_N_bb[i, 1], F_n_N_bb[i, 2], F_n_N_bb[i, 3], F_n_N_bb[i,
+																		4],
+			   F_n_N_bb[i, 5], F_n_N_bb[i, 6], F_n_N_bb[i, 7], F_n_N_bb[i,
+																		8],
+			   F_n_N_bb[i, 9], F_n_N_bb[i, 10], F_n_N_bb[i, 11],
+			   F_n_N_bb[i, 12], F_n_N_bb[i, 13], F_n_N_bb[i, 14],
+			   F_n_N_bb[i, 15], F_n_N_bb[i, 16], F_n_N_bb[i, 17],
+			   F_n_N_bb[i, 18], F_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_n_Ca_bb[i, 1], F_n_Ca_bb[i, 2], F_n_Ca_bb[i, 3],
+			   F_n_Ca_bb[i, 4], F_n_Ca_bb[i, 5], F_n_Ca_bb[i, 6],
+			   F_n_Ca_bb[i, 7], F_n_Ca_bb[i, 8], F_n_Ca_bb[i, 9],
+			   F_n_Ca_bb[i, 10], F_n_Ca_bb[i, 11], F_n_Ca_bb[i, 12],
+			   F_n_Ca_bb[i, 13], F_n_Ca_bb[i, 14], F_n_Ca_bb[i, 15],
+			   F_n_Ca_bb[i, 16], F_n_Ca_bb[i, 17], F_n_Ca_bb[i, 18],
+			   F_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_n_Cb_bb[i, 1], F_n_Cb_bb[i, 2], F_n_Cb_bb[i, 3],
+			   F_n_Cb_bb[i, 4], F_n_Cb_bb[i, 5], F_n_Cb_bb[i, 6],
+			   F_n_Cb_bb[i, 7], F_n_Cb_bb[i, 8], F_n_Cb_bb[i, 9],
+			   F_n_Cb_bb[i, 10], F_n_Cb_bb[i, 11], F_n_Cb_bb[i, 12],
+			   F_n_Cb_bb[i, 13], F_n_Cb_bb[i, 14], F_n_Cb_bb[i, 15],
+			   F_n_Cb_bb[i, 16], F_n_Cb_bb[i, 17], F_n_Cb_bb[i, 18],
+			   F_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_n_CO_bb[i, 1], F_n_CO_bb[i, 2], F_n_CO_bb[i, 3],
+			   F_n_CO_bb[i, 4], F_n_CO_bb[i, 5], F_n_CO_bb[i, 6],
+			   F_n_CO_bb[i, 7], F_n_CO_bb[i, 8], F_n_CO_bb[i, 9],
+			   F_n_CO_bb[i, 10], F_n_CO_bb[i, 11], F_n_CO_bb[i, 12],
+			   F_n_CO_bb[i, 13], F_n_CO_bb[i, 14], F_n_CO_bb[i, 15],
+			   F_n_CO_bb[i, 16], F_n_CO_bb[i, 17], F_n_CO_bb[i, 18],
+			   F_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_s_N_bb[i, 1], S_s_N_bb[i, 2], S_s_N_bb[i, 3], S_s_N_bb[i,
+																		4],
+			   S_s_N_bb[i, 5], S_s_N_bb[i, 6], S_s_N_bb[i, 7], S_s_N_bb[i,
+																		8],
+			   S_s_N_bb[i, 9], S_s_N_bb[i, 10], S_s_N_bb[i, 11],
+			   S_s_N_bb[i, 12], S_s_N_bb[i, 13], S_s_N_bb[i, 14],
+			   S_s_N_bb[i, 15], S_s_N_bb[i, 16], S_s_N_bb[i, 17],
+			   S_s_N_bb[i, 18], S_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_s_Ca_bb[i, 1], S_s_Ca_bb[i, 2], S_s_Ca_bb[i, 3],
+			   S_s_Ca_bb[i, 4], S_s_Ca_bb[i, 5], S_s_Ca_bb[i, 6],
+			   S_s_Ca_bb[i, 7], S_s_Ca_bb[i, 8], S_s_Ca_bb[i, 9],
+			   S_s_Ca_bb[i, 10], S_s_Ca_bb[i, 11], S_s_Ca_bb[i, 12],
+			   S_s_Ca_bb[i, 13], S_s_Ca_bb[i, 14], S_s_Ca_bb[i, 15],
+			   S_s_Ca_bb[i, 16], S_s_Ca_bb[i, 17], S_s_Ca_bb[i, 18],
+			   S_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_s_Cb_bb[i, 1], S_s_Cb_bb[i, 2], S_s_Cb_bb[i, 3],
+			   S_s_Cb_bb[i, 4], S_s_Cb_bb[i, 5], S_s_Cb_bb[i, 6],
+			   S_s_Cb_bb[i, 7], S_s_Cb_bb[i, 8], S_s_Cb_bb[i, 9],
+			   S_s_Cb_bb[i, 10], S_s_Cb_bb[i, 11], S_s_Cb_bb[i, 12],
+			   S_s_Cb_bb[i, 13], S_s_Cb_bb[i, 14], S_s_Cb_bb[i, 15],
+			   S_s_Cb_bb[i, 16], S_s_Cb_bb[i, 17], S_s_Cb_bb[i, 18],
+			   S_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_s_CO_bb[i, 1], S_s_CO_bb[i, 2], S_s_CO_bb[i, 3],
+			   S_s_CO_bb[i, 4], S_s_CO_bb[i, 5], S_s_CO_bb[i, 6],
+			   S_s_CO_bb[i, 7], S_s_CO_bb[i, 8], S_s_CO_bb[i, 9],
+			   S_s_CO_bb[i, 10], S_s_CO_bb[i, 11], S_s_CO_bb[i, 12],
+			   S_s_CO_bb[i, 13], S_s_CO_bb[i, 14], S_s_CO_bb[i, 15],
+			   S_s_CO_bb[i, 16], S_s_CO_bb[i, 17], S_s_CO_bb[i, 18],
+			   S_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "S_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_h_N_bb[i, 1], S_h_N_bb[i, 2], S_h_N_bb[i, 3], S_h_N_bb[i,
+																		4],
+			   S_h_N_bb[i, 5], S_h_N_bb[i, 6], S_h_N_bb[i, 7], S_h_N_bb[i,
+																		8],
+			   S_h_N_bb[i, 9], S_h_N_bb[i, 10], S_h_N_bb[i, 11],
+			   S_h_N_bb[i, 12], S_h_N_bb[i, 13], S_h_N_bb[i, 14],
+			   S_h_N_bb[i, 15], S_h_N_bb[i, 16], S_h_N_bb[i, 17],
+			   S_h_N_bb[i, 18], S_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_h_Ca_bb[i, 1], S_h_Ca_bb[i, 2], S_h_Ca_bb[i, 3],
+			   S_h_Ca_bb[i, 4], S_h_Ca_bb[i, 5], S_h_Ca_bb[i, 6],
+			   S_h_Ca_bb[i, 7], S_h_Ca_bb[i, 8], S_h_Ca_bb[i, 9],
+			   S_h_Ca_bb[i, 10], S_h_Ca_bb[i, 11], S_h_Ca_bb[i, 12],
+			   S_h_Ca_bb[i, 13], S_h_Ca_bb[i, 14], S_h_Ca_bb[i, 15],
+			   S_h_Ca_bb[i, 16], S_h_Ca_bb[i, 17], S_h_Ca_bb[i, 18],
+			   S_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_h_Cb_bb[i, 1], S_h_Cb_bb[i, 2], S_h_Cb_bb[i, 3],
+			   S_h_Cb_bb[i, 4], S_h_Cb_bb[i, 5], S_h_Cb_bb[i, 6],
+			   S_h_Cb_bb[i, 7], S_h_Cb_bb[i, 8], S_h_Cb_bb[i, 9],
+			   S_h_Cb_bb[i, 10], S_h_Cb_bb[i, 11], S_h_Cb_bb[i, 12],
+			   S_h_Cb_bb[i, 13], S_h_Cb_bb[i, 14], S_h_Cb_bb[i, 15],
+			   S_h_Cb_bb[i, 16], S_h_Cb_bb[i, 17], S_h_Cb_bb[i, 18],
+			   S_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_h_CO_bb[i, 1], S_h_CO_bb[i, 2], S_h_CO_bb[i, 3],
+			   S_h_CO_bb[i, 4], S_h_CO_bb[i, 5], S_h_CO_bb[i, 6],
+			   S_h_CO_bb[i, 7], S_h_CO_bb[i, 8], S_h_CO_bb[i, 9],
+			   S_h_CO_bb[i, 10], S_h_CO_bb[i, 11], S_h_CO_bb[i, 12],
+			   S_h_CO_bb[i, 13], S_h_CO_bb[i, 14], S_h_CO_bb[i, 15],
+			   S_h_CO_bb[i, 16], S_h_CO_bb[i, 17], S_h_CO_bb[i, 18],
+			   S_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_n_N_bb[i, 1], S_n_N_bb[i, 2], S_n_N_bb[i, 3], S_n_N_bb[i,
+																		4],
+			   S_n_N_bb[i, 5], S_n_N_bb[i, 6], S_n_N_bb[i, 7], S_n_N_bb[i,
+																		8],
+			   S_n_N_bb[i, 9], S_n_N_bb[i, 10], S_n_N_bb[i, 11],
+			   S_n_N_bb[i, 12], S_n_N_bb[i, 13], S_n_N_bb[i, 14],
+			   S_n_N_bb[i, 15], S_n_N_bb[i, 16], S_n_N_bb[i, 17],
+			   S_n_N_bb[i, 18], S_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_n_Ca_bb[i, 1], S_n_Ca_bb[i, 2], S_n_Ca_bb[i, 3],
+			   S_n_Ca_bb[i, 4], S_n_Ca_bb[i, 5], S_n_Ca_bb[i, 6],
+			   S_n_Ca_bb[i, 7], S_n_Ca_bb[i, 8], S_n_Ca_bb[i, 9],
+			   S_n_Ca_bb[i, 10], S_n_Ca_bb[i, 11], S_n_Ca_bb[i, 12],
+			   S_n_Ca_bb[i, 13], S_n_Ca_bb[i, 14], S_n_Ca_bb[i, 15],
+			   S_n_Ca_bb[i, 16], S_n_Ca_bb[i, 17], S_n_Ca_bb[i, 18],
+			   S_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_n_Cb_bb[i, 1], S_n_Cb_bb[i, 2], S_n_Cb_bb[i, 3],
+			   S_n_Cb_bb[i, 4], S_n_Cb_bb[i, 5], S_n_Cb_bb[i, 6],
+			   S_n_Cb_bb[i, 7], S_n_Cb_bb[i, 8], S_n_Cb_bb[i, 9],
+			   S_n_Cb_bb[i, 10], S_n_Cb_bb[i, 11], S_n_Cb_bb[i, 12],
+			   S_n_Cb_bb[i, 13], S_n_Cb_bb[i, 14], S_n_Cb_bb[i, 15],
+			   S_n_Cb_bb[i, 16], S_n_Cb_bb[i, 17], S_n_Cb_bb[i, 18],
+			   S_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_n_CO_bb[i, 1], S_n_CO_bb[i, 2], S_n_CO_bb[i, 3],
+			   S_n_CO_bb[i, 4], S_n_CO_bb[i, 5], S_n_CO_bb[i, 6],
+			   S_n_CO_bb[i, 7], S_n_CO_bb[i, 8], S_n_CO_bb[i, 9],
+			   S_n_CO_bb[i, 10], S_n_CO_bb[i, 11], S_n_CO_bb[i, 12],
+			   S_n_CO_bb[i, 13], S_n_CO_bb[i, 14], S_n_CO_bb[i, 15],
+			   S_n_CO_bb[i, 16], S_n_CO_bb[i, 17], S_n_CO_bb[i, 18],
+			   S_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_s_N_bb[i, 1], V_s_N_bb[i, 2], V_s_N_bb[i, 3], V_s_N_bb[i,
+																		4],
+			   V_s_N_bb[i, 5], V_s_N_bb[i, 6], V_s_N_bb[i, 7], V_s_N_bb[i,
+																		8],
+			   V_s_N_bb[i, 9], V_s_N_bb[i, 10], V_s_N_bb[i, 11],
+			   V_s_N_bb[i, 12], V_s_N_bb[i, 13], V_s_N_bb[i, 14],
+			   V_s_N_bb[i, 15], V_s_N_bb[i, 16], V_s_N_bb[i, 17],
+			   V_s_N_bb[i, 18], V_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_s_Ca_bb[i, 1], V_s_Ca_bb[i, 2], V_s_Ca_bb[i, 3],
+			   V_s_Ca_bb[i, 4], V_s_Ca_bb[i, 5], V_s_Ca_bb[i, 6],
+			   V_s_Ca_bb[i, 7], V_s_Ca_bb[i, 8], V_s_Ca_bb[i, 9],
+			   V_s_Ca_bb[i, 10], V_s_Ca_bb[i, 11], V_s_Ca_bb[i, 12],
+			   V_s_Ca_bb[i, 13], V_s_Ca_bb[i, 14], V_s_Ca_bb[i, 15],
+			   V_s_Ca_bb[i, 16], V_s_Ca_bb[i, 17], V_s_Ca_bb[i, 18],
+			   V_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_s_Cb_bb[i, 1], V_s_Cb_bb[i, 2], V_s_Cb_bb[i, 3],
+			   V_s_Cb_bb[i, 4], V_s_Cb_bb[i, 5], V_s_Cb_bb[i, 6],
+			   V_s_Cb_bb[i, 7], V_s_Cb_bb[i, 8], V_s_Cb_bb[i, 9],
+			   V_s_Cb_bb[i, 10], V_s_Cb_bb[i, 11], V_s_Cb_bb[i, 12],
+			   V_s_Cb_bb[i, 13], V_s_Cb_bb[i, 14], V_s_Cb_bb[i, 15],
+			   V_s_Cb_bb[i, 16], V_s_Cb_bb[i, 17], V_s_Cb_bb[i, 18],
+			   V_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_s_CO_bb[i, 1], V_s_CO_bb[i, 2], V_s_CO_bb[i, 3],
+			   V_s_CO_bb[i, 4], V_s_CO_bb[i, 5], V_s_CO_bb[i, 6],
+			   V_s_CO_bb[i, 7], V_s_CO_bb[i, 8], V_s_CO_bb[i, 9],
+			   V_s_CO_bb[i, 10], V_s_CO_bb[i, 11], V_s_CO_bb[i, 12],
+			   V_s_CO_bb[i, 13], V_s_CO_bb[i, 14], V_s_CO_bb[i, 15],
+			   V_s_CO_bb[i, 16], V_s_CO_bb[i, 17], V_s_CO_bb[i, 18],
+			   V_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "V_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_h_N_bb[i, 1], V_h_N_bb[i, 2], V_h_N_bb[i, 3], V_h_N_bb[i,
+																		4],
+			   V_h_N_bb[i, 5], V_h_N_bb[i, 6], V_h_N_bb[i, 7], V_h_N_bb[i,
+																		8],
+			   V_h_N_bb[i, 9], V_h_N_bb[i, 10], V_h_N_bb[i, 11],
+			   V_h_N_bb[i, 12], V_h_N_bb[i, 13], V_h_N_bb[i, 14],
+			   V_h_N_bb[i, 15], V_h_N_bb[i, 16], V_h_N_bb[i, 17],
+			   V_h_N_bb[i, 18], V_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_h_Ca_bb[i, 1], V_h_Ca_bb[i, 2], V_h_Ca_bb[i, 3],
+			   V_h_Ca_bb[i, 4], V_h_Ca_bb[i, 5], V_h_Ca_bb[i, 6],
+			   V_h_Ca_bb[i, 7], V_h_Ca_bb[i, 8], V_h_Ca_bb[i, 9],
+			   V_h_Ca_bb[i, 10], V_h_Ca_bb[i, 11], V_h_Ca_bb[i, 12],
+			   V_h_Ca_bb[i, 13], V_h_Ca_bb[i, 14], V_h_Ca_bb[i, 15],
+			   V_h_Ca_bb[i, 16], V_h_Ca_bb[i, 17], V_h_Ca_bb[i, 18],
+			   V_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_h_Cb_bb[i, 1], V_h_Cb_bb[i, 2], V_h_Cb_bb[i, 3],
+			   V_h_Cb_bb[i, 4], V_h_Cb_bb[i, 5], V_h_Cb_bb[i, 6],
+			   V_h_Cb_bb[i, 7], V_h_Cb_bb[i, 8], V_h_Cb_bb[i, 9],
+			   V_h_Cb_bb[i, 10], V_h_Cb_bb[i, 11], V_h_Cb_bb[i, 12],
+			   V_h_Cb_bb[i, 13], V_h_Cb_bb[i, 14], V_h_Cb_bb[i, 15],
+			   V_h_Cb_bb[i, 16], V_h_Cb_bb[i, 17], V_h_Cb_bb[i, 18],
+			   V_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_h_CO_bb[i, 1], V_h_CO_bb[i, 2], V_h_CO_bb[i, 3],
+			   V_h_CO_bb[i, 4], V_h_CO_bb[i, 5], V_h_CO_bb[i, 6],
+			   V_h_CO_bb[i, 7], V_h_CO_bb[i, 8], V_h_CO_bb[i, 9],
+			   V_h_CO_bb[i, 10], V_h_CO_bb[i, 11], V_h_CO_bb[i, 12],
+			   V_h_CO_bb[i, 13], V_h_CO_bb[i, 14], V_h_CO_bb[i, 15],
+			   V_h_CO_bb[i, 16], V_h_CO_bb[i, 17], V_h_CO_bb[i, 18],
+			   V_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_n_N_bb[i, 1], V_n_N_bb[i, 2], V_n_N_bb[i, 3], V_n_N_bb[i,
+																		4],
+			   V_n_N_bb[i, 5], V_n_N_bb[i, 6], V_n_N_bb[i, 7], V_n_N_bb[i,
+																		8],
+			   V_n_N_bb[i, 9], V_n_N_bb[i, 10], V_n_N_bb[i, 11],
+			   V_n_N_bb[i, 12], V_n_N_bb[i, 13], V_n_N_bb[i, 14],
+			   V_n_N_bb[i, 15], V_n_N_bb[i, 16], V_n_N_bb[i, 17],
+			   V_n_N_bb[i, 18], V_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_n_Ca_bb[i, 1], V_n_Ca_bb[i, 2], V_n_Ca_bb[i, 3],
+			   V_n_Ca_bb[i, 4], V_n_Ca_bb[i, 5], V_n_Ca_bb[i, 6],
+			   V_n_Ca_bb[i, 7], V_n_Ca_bb[i, 8], V_n_Ca_bb[i, 9],
+			   V_n_Ca_bb[i, 10], V_n_Ca_bb[i, 11], V_n_Ca_bb[i, 12],
+			   V_n_Ca_bb[i, 13], V_n_Ca_bb[i, 14], V_n_Ca_bb[i, 15],
+			   V_n_Ca_bb[i, 16], V_n_Ca_bb[i, 17], V_n_Ca_bb[i, 18],
+			   V_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_n_Cb_bb[i, 1], V_n_Cb_bb[i, 2], V_n_Cb_bb[i, 3],
+			   V_n_Cb_bb[i, 4], V_n_Cb_bb[i, 5], V_n_Cb_bb[i, 6],
+			   V_n_Cb_bb[i, 7], V_n_Cb_bb[i, 8], V_n_Cb_bb[i, 9],
+			   V_n_Cb_bb[i, 10], V_n_Cb_bb[i, 11], V_n_Cb_bb[i, 12],
+			   V_n_Cb_bb[i, 13], V_n_Cb_bb[i, 14], V_n_Cb_bb[i, 15],
+			   V_n_Cb_bb[i, 16], V_n_Cb_bb[i, 17], V_n_Cb_bb[i, 18],
+			   V_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_n_CO_bb[i, 1], V_n_CO_bb[i, 2], V_n_CO_bb[i, 3],
+			   V_n_CO_bb[i, 4], V_n_CO_bb[i, 5], V_n_CO_bb[i, 6],
+			   V_n_CO_bb[i, 7], V_n_CO_bb[i, 8], V_n_CO_bb[i, 9],
+			   V_n_CO_bb[i, 10], V_n_CO_bb[i, 11], V_n_CO_bb[i, 12],
+			   V_n_CO_bb[i, 13], V_n_CO_bb[i, 14], V_n_CO_bb[i, 15],
+			   V_n_CO_bb[i, 16], V_n_CO_bb[i, 17], V_n_CO_bb[i, 18],
+			   V_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_s_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_s_N_bb[i, 1], L_s_N_bb[i, 2], L_s_N_bb[i, 3], L_s_N_bb[i,
+																		4],
+			   L_s_N_bb[i, 5], L_s_N_bb[i, 6], L_s_N_bb[i, 7], L_s_N_bb[i,
+																		8],
+			   L_s_N_bb[i, 9], L_s_N_bb[i, 10], L_s_N_bb[i, 11],
+			   L_s_N_bb[i, 12], L_s_N_bb[i, 13], L_s_N_bb[i, 14],
+			   L_s_N_bb[i, 15], L_s_N_bb[i, 16], L_s_N_bb[i, 17],
+			   L_s_N_bb[i, 18], L_s_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_s_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_s_Ca_bb[i, 1], L_s_Ca_bb[i, 2], L_s_Ca_bb[i, 3],
+			   L_s_Ca_bb[i, 4], L_s_Ca_bb[i, 5], L_s_Ca_bb[i, 6],
+			   L_s_Ca_bb[i, 7], L_s_Ca_bb[i, 8], L_s_Ca_bb[i, 9],
+			   L_s_Ca_bb[i, 10], L_s_Ca_bb[i, 11], L_s_Ca_bb[i, 12],
+			   L_s_Ca_bb[i, 13], L_s_Ca_bb[i, 14], L_s_Ca_bb[i, 15],
+			   L_s_Ca_bb[i, 16], L_s_Ca_bb[i, 17], L_s_Ca_bb[i, 18],
+			   L_s_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_s_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_s_Cb_bb[i, 1], L_s_Cb_bb[i, 2], L_s_Cb_bb[i, 3],
+			   L_s_Cb_bb[i, 4], L_s_Cb_bb[i, 5], L_s_Cb_bb[i, 6],
+			   L_s_Cb_bb[i, 7], L_s_Cb_bb[i, 8], L_s_Cb_bb[i, 9],
+			   L_s_Cb_bb[i, 10], L_s_Cb_bb[i, 11], L_s_Cb_bb[i, 12],
+			   L_s_Cb_bb[i, 13], L_s_Cb_bb[i, 14], L_s_Cb_bb[i, 15],
+			   L_s_Cb_bb[i, 16], L_s_Cb_bb[i, 17], L_s_Cb_bb[i, 18],
+			   L_s_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_s_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_s_CO_bb[i, 1], L_s_CO_bb[i, 2], L_s_CO_bb[i, 3],
+			   L_s_CO_bb[i, 4], L_s_CO_bb[i, 5], L_s_CO_bb[i, 6],
+			   L_s_CO_bb[i, 7], L_s_CO_bb[i, 8], L_s_CO_bb[i, 9],
+			   L_s_CO_bb[i, 10], L_s_CO_bb[i, 11], L_s_CO_bb[i, 12],
+			   L_s_CO_bb[i, 13], L_s_CO_bb[i, 14], L_s_CO_bb[i, 15],
+			   L_s_CO_bb[i, 16], L_s_CO_bb[i, 17], L_s_CO_bb[i, 18],
+			   L_s_CO_bb[i, 19]);
+	}
+	fclose(db);
+	db = safe_fopen(prefix + "L_h_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_h_N_bb[i, 1], L_h_N_bb[i, 2], L_h_N_bb[i, 3], L_h_N_bb[i,
+																		4],
+			   L_h_N_bb[i, 5], L_h_N_bb[i, 6], L_h_N_bb[i, 7], L_h_N_bb[i,
+																		8],
+			   L_h_N_bb[i, 9], L_h_N_bb[i, 10], L_h_N_bb[i, 11],
+			   L_h_N_bb[i, 12], L_h_N_bb[i, 13], L_h_N_bb[i, 14],
+			   L_h_N_bb[i, 15], L_h_N_bb[i, 16], L_h_N_bb[i, 17],
+			   L_h_N_bb[i, 18], L_h_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_h_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_h_Ca_bb[i, 1], L_h_Ca_bb[i, 2], L_h_Ca_bb[i, 3],
+			   L_h_Ca_bb[i, 4], L_h_Ca_bb[i, 5], L_h_Ca_bb[i, 6],
+			   L_h_Ca_bb[i, 7], L_h_Ca_bb[i, 8], L_h_Ca_bb[i, 9],
+			   L_h_Ca_bb[i, 10], L_h_Ca_bb[i, 11], L_h_Ca_bb[i, 12],
+			   L_h_Ca_bb[i, 13], L_h_Ca_bb[i, 14], L_h_Ca_bb[i, 15],
+			   L_h_Ca_bb[i, 16], L_h_Ca_bb[i, 17], L_h_Ca_bb[i, 18],
+			   L_h_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_h_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_h_Cb_bb[i, 1], L_h_Cb_bb[i, 2], L_h_Cb_bb[i, 3],
+			   L_h_Cb_bb[i, 4], L_h_Cb_bb[i, 5], L_h_Cb_bb[i, 6],
+			   L_h_Cb_bb[i, 7], L_h_Cb_bb[i, 8], L_h_Cb_bb[i, 9],
+			   L_h_Cb_bb[i, 10], L_h_Cb_bb[i, 11], L_h_Cb_bb[i, 12],
+			   L_h_Cb_bb[i, 13], L_h_Cb_bb[i, 14], L_h_Cb_bb[i, 15],
+			   L_h_Cb_bb[i, 16], L_h_Cb_bb[i, 17], L_h_Cb_bb[i, 18],
+			   L_h_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_h_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_h_CO_bb[i, 1], L_h_CO_bb[i, 2], L_h_CO_bb[i, 3],
+			   L_h_CO_bb[i, 4], L_h_CO_bb[i, 5], L_h_CO_bb[i, 6],
+			   L_h_CO_bb[i, 7], L_h_CO_bb[i, 8], L_h_CO_bb[i, 9],
+			   L_h_CO_bb[i, 10], L_h_CO_bb[i, 11], L_h_CO_bb[i, 12],
+			   L_h_CO_bb[i, 13], L_h_CO_bb[i, 14], L_h_CO_bb[i, 15],
+			   L_h_CO_bb[i, 16], L_h_CO_bb[i, 17], L_h_CO_bb[i, 18],
+			   L_h_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_n_bb_N", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_n_N_bb[i, 1], L_n_N_bb[i, 2], L_n_N_bb[i, 3], L_n_N_bb[i,
+																		4],
+			   L_n_N_bb[i, 5], L_n_N_bb[i, 6], L_n_N_bb[i, 7], L_n_N_bb[i,
+																		8],
+			   L_n_N_bb[i, 9], L_n_N_bb[i, 10], L_n_N_bb[i, 11],
+			   L_n_N_bb[i, 12], L_n_N_bb[i, 13], L_n_N_bb[i, 14],
+			   L_n_N_bb[i, 15], L_n_N_bb[i, 16], L_n_N_bb[i, 17],
+			   L_n_N_bb[i, 18], L_n_N_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_n_bb_Ca", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_n_Ca_bb[i, 1], L_n_Ca_bb[i, 2], L_n_Ca_bb[i, 3],
+			   L_n_Ca_bb[i, 4], L_n_Ca_bb[i, 5], L_n_Ca_bb[i, 6],
+			   L_n_Ca_bb[i, 7], L_n_Ca_bb[i, 8], L_n_Ca_bb[i, 9],
+			   L_n_Ca_bb[i, 10], L_n_Ca_bb[i, 11], L_n_Ca_bb[i, 12],
+			   L_n_Ca_bb[i, 13], L_n_Ca_bb[i, 14], L_n_Ca_bb[i, 15],
+			   L_n_Ca_bb[i, 16], L_n_Ca_bb[i, 17], L_n_Ca_bb[i, 18],
+			   L_n_Ca_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_n_bb_Cb", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_n_Cb_bb[i, 1], L_n_Cb_bb[i, 2], L_n_Cb_bb[i, 3],
+			   L_n_Cb_bb[i, 4], L_n_Cb_bb[i, 5], L_n_Cb_bb[i, 6],
+			   L_n_Cb_bb[i, 7], L_n_Cb_bb[i, 8], L_n_Cb_bb[i, 9],
+			   L_n_Cb_bb[i, 10], L_n_Cb_bb[i, 11], L_n_Cb_bb[i, 12],
+			   L_n_Cb_bb[i, 13], L_n_Cb_bb[i, 14], L_n_Cb_bb[i, 15],
+			   L_n_Cb_bb[i, 16], L_n_Cb_bb[i, 17], L_n_Cb_bb[i, 18],
+			   L_n_Cb_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_n_bb_CO", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 111)
+			break;
+		sscanf(line,
+			   "%*s%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_n_CO_bb[i, 1], L_n_CO_bb[i, 2], L_n_CO_bb[i, 3],
+			   L_n_CO_bb[i, 4], L_n_CO_bb[i, 5], L_n_CO_bb[i, 6],
+			   L_n_CO_bb[i, 7], L_n_CO_bb[i, 8], L_n_CO_bb[i, 9],
+			   L_n_CO_bb[i, 10], L_n_CO_bb[i, 11], L_n_CO_bb[i, 12],
+			   L_n_CO_bb[i, 13], L_n_CO_bb[i, 14], L_n_CO_bb[i, 15],
+			   L_n_CO_bb[i, 16], L_n_CO_bb[i, 17], L_n_CO_bb[i, 18],
+			   L_n_CO_bb[i, 19]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_Nchi_p[i, 1], A_Nchi_p[i, 2], A_Nchi_p[i, 3], A_Nchi_p[i,
+																		4],
+			   A_Nchi_p[i, 5], A_Nchi_p[i, 6], A_Nchi_p[i, 7], A_Nchi_p[i,
+																		8],
+			   A_Nchi_p[i, 9], A_Nchi_p[i, 10], A_Nchi_p[i, 11],
+			   A_Nchi_p[i, 12], A_Nchi_p[i, 13], A_Nchi_p[i, 14],
+			   A_Nchi_p[i, 15], A_Nchi_p[i, 16], A_Nchi_p[i, 17],
+			   A_Nchi_p[i, 18], A_Nchi_p[i, 19], A_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_Nchi_p[i, 1], G_Nchi_p[i, 2], G_Nchi_p[i, 3], G_Nchi_p[i,
+																		4],
+			   G_Nchi_p[i, 5], G_Nchi_p[i, 6], G_Nchi_p[i, 7], G_Nchi_p[i,
+																		8],
+			   G_Nchi_p[i, 9], G_Nchi_p[i, 10], G_Nchi_p[i, 11],
+			   G_Nchi_p[i, 12], G_Nchi_p[i, 13], G_Nchi_p[i, 14],
+			   G_Nchi_p[i, 15], G_Nchi_p[i, 16], G_Nchi_p[i, 17],
+			   G_Nchi_p[i, 18], G_Nchi_p[i, 19], G_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "Q_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Q_Nchi_p[i, 1], Q_Nchi_p[i, 2], Q_Nchi_p[i, 3], Q_Nchi_p[i,
+																		4],
+			   Q_Nchi_p[i, 5], Q_Nchi_p[i, 6], Q_Nchi_p[i, 7], Q_Nchi_p[i,
+																		8],
+			   Q_Nchi_p[i, 9], Q_Nchi_p[i, 10], Q_Nchi_p[i, 11],
+			   Q_Nchi_p[i, 12], Q_Nchi_p[i, 13], Q_Nchi_p[i, 14],
+			   Q_Nchi_p[i, 15], Q_Nchi_p[i, 16], Q_Nchi_p[i, 17],
+			   Q_Nchi_p[i, 18], Q_Nchi_p[i, 19], Q_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "F_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   F_Nchi_p[i, 1], F_Nchi_p[i, 2], F_Nchi_p[i, 3], F_Nchi_p[i,
+																		4],
+			   F_Nchi_p[i, 5], F_Nchi_p[i, 6], F_Nchi_p[i, 7], F_Nchi_p[i,
+																		8],
+			   F_Nchi_p[i, 9], F_Nchi_p[i, 10], F_Nchi_p[i, 11],
+			   F_Nchi_p[i, 12], F_Nchi_p[i, 13], F_Nchi_p[i, 14],
+			   F_Nchi_p[i, 15], F_Nchi_p[i, 16], F_Nchi_p[i, 17],
+			   F_Nchi_p[i, 18], F_Nchi_p[i, 19], F_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_Nchi_p[i, 1], V_Nchi_p[i, 2], V_Nchi_p[i, 3], V_Nchi_p[i,
+																		4],
+			   V_Nchi_p[i, 5], V_Nchi_p[i, 6], V_Nchi_p[i, 7], V_Nchi_p[i,
+																		8],
+			   V_Nchi_p[i, 9], V_Nchi_p[i, 10], V_Nchi_p[i, 11],
+			   V_Nchi_p[i, 12], V_Nchi_p[i, 13], V_Nchi_p[i, 14],
+			   V_Nchi_p[i, 15], V_Nchi_p[i, 16], V_Nchi_p[i, 17],
+			   V_Nchi_p[i, 18], V_Nchi_p[i, 19], V_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "T_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   T_Nchi_p[i, 1], T_Nchi_p[i, 2], T_Nchi_p[i, 3], T_Nchi_p[i,
+																		4],
+			   T_Nchi_p[i, 5], T_Nchi_p[i, 6], T_Nchi_p[i, 7], T_Nchi_p[i,
+																		8],
+			   T_Nchi_p[i, 9], T_Nchi_p[i, 10], T_Nchi_p[i, 11],
+			   T_Nchi_p[i, 12], T_Nchi_p[i, 13], T_Nchi_p[i, 14],
+			   T_Nchi_p[i, 15], T_Nchi_p[i, 16], T_Nchi_p[i, 17],
+			   T_Nchi_p[i, 18], T_Nchi_p[i, 19], T_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "P_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   P_Nchi_p[i, 1], P_Nchi_p[i, 2], P_Nchi_p[i, 3], P_Nchi_p[i,
+																		4],
+			   P_Nchi_p[i, 5], P_Nchi_p[i, 6], P_Nchi_p[i, 7], P_Nchi_p[i,
+																		8],
+			   P_Nchi_p[i, 9], P_Nchi_p[i, 10], P_Nchi_p[i, 11],
+			   P_Nchi_p[i, 12], P_Nchi_p[i, 13], P_Nchi_p[i, 14],
+			   P_Nchi_p[i, 15], P_Nchi_p[i, 16], P_Nchi_p[i, 17],
+			   P_Nchi_p[i, 18], P_Nchi_p[i, 19], P_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "I_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   I_Nchi_p[i, 1], I_Nchi_p[i, 2], I_Nchi_p[i, 3], I_Nchi_p[i,
+																		4],
+			   I_Nchi_p[i, 5], I_Nchi_p[i, 6], I_Nchi_p[i, 7], I_Nchi_p[i,
+																		8],
+			   I_Nchi_p[i, 9], I_Nchi_p[i, 10], I_Nchi_p[i, 11],
+			   I_Nchi_p[i, 12], I_Nchi_p[i, 13], I_Nchi_p[i, 14],
+			   I_Nchi_p[i, 15], I_Nchi_p[i, 16], I_Nchi_p[i, 17],
+			   I_Nchi_p[i, 18], I_Nchi_p[i, 19], I_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "L_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   L_Nchi_p[i, 1], L_Nchi_p[i, 2], L_Nchi_p[i, 3], L_Nchi_p[i,
+																		4],
+			   L_Nchi_p[i, 5], L_Nchi_p[i, 6], L_Nchi_p[i, 7], L_Nchi_p[i,
+																		8],
+			   L_Nchi_p[i, 9], L_Nchi_p[i, 10], L_Nchi_p[i, 11],
+			   L_Nchi_p[i, 12], L_Nchi_p[i, 13], L_Nchi_p[i, 14],
+			   L_Nchi_p[i, 15], L_Nchi_p[i, 16], L_Nchi_p[i, 17],
+			   L_Nchi_p[i, 18], L_Nchi_p[i, 19], L_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "S_inp_Nchi_p", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   S_Nchi_p[i, 1], S_Nchi_p[i, 2], S_Nchi_p[i, 3], S_Nchi_p[i,
+																		4],
+			   S_Nchi_p[i, 5], S_Nchi_p[i, 6], S_Nchi_p[i, 7], S_Nchi_p[i,
+																		8],
+			   S_Nchi_p[i, 9], S_Nchi_p[i, 10], S_Nchi_p[i, 11],
+			   S_Nchi_p[i, 12], S_Nchi_p[i, 13], S_Nchi_p[i, 14],
+			   S_Nchi_p[i, 15], S_Nchi_p[i, 16], S_Nchi_p[i, 17],
+			   S_Nchi_p[i, 18], S_Nchi_p[i, 19], S_Nchi_p[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "A_inp_COchi_f", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   A_COchi_f[i, 1], A_COchi_f[i, 2], A_COchi_f[i, 3],
+			   A_COchi_f[i, 4], A_COchi_f[i, 5], A_COchi_f[i, 6],
+			   A_COchi_f[i, 7], A_COchi_f[i, 8], A_COchi_f[i, 9],
+			   A_COchi_f[i, 10], A_COchi_f[i, 11], A_COchi_f[i, 12],
+			   A_COchi_f[i, 13], A_COchi_f[i, 14], A_COchi_f[i, 15],
+			   A_COchi_f[i, 16], A_COchi_f[i, 17], A_COchi_f[i, 18],
+			   A_COchi_f[i, 19], A_COchi_f[i, 20]);
+
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "G_inp_COchi_f", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   G_COchi_f[i, 1], G_COchi_f[i, 2], G_COchi_f[i, 3],
+			   G_COchi_f[i, 4], G_COchi_f[i, 5], G_COchi_f[i, 6],
+			   G_COchi_f[i, 7], G_COchi_f[i, 8], G_COchi_f[i, 9],
+			   G_COchi_f[i, 10], G_COchi_f[i, 11], G_COchi_f[i, 12],
+			   G_COchi_f[i, 13], G_COchi_f[i, 14], G_COchi_f[i, 15],
+			   G_COchi_f[i, 16], G_COchi_f[i, 17], G_COchi_f[i, 18],
+			   G_COchi_f[i, 19], G_COchi_f[i, 20]);
+
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "V_inp_COchi_f", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 10)
+			break;
+		sscanf(line,
+			   "%*s%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   V_COchi_f[i, 1], V_COchi_f[i, 2], V_COchi_f[i, 3],
+			   V_COchi_f[i, 4], V_COchi_f[i, 5], V_COchi_f[i, 6],
+			   V_COchi_f[i, 7], V_COchi_f[i, 8], V_COchi_f[i, 9],
+			   V_COchi_f[i, 10], V_COchi_f[i, 11], V_COchi_f[i, 12],
+			   V_COchi_f[i, 13], V_COchi_f[i, 14], V_COchi_f[i, 15],
+			   V_COchi_f[i, 16], V_COchi_f[i, 17], V_COchi_f[i, 18],
+			   V_COchi_f[i, 19], V_COchi_f[i, 20]);
+
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "s_ref", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 20)
+			break;
+		sscanf(line, "%*s%lf%lf%lf%lf",
+			   N_ref[i, 1], Ca_ref[i, 1], Cb_ref[i, 1], CO_ref[i, 1]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "h_ref", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 20)
+			break;
+		sscanf(line, "%*s%lf%lf%lf%lf",
+			   N_ref[i, 2], Ca_ref[i, 2], Cb_ref[i, 2], CO_ref[i, 2]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "n_ref", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 20)
+			break;
+		sscanf(line, "%*s%lf%lf%lf%lf",
+			   N_ref[i, 3], Ca_ref[i, 3], Cb_ref[i, 3], CO_ref[i, 3]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "inp_rc", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 19)
+			break;
+		sscanf(line, "%*s%lf%lf%lf%lf",
+			   N_rc[i], Ca_rc[i], Cb_rc[i], CO_rc[i]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "inp_Nchi12_s", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 28)
+			break;
+		sscanf(line,
+			   "%*s%*d%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   N_chi12_s[i, 1], N_chi12_s[i, 2], N_chi12_s[i, 3],
+			   N_chi12_s[i, 4], N_chi12_s[i, 5], N_chi12_s[i, 6],
+			   N_chi12_s[i, 7], N_chi12_s[i, 8], N_chi12_s[i, 9],
+			   N_chi12_s[i, 10], N_chi12_s[i, 11], N_chi12_s[i, 12],
+			   N_chi12_s[i, 13], N_chi12_s[i, 14], N_chi12_s[i, 15],
+			   N_chi12_s[i, 16], N_chi12_s[i, 17], N_chi12_s[i, 18],
+			   N_chi12_s[i, 19], N_chi12_s[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "inp_Cachi12_s", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 28)
+			break;
+		sscanf(line,
+			   "%*s%*d%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Ca_chi12_s[i, 1], Ca_chi12_s[i, 2], Ca_chi12_s[i, 3],
+			   Ca_chi12_s[i, 4], Ca_chi12_s[i, 5], Ca_chi12_s[i, 6],
+			   Ca_chi12_s[i, 7], Ca_chi12_s[i, 8], Ca_chi12_s[i, 9],
+			   Ca_chi12_s[i, 10], Ca_chi12_s[i, 11], Ca_chi12_s[i, 12],
+			   Ca_chi12_s[i, 13], Ca_chi12_s[i, 14], Ca_chi12_s[i, 15],
+			   Ca_chi12_s[i, 16], Ca_chi12_s[i, 17], Ca_chi12_s[i, 18],
+			   Ca_chi12_s[i, 19], Ca_chi12_s[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "inp_Cbchi12_s", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 28)
+			break;
+		sscanf(line,
+			   "%*s%*d%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   Cb_chi12_s[i, 1], Cb_chi12_s[i, 2], Cb_chi12_s[i, 3],
+			   Cb_chi12_s[i, 4], Cb_chi12_s[i, 5], Cb_chi12_s[i, 6],
+			   Cb_chi12_s[i, 7], Cb_chi12_s[i, 8], Cb_chi12_s[i, 9],
+			   Cb_chi12_s[i, 10], Cb_chi12_s[i, 11], Cb_chi12_s[i, 12],
+			   Cb_chi12_s[i, 13], Cb_chi12_s[i, 14], Cb_chi12_s[i, 15],
+			   Cb_chi12_s[i, 16], Cb_chi12_s[i, 17], Cb_chi12_s[i, 18],
+			   Cb_chi12_s[i, 19], Cb_chi12_s[i, 20]);
+	}
+	fclose(db);
+
+	db = safe_fopen(prefix + "inp_COchi12_s", "r");
+	i = 0;
+	while (line = getline(db)) {
+		if (substr(line, 1, 1) == "#")
+			continue;
+		i++;
+		if (i > 28)
+			break;
+		sscanf(line,
+			   "%*s%*d%*d%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf\n",
+			   CO_chi12_s[i, 1], CO_chi12_s[i, 2], CO_chi12_s[i, 3],
+			   CO_chi12_s[i, 4], CO_chi12_s[i, 5], CO_chi12_s[i, 6],
+			   CO_chi12_s[i, 7], CO_chi12_s[i, 8], CO_chi12_s[i, 9],
+			   CO_chi12_s[i, 10], CO_chi12_s[i, 11], CO_chi12_s[i, 12],
+			   CO_chi12_s[i, 13], CO_chi12_s[i, 14], CO_chi12_s[i, 15],
+			   CO_chi12_s[i, 16], CO_chi12_s[i, 17], CO_chi12_s[i, 18],
+			   CO_chi12_s[i, 19], CO_chi12_s[i, 20]);
+	}
+	fclose(db);
+
+	return (0);
+};
+
+int GetStruct(molecule m, string pdb_ID)	// determine some geometrical parameters
+{
+
+	residue r;
+	atom a;
+	int i, j;
+	point p[hashed];
+	float d1, d2;
+	point pN[MAXRES], pCA, pCprev, pNnext, pC, pCB, pCG, pCD, pCE,
+		pO[MAXRES];
+	file out;
+	int s;
+	string idp;
+	int res_to_class[hashed];
+
+// MSH: Define variables for HB-NN
+
+	float a1, a2, a3, tor1, tor2, tor3;
+	point pH[MAXRES], pCC[MAXRES];
+	point pOW[MAXRES], pH1[MAXRES], pH2[MAXRES];
+	int D2, D3, D4, I2, I3, I4;
+	int DW2, DW3, DW4, DW5, DW6, IW2, IW3, IW4, IW5, IW6;
+
+// MSH: End
+
+//   set up hashed array of coordinates
+	for (a in m) {
+		p[a.fullname] = a.pos;
+	}
+
+//   set up array of residue names, etc
+	lastprot = m.nresidues;
+	firstwat = lastprot + 1;
+	lastwat = m.nresidues;
+	for (r in m) {
+		j = r.tresnum;
+		if (j == 1) {
+			first_resid = atoi(substr(r.resid, 2, 4));
+			firstprot = j;		// so for now, firstprot will always be 1;
+			//  may change this later...
+		}
+		R_name[j] = r.resname;
+		R_num[j] = atoi(substr(r.resid, 2, 4));	// only used for printing
+		R_relnum[j] = r.resnum;
+		S_num[j] = r.strandnum;
+	}
+
+	for (j = 1; j <= m.nresidues; j++) {
+		if (R_name[j] == "WAT" || R_name[j] == "HOH") {
+			firstwat = j;
+			lastprot = j - 1;
+			break;
+		}
+	}
+
+	assert(lastprot <= MAXRES);
+    // fprintf( stderr, "%d %d %d %d\n", firstprot, lastprot, firstwat, lastwat);
+
+	phi[1] = 0.00;
+	psi[lastprot] = 0.00;
+
+// MSH: Read geometric parameters for HB-NN
+
+	for (j = 1; j <= lastprot; j++) {
+		s = S_num[j];
+		pN[j] = p[sprintf("%d:%d:N", s, R_relnum[j])];
+		pO[j] = p[sprintf("%d:%d:O", s, R_relnum[j])];
+		pH[j] = p[sprintf("%d:%d:H", s, R_relnum[j])];
+		pCC[j] = p[sprintf("%d:%d:C", s, R_relnum[j])];
+		//pH1[j] = p[sprintf("%d:%d:H1", s, R_relnum[j])];
+		//pH2[j] = p[sprintf("%d:%d:H2", s, R_relnum[j])];
+	}
+	for (j = firstwat; j <= lastwat; j++) {
+		s = S_num[j];
+		pO[j] = p[sprintf("%d:%d:O", s, j-lastprot)];
+		//pH1[j] = p[sprintf("%d:%d:H1", s, j-lastprot)];
+		//pH2[j] = p[sprintf("%d:%d:H2", s, j-lastprot)];
+	}
+
+	for (j = firstprot+1; j <= lastprot; j++) {
+
+		if (R_name[j] != "PRO" && R_relnum[j] != 1) {
+			DHB01[j] = 999.;
+			DHB02[j] = 999.;
+			DHB03[j] = 999.;
+			DHB04[j] = 999.;
+			DWHB1[j] = 999.;
+			DWHB2[j] = 999.;
+			DWHB3[j] = 999.;
+			DWHB4[j] = 999.;
+
+			D2 = 0;
+			D3 = 0;
+			D4 = 0;
+			DW2 = 0;
+			DW3 = 0;
+			DW4 = 0;
+			DW5 = 0;
+			DW6 = 0;
+
+			for (i = firstprot; i <= lastwat; i++) {
+
+				if (R_name[i] != "WAT" && R_name[i] != "HOH" ) {
+
+					d1 = distp(pH[j], pO[i]);
+					d2 = distp(pO[j], pH[i]);
+// fprintf( stderr, "%3d %3d %8.3f %8.3f %8.3f    %8.3f %8.3f %8.3f    %8.3f %8.3f %8.3f\n",i,j,pN[j].x,pN[j].y,pN[j].z,pH[j].x,pH[j].y,pH[j].z,pO[j].x,pO[j].y,pO[j].z);
+               if ((pN[j].x != 0 || pN[j].y != 0 || pN[j].z != 0) &&
+					    (pH[j].x != 0 || pH[j].y != 0 || pH[j].z != 0) &&
+						 (pO[j].x != 0 || pO[j].y != 0 || pO[j].z != 0)) {
+					 	if (pO[i].x == 0 && pO[i].y == 0 && pO[i].z == 0)
+							a1 = 0 / 0.;
+						else
+							a1 = anglep(pN[j], pH[j], pO[i]);
+					 	if (pH[i].x == 0 && pH[i].y == 0 && pH[i].z == 0)
+							a2 = 0 / 0.;
+						else
+							a2 = anglep(pCC[j], pO[j], pH[i]);
+					} else {
+						a1 = 0 / 0.; // Set to NaN to blow up any calculation that relies on
+						a2 = 0 / 0.; // these ridiculous numbers
+					}
+					tor1 = torsionp(pCC[j - 1], pN[j], pH[j], pO[i]);
+					tor2 = torsionp(pN[j + 1], pCC[j], pO[j], pH[i]);
+					if (tor1 < 0)
+						tor1 = -tor1;
+					if (tor2 < 0)
+						tor2 = -tor2;
+
+					if (d1 != 0 && d1 < 4.0 && (j - i > 2 || i - j > 2)
+						&& DHB01[j] == 999.) {
+						DHB01[j] = d1;
+						DHBA1[j] = a1;
+						DHBT1[j] = tor1;
+						CD1[j] = i;
+					}
+					if (d1 != 0 && d1 < 4.0 && (j - i > 2 || i - j > 2)
+						&& i != CD1[j] && D2 == 0) {
+						DHB02[j] = d1;
+						DHBA2[j] = a1;
+						DHBT2[j] = tor1;
+						CD2[j] = i;
+						D2 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && (j - i > 2 || i - j > 2)
+						&& i != CD2[j] && i != CD1[j] && D3 == 0) {
+						DHB03[j] = d1;
+						DHBA3[j] = a1;
+						DHBT3[j] = tor1;
+						CD3[j] = i;
+						D3 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && (j - i > 2 || i - j > 2)
+						&& i != CD3[j] && i != CD2[j] && i != CD1[j]
+						&& D4 == 0) {
+						DHB04[j] = d1;
+						DHBA4[j] = a1;
+						DHBT4[j] = tor1;
+						D4 = 1;
+					}
+				} else {
+
+					d1 = distp(pH[j], pO[i]);
+					//d2 = distp(pO[j], pH1[i]);    
+					//d3 = distp(pO[j], pH2[i]);    
+					if ((pN[j].x == 0 && pN[j].y == 0 && pN[j].z == 0) ||
+					    (pH[j].x == 0 && pH[j].y == 0 && pH[j].z == 0) ||
+					    (pO[i].x == 0 && pO[i].y == 0 && pO[i].z == 0)) {
+						a1 = 0 / 0.; // Set to NaN to blow up any calc that relies on these #s
+					} else {
+						a1 = anglep(pN[j], pH[j], pO[i]);
+					}
+					tor1 = torsionp(pCC[j - 1], pN[j], pH[j], pO[i]);
+					if (tor1 < 0)
+						tor1 = -tor1;
+
+					//if(d2 != 0 && d3 != 0 && d2 < d3){
+					//  d2 = distp(pO[j], pH1[i]);
+					//  a2 = anglep(pCC[j], pO[j], pH1[i]); 
+					//  tor2 = torsionp(pN[j+1], pCC[j], pO[j], pH1[i]);
+					//  if(tor2 < 0) tor2 = -tor2;
+					//}
+					//if(d2 != 0 && d3 != 0 && d2 > d3){
+					//  d2 = distp(pO[j], pH2[i]);
+					//  a2 = anglep(pCC[j], pO[j], pH2[i]); 
+					//  tor2 = torsionp(pN[j+1], pCC[j], pO[j], pH2[i]);
+					//  if(tor2 < 0) tor2 = -tor2;
+					//}
+
+					if (d1 != 0 && d1 < 4.0 && DWHB1[j] == 999.) {
+						DWHB1[j] = d1;
+						DWHBA1[j] = a1;
+						DWHBT1[j] = tor1;
+						CWD1[j] = i;
+					}
+					if (d1 != 0 && d1 < 4.0 && i != CWD1[j] && DW2 == 0) {
+						DWHB2[j] = d1;
+						DWHBA2[j] = a1;
+						DWHBT2[j] = tor1;
+						CWD2[j] = i;
+						DW2 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && i != CWD2[j] && i != CWD1[j]
+						&& DW3 == 0) {
+						DWHB3[j] = d1;
+						DWHBA3[j] = a1;
+						DWHBT3[j] = tor1;
+						CWD3[j] = i;
+						DW3 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && i != CWD3[j] && i != CWD2[j]
+						&& i != CWD1[j] && DW4 == 0) {
+						DWHB4[j] = d1;
+						DWHBA4[j] = a1;
+						DWHBT4[j] = tor1;
+						CWD4[j] = i;
+						DW4 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && i != CWD4[i] && i != CWD3[j]
+						&& i != CWD2[j] && i != CWD1[j] && DW5 == 0) {
+						DWHB5[j] = d1;
+						DWHBA5[j] = a1;
+						DWHBT5[j] = tor1;
+						CWD5[j] = i;
+						DW5 = 1;
+					}
+					if (d1 != 0 && d1 < 4.0 && i != CWD5[i] && i != CWD4[i]
+						&& i != CWD3[j] && i != CWD2[j] && i != CWD1[j]
+						&& DW6 == 0) {
+						DWHB6[j] = d1;
+						DWHBA6[j] = a1;
+						DWHBT6[j] = tor1;
+						DW6 = 1;
+					}
+
+				}
+			}
+		}
+	}
+
+// MSH: End
+
+	for (j = firstprot; j <= lastprot; j++) {
+		s = S_num[j];
+		pN[j] = p[sprintf("%d:%d:N", s, j)];
+		pO[j] = p[sprintf("%d:%d:O", s, j)];
+	}
+
+	for (j = firstprot; j <= lastprot; j++) {
+
+		s = S_num[j];
+		if (j > firstprot)
+			pCprev = p[sprintf("%d:%d:C", s, j - 1)];
+		pCA = p[sprintf("%d:%d:CA", s, j)];
+		pC = p[sprintf("%d:%d:C", s, j)];
+		if (j < lastprot)
+			pNnext = p[sprintf("%d:%d:N", s, j + 1)];
+
+		if (j > firstprot)
+			phi[j] = torsionp(pCprev, pN[j], pCA, pC);
+		if (j < lastprot)
+			psi[j] = torsionp(pN[j], pCA, pC, pNnext);
+
+		// find unique CB, CG, CD, CE atoms:
+		if (sprintf("%d:%d:CB", s, j) in p)
+			pCB = p[sprintf("%d:%d:CB", s, j)];
+
+		if (sprintf("%d:%d:CG", s, j) in p)
+			pCG = p[sprintf("%d:%d:CG", s, j)];
+		if (sprintf("%d:%d:CG1", s, j) in p)
+			pCG = p[sprintf("%d:%d:CG1", s, j)];
+		if (R_name[j] == "SER")
+			pCG = p[sprintf("%d:%d:OG", s, j)];
+		if (R_name[j] == "THR")
+			pCG = p[sprintf("%d:%d:OG1", s, j)];
+
+		if (sprintf("%d:%d:CD", s, j) in p)
+			pCD = p[sprintf("%d:%d:CD", s, j)];
+		if (sprintf("%d:%d:CD1", s, j) in p)
+			pCD = p[sprintf("%d:%d:CD1", s, j)];
+		if (R_name[j] == "ASP" || R_name[j] == "ASN")
+			pCD = p[sprintf("%d:%d:OD1", s, j)];
+
+		if (sprintf("%d:%d:CE", s, j) in p)
+			pCE = p[sprintf("%d:%d:CE", s, j)];
+		if (sprintf("%d:%d:CE1", s, j) in p)
+			pCE = p[sprintf("%d:%d:CE1", s, j)];
+		if (R_name[j] == "GLU" || R_name[j] == "GLN")
+			pCE = p[sprintf("%d:%d:OE1", s, j)];
+
+		if (R_name[j] == "GLY" || R_name[j] == "ALA") {
+			chi[j] = -60;
+		} else {
+			chi[j] = torsionp(pN[j], pCA, pCB, pCG);
+		}
+
+		if (R_name[j] == "GLY" || R_name[j] == "ALA"
+			|| R_name[j] == "SER" || R_name[j] == "CYS"
+			|| R_name[j] == "VAL" || R_name[j] == "THR")
+			chi2[j] = -60;
+		else if (R_name[j] == "ILE" || R_name[j] == "PHE"
+				 || R_name[j] == "PRO" || R_name[j] == "TYR"
+				 || R_name[j] == "ASN" || R_name[j] == "ASP"
+				 || R_name[j] == "GLU" || R_name[j] == "GLN"
+				 || R_name[j] == "MET" || R_name[j] == "LYS"
+				 || R_name[j] == "ARG" || R_name[j] == "LEU"
+				 || substr(R_name[j], 1, 2) == "HI" || R_name[j] == "TYR"
+				 || R_name[j] == "TRP")
+			chi2[j] = torsionp(pCA, pCB, pCG, pCD);
+
+		if (R_name[j] == "GLU" || R_name[j] == "GLN"
+			|| R_name[j] == "MET" || R_name[j] == "LYS"
+			|| R_name[j] == "ARG")
+			chi3[j] = torsionp(pCB, pCG, pCD, pCE);
+
+		DHB1[j] = 111.11;
+		IHB1[j] = 111.11;
+		for (i = 1; i <= lastprot; i++) {
+
+			d1 = distp(pN[j], pO[i]);
+			d2 = distp(pN[i], pO[j]);
+
+			if (d1 < DHB1[j] && (j - i > 2 || i - j > 2)) {
+				DHB1[j] = d1;
+				CD1[j] = i;
+			}
+			if (d2 < IHB1[j] && (j - i > 2 || i - j > 2)) {
+				IHB1[j] = d2;
+				CI1[j] = i;
+			}
+		}
+		DHB2[j] = 111.11;
+		IHB2[j] = 111.11;
+		for (i = firstprot; i <= lastprot; i++) {
+
+			d1 = distp(pN[j], pO[i]);
+			d2 = distp(pN[i], pO[j]);
+
+			if (d1 < DHB2[j] && (j - i > 2 || i - j > 2) && i != CD1[j]) {
+				DHB2[j] = d1;
+				CD2[j] = i;
+			}
+			if (d2 < IHB2[j] && (j - i > 2 || i - j > 2) && i != CI1[j]) {
+				IHB2[j] = d2;
+				CI2[j] = i;
+			}
+		}
+	}
+
+//   handle waters:
+	for (j = firstprot; j <= lastprot; j++) {
+		N_close[j] = 99.9;
+		O_close[j] = 99.9;
+		if (firstwat != 0) {
+			for (i = firstwat; i <= lastwat; i++) {
+				idp = sprintf("%d:%d:O", S_num[i], i - lastprot);
+				d1 = distp(pN[j], p[idp]);
+				d2 = distp(pO[j], p[idp]);
+				if (d1 < N_close[j]) {
+					N_close[j] = d1;
+					No_close[j] = i;
+				}
+				if (d2 < O_close[j]) {
+					O_close[j] = d2;
+					No_close[j] = i;
+				}
+			}
+		}
+	}
+
+// classify residues according to "type"
+
+//   classify backbone as helix or sheet or none:
+
+	for (i = firstprot; i <= lastprot; i++) {
+
+		if (psi[i] <= 180 && psi[i] >= 80 && phi[i] >= -180
+			&& phi[i] < -60) {
+			class_cf[i] = 1;
+			cf[i] = "s";
+		} else if (psi[i] <= -15 && psi[i] >= -70 && phi[i] >= -90
+				   && phi[i] < -40) {
+			class_cf[i] = 2;
+			cf[i] = "h";
+		} else {
+			class_cf[i] = 3;
+			cf[i] = "n";
+		}
+	}
+
+	res_to_class["ALA"] = 1;
+	res_to_class["GLY"] = 2;
+	res_to_class["MET"] = 3;
+	res_to_class["GLN"] = 4;
+	res_to_class["GLU"] = 5;
+	res_to_class["LYS"] = 6;
+	res_to_class["ARG"] = 7;
+	res_to_class["PHE"] = 8;
+	res_to_class["TYR"] = 9;
+	res_to_class["TRP"] = 10;
+	res_to_class["HIS"] = 11;
+	res_to_class["HIP"] = 11;
+	res_to_class["HID"] = 11;
+	res_to_class["HIE"] = 11;
+	res_to_class["SER"] = 12;
+	res_to_class["CYS"] = 13;
+	res_to_class["ASN"] = 14;
+	res_to_class["ASP"] = 15;
+	res_to_class["ILE"] = 16;
+	res_to_class["VAL"] = 17;
+	res_to_class["LEU"] = 18;
+	res_to_class["THR"] = 19;
+	res_to_class["PRO"] = 20;
+
+	for (i = firstprot; i <= lastprot; i++) {
+		if (R_name[i] in res_to_class && R_name[i] != "CYS") {
+			class_res[i] = res_to_class[R_name[i]];
+			range[i] = 1;
+		} else {
+			class_res[i] = 0;
+			range[i] = 0;
+		}
+	}
+
+	for (i = firstprot; i <= lastprot; i++) {
+		if (chi[i] < 0)
+			chi[i] = 360 + chi[i];
+		if ((chi[i] >= 240 && chi[i] < 360) && (class_cf[i] == 1))
+			class_chi[i] = 1;
+		else if ((chi[i] >= 0 && chi[i] < 120) && (class_cf[i] == 1))
+			class_chi[i] = 2;
+		else if ((chi[i] >= 120 && chi[i] < 240) && (class_cf[i] == 1))
+			class_chi[i] = 3;
+		else if ((chi[i] >= 240 && chi[i] < 360) && (class_cf[i] == 2))
+			class_chi[i] = 4;
+		else if ((chi[i] >= 0 && chi[i] < 120) && (class_cf[i] == 2))
+			class_chi[i] = 5;
+		else if ((chi[i] >= 120 && chi[i] < 240) && (class_cf[i] == 2))
+			class_chi[i] = 6;
+		else if ((chi[i] >= 240 && chi[i] < 360) && (class_cf[i] == 3))
+			class_chi[i] = 7;
+		else if ((chi[i] >= 0 && chi[i] < 120) && (class_cf[i] == 3))
+			class_chi[i] = 8;
+		else if ((chi[i] >= 120 && chi[i] < 240) && (class_cf[i] == 3))
+			class_chi[i] = 9;
+		else
+			class_chi[i] = 0;
+	}
+
+	for (i = firstprot; i <= lastprot; i++) {
+		if (chi2[i] < 0)
+			chi2[i] = 360 + chi2[i];
+		if (chi2[i] >= 240 && chi2[i] < 360)
+			class_chi2[i] = 1;
+		else if (chi2[i] >= 0 && chi2[i] < 120)
+			class_chi2[i] = 2;
+		else if (chi2[i] >= 120 && chi2[i] < 240)
+			class_chi2[i] = 3;
+		else{
+			class_chi2[i] = 0;
+            fprintf( stderr, "setting class_chi2 to 0: %d  %8.2f %8.2f\n",
+                i, chi[i], chi2[i] );
+        }
+	}
+
+	for (i = firstprot; i <= lastprot; i++) {
+		if (class_chi[i] == 1) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 1;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 2;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 3;
+		}
+
+		if (class_chi[i] == 2) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 4;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 5;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 6;
+		}
+
+		if (class_chi[i] == 3) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 7;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 8;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 9;
+		}
+
+		if (class_chi[i] == 4) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 10;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 11;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 12;
+		}
+
+		if (class_chi[i] == 5) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 13;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 14;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 15;
+		}
+
+		if (class_chi[i] == 6) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 16;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 17;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 18;
+		}
+
+		if (class_chi[i] == 7) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 19;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 20;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 21;
+		}
+
+		if (class_chi[i] == 8) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 22;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 23;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 24;
+		}
+
+		if (class_chi[i] == 9) {
+			if (class_chi2[i] == 1)
+				class_chi12[i] = 25;
+			else if (class_chi2[i] == 2)
+				class_chi12[i] = 26;
+			else if (class_chi2[i] == 3)
+				class_chi12[i] = 27;
+
+		} else if (class_chi[i] < 1 || class_chi[i] > 10){
+			class_chi12[i] = 0;
+            fprintf( stderr, "setting class_chi12 to 0: %d  %8.2f   %8.2f\n",
+                i, chi[i], chi2[i] );
+        }
+        // fprintf( stderr, "i, class_chi12:  %d %d\n", i, class_chi12[i] );
+	}
+	return (0);
+};
+
+int PrintStructParams(string filename)
+{
+
+	int j;
+	file out;
+	float chi1_pr, chi2_pr;
+
+	//  write out computed structural parameters:
+
+	out = safe_fopen(filename, "w");
+
+	fprintf(out, "%s\n",
+			"#-----------------------------------------------------------------------------------------------------------");
+	fprintf(out, "%s\n",
+			"#No. res   phi     psi    chi     chi2    H1   i    H2   i    O1   i    O2   i   Nw  i   Ow  i");
+	fprintf(out, "%s\n",
+			"#-----------------------------------------------------------------------------------------------------------");
+
+	j = firstprot;
+	chi1_pr = chi[j];
+	if (chi1_pr > 180.)
+		chi1_pr = chi1_pr - 360.;
+	fprintf(out, "%-4d%-4s%7.2f%8.2f%8.2f\n", R_num[j], R_name[j], phi[j],
+			psi[j], chi1_pr);
+	for (j = firstprot + 1; j <= lastprot; j++) {
+		chi1_pr = chi[j];
+		if (chi1_pr > 180.)
+			chi1_pr = chi1_pr - 360.;
+		chi2_pr = chi2[j];
+		if (chi2_pr > 180.)
+			chi2_pr = chi2_pr - 360.;
+		fprintf(out,
+				"%-4d%-4s%7.2f%8.2f%8.2f%8.2f%6.2f%4d%6.2f%4d%6.2f%4d%6.2f%4d%6.2f%4d%6.2f%4d\n",
+				R_num[j], R_name[j], phi[j], psi[j], chi1_pr, chi2_pr,
+				DHB1[j], CD1[j], DHB2[j], CD2[j], IHB1[j - 1], CI1[j - 1],
+				IHB2[j - 1], CI2[j - 1], N_close[j], No_close[j],
+				O_close[j - 1], No_close[j - 1]);
+	}
+	fclose(out);
+	return(0);
+};
+
+
+int GetObsShift(string basename, float obs[hashed],
+				float N[1], float CA[1], float CB[1], float CO[1])
+{
+
+	file obsf;
+	int i, j, k;
+	string line, idp, res_exp;
+	float Ntmp, Catmp, Cbtmp, COtmp, shift;
+	string res, atom1, atom2;
+	//  Try first to read basename.obs:
+	j = 0;
+
+	obsf = fopen(basename + ".obs", "r");
+	if (obsf != NULL) {
+		while (line = getline(obsf)) {
+			if (substr(line, 1, 1) == "#")
+				continue;
+			sscanf(line, "%d%s%lf%lf%lf%lf",
+				   i, res_exp, Ntmp, Catmp, Cbtmp, COtmp);
+			assert(i <= MAXRES);
+
+			//  modify the residue number to be relative to the first
+			//    residue in the protein, since this is how the rest of
+			//    the program works:
+			i = i - first_resid + 1;
+
+			// fill zero for missing experimental data;
+			if ((i - j) > 1) {
+				for (k = j + 1; k < i; k++) {
+					N_exp[k] = 0;
+					Ca_exp[k] = 0;
+					Cb_exp[k] = 0;
+					CO_exp[k] = 0;
+					RES_exp[k] = R_name[k];
+				}
+			}
+			j = i;
+			N_exp[i] = Ntmp;
+			Ca_exp[i] = Catmp;
+			Cb_exp[i] = Cbtmp;
+			CO_exp[i] = COtmp;
+
+			if (res_exp == "A" || res_exp == "ALA")
+				RES_exp[i] = "ALA";
+			if (res_exp == "C" || res_exp == "CYS")
+				RES_exp[i] = "CYS";
+			if (res_exp == "D" || res_exp == "ASP")
+				RES_exp[i] = "ASP";
+			if (res_exp == "E" || res_exp == "GLU")
+				RES_exp[i] = "GLU";
+			if (res_exp == "F" || res_exp == "PHE")
+				RES_exp[i] = "PHE";
+			if (res_exp == "G" || res_exp == "GLY")
+				RES_exp[i] = "GLY";
+			if (res_exp == "H" || res_exp == "HIS")
+				RES_exp[i] = "HIS";
+			if (res_exp == "I" || res_exp == "ILE")
+				RES_exp[i] = "ILE";
+			if (res_exp == "K" || res_exp == "LYS")
+				RES_exp[i] = "LYS";
+			if (res_exp == "L" || res_exp == "LEU")
+				RES_exp[i] = "LEU";
+			if (res_exp == "M" || res_exp == "MET")
+				RES_exp[i] = "MET";
+			if (res_exp == "N" || res_exp == "ASN")
+				RES_exp[i] = "ASN";
+			if (res_exp == "P" || res_exp == "PRO")
+				RES_exp[i] = "PRO";
+			if (res_exp == "Q" || res_exp == "GLN")
+				RES_exp[i] = "GLN";
+			if (res_exp == "R" || res_exp == "ARG")
+				RES_exp[i] = "ARG";
+			if (res_exp == "S" || res_exp == "SER")
+				RES_exp[i] = "SER";
+			if (res_exp == "T" || res_exp == "THR")
+				RES_exp[i] = "THR";
+			if (res_exp == "V" || res_exp == "VAL")
+				RES_exp[i] = "VAL";
+			if (res_exp == "W" || res_exp == "TRP")
+				RES_exp[i] = "TRP";
+			if (res_exp == "Y" || res_exp == "TYR")
+				RES_exp[i] = "TYR";
+
+			//  put observed values into a hashed array:
+			idp = sprintf("1:%d:N", i);
+			obs[idp] = N_exp[i];
+			idp = sprintf("1:%d:CA", i);
+			obs[idp] = Ca_exp[i];
+			idp = sprintf("1:%d:CB", i);
+			obs[idp] = Cb_exp[i];
+			idp = sprintf("1:%d:C", i);
+			obs[idp] = CO_exp[i];
+		}
+
+	} else {					// try to find and read basename.str:
+
+		obsf = fopen(basename + ".str", "r");
+		if (obsf == NULL) {
+			fprintf(stderr, "empty or non-existent obs and str files\n");
+			exit(1);
+		} else {
+			while (line = getline(obsf)) {
+				if (substr(line, 1, 1) == "#")
+					continue;
+				sscanf(line, "%*d%d%s%s%s%lf\n", i, res, atom1, atom2,
+					   shift);
+				assert(i <= MAXRES);
+
+				//  modify the residue number to be relative to the first
+				//    residue in the protein, since this is how the rest of
+				//    the program works:
+				i = i - first_resid + 1;
+
+				// fill zero for missing experimental data;
+				if ((i - j) > 1) {
+					for (k = j + 1; k < i; k++) {
+						N_exp[k] = 0;
+						Ca_exp[k] = 0;
+						Cb_exp[k] = 0;
+						CO_exp[k] = 0;
+						RES_exp[k] = R_name[k];
+					}
+				}
+				j = i;
+
+				if (atom1 == "N") {
+					N_exp[i] = shift;
+					idp = sprintf("1:%d:N", i);
+					obs[idp] = N_exp[i];
+				}
+				if (atom1 == "CA") {
+					Ca_exp[i] = shift;
+					idp = sprintf("1:%d:CA", i);
+					obs[idp] = Ca_exp[i];
+				}
+				if (atom1 == "CB") {
+					Cb_exp[i] = shift;
+					idp = sprintf("1:%d:CB", i);
+					obs[idp] = Cb_exp[i];
+				}
+				if (atom1 == "C") {
+					CO_exp[i] = shift;
+					idp = sprintf("1:%d:C", i);
+					obs[idp] = CO_exp[i];
+				}
+				RES_exp[i] = res;
+			}
+		}
+	}
+	fclose(obsf);
+	return (0);
+};
+
+
+float BBcorr(int fsp, float ph, float ps, string resname)
+{
+	int i, j, x, y, z, up, low, x_low, y_up;
+	float d_bb1, d_bb2, d_bb, grid11, grid12, grid21, grid22;
+	x = 0;
+	y = 0;
+
+	if (ph <= 180) {
+		for (i = 1; i <= 37; i++) {
+			up = 180 - (i - 1) * 10;
+			low = up - 10;
+			if (ps <= up && ps > low) {
+				y = i;
+				y_up = up;
+			}
+		}
+		for (i = 1; i <= 18; i++) {
+			low = -180 + (i - 1) * 20;
+			up = low + 20;
+			if (ph < up && ph >= low) {
+				x = i;
+				x_low = low;
+			}
+		}
+
+
+		if (fsp < 14 && fsp > 10) {
+			z = (fsp - 11) * 37;
+			if (resname == "ALA") {
+				grid11 = A_s_N_bb[y + z, x];
+				grid21 = A_s_N_bb[y + 1 + z, x];
+				grid12 = A_s_N_bb[y + z, x + 1];
+				grid22 = A_s_N_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_s_N_bb[y + z, x];
+				grid21 = G_s_N_bb[y + 1 + z, x];
+				grid12 = G_s_N_bb[y + z, x + 1];
+				grid22 = G_s_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_s_N_bb[y + z, x];
+				grid21 = Q_s_N_bb[y + 1 + z, x];
+				grid12 = Q_s_N_bb[y + z, x + 1];
+				grid22 = Q_s_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_s_N_bb[y + z, x];
+				grid21 = F_s_N_bb[y + 1 + z, x];
+				grid12 = F_s_N_bb[y + z, x + 1];
+				grid22 = F_s_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_s_N_bb[y + z, x];
+				grid21 = S_s_N_bb[y + 1 + z, x];
+				grid12 = S_s_N_bb[y + z, x + 1];
+				grid22 = S_s_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_s_N_bb[y + z, x];
+				grid21 = V_s_N_bb[y + 1 + z, x];
+				grid12 = V_s_N_bb[y + z, x + 1];
+				grid22 = V_s_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_s_N_bb[y + z, x];
+				grid21 = L_s_N_bb[y + 1 + z, x];
+				grid12 = L_s_N_bb[y + z, x + 1];
+				grid22 = L_s_N_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 24 && fsp > 20) {
+			z = (fsp - 21) * 37;
+			if (resname == "ALA") {
+				grid11 = A_s_Ca_bb[y + z, x];
+				grid21 = A_s_Ca_bb[y + 1 + z, x];
+				grid12 = A_s_Ca_bb[y + z, x + 1];
+				grid22 = A_s_Ca_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_s_Ca_bb[y + z, x];
+				grid21 = G_s_Ca_bb[y + 1 + z, x];
+				grid12 = G_s_Ca_bb[y + z, x + 1];
+				grid22 = G_s_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_s_Ca_bb[y + z, x];
+				grid21 = Q_s_Ca_bb[y + 1 + z, x];
+				grid12 = Q_s_Ca_bb[y + z, x + 1];
+				grid22 = Q_s_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_s_Ca_bb[y + z, x];
+				grid21 = F_s_Ca_bb[y + 1 + z, x];
+				grid12 = F_s_Ca_bb[y + z, x + 1];
+				grid22 = F_s_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_s_Ca_bb[y + z, x];
+				grid21 = S_s_Ca_bb[y + 1 + z, x];
+				grid12 = S_s_Ca_bb[y + z, x + 1];
+				grid22 = S_s_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_s_Ca_bb[y + z, x];
+				grid21 = V_s_Ca_bb[y + 1 + z, x];
+				grid12 = V_s_Ca_bb[y + z, x + 1];
+				grid22 = V_s_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_s_Ca_bb[y + z, x];
+				grid21 = L_s_Ca_bb[y + 1 + z, x];
+				grid12 = L_s_Ca_bb[y + z, x + 1];
+				grid22 = L_s_Ca_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 34 && fsp > 30) {
+			z = (fsp - 31) * 37;
+			if (resname == "ALA") {
+				grid11 = A_s_Cb_bb[y + z, x];
+				grid21 = A_s_Cb_bb[y + 1 + z, x];
+				grid12 = A_s_Cb_bb[y + z, x + 1];
+				grid22 = A_s_Cb_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_s_Cb_bb[y + z, x];
+				grid21 = G_s_Cb_bb[y + 1 + z, x];
+				grid12 = G_s_Cb_bb[y + z, x + 1];
+				grid22 = G_s_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_s_Cb_bb[y + z, x];
+				grid21 = Q_s_Cb_bb[y + 1 + z, x];
+				grid12 = Q_s_Cb_bb[y + z, x + 1];
+				grid22 = Q_s_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_s_Cb_bb[y + z, x];
+				grid21 = F_s_Cb_bb[y + 1 + z, x];
+				grid12 = F_s_Cb_bb[y + z, x + 1];
+				grid22 = F_s_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_s_Cb_bb[y + z, x];
+				grid21 = S_s_Cb_bb[y + 1 + z, x];
+				grid12 = S_s_Cb_bb[y + z, x + 1];
+				grid22 = S_s_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_s_Cb_bb[y + z, x];
+				grid21 = V_s_Cb_bb[y + 1 + z, x];
+				grid12 = V_s_Cb_bb[y + z, x + 1];
+				grid22 = V_s_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_s_Cb_bb[y + z, x];
+				grid21 = L_s_Cb_bb[y + 1 + z, x];
+				grid12 = L_s_Cb_bb[y + z, x + 1];
+				grid22 = L_s_Cb_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 44 && fsp > 40) {
+			z = (fsp - 41) * 37;
+			if (resname == "ALA") {
+				grid11 = A_s_CO_bb[y + z, x];
+				grid21 = A_s_CO_bb[y + 1 + z, x];
+				grid12 = A_s_CO_bb[y + z, x + 1];
+				grid22 = A_s_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_s_CO_bb[y + z, x];
+				grid21 = G_s_CO_bb[y + 1 + z, x];
+				grid12 = G_s_CO_bb[y + z, x + 1];
+				grid22 = G_s_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_s_CO_bb[y + z, x];
+				grid21 = Q_s_CO_bb[y + 1 + z, x];
+				grid12 = Q_s_CO_bb[y + z, x + 1];
+				grid22 = Q_s_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_s_CO_bb[y + z, x];
+				grid21 = F_s_CO_bb[y + 1 + z, x];
+				grid12 = F_s_CO_bb[y + z, x + 1];
+				grid22 = F_s_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_s_CO_bb[y + z, x];
+				grid21 = S_s_CO_bb[y + 1 + z, x];
+				grid12 = S_s_CO_bb[y + z, x + 1];
+				grid22 = S_s_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_s_CO_bb[y + z, x];
+				grid21 = V_s_CO_bb[y + 1 + z, x];
+				grid12 = V_s_CO_bb[y + z, x + 1];
+				grid22 = V_s_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_s_CO_bb[y + z, x];
+				grid21 = L_s_CO_bb[y + 1 + z, x];
+				grid12 = L_s_CO_bb[y + z, x + 1];
+				grid22 = L_s_CO_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 17 && fsp > 13) {
+			z = (fsp - 14) * 37;
+			if (resname == "ALA") {
+				grid11 = A_h_N_bb[y + z, x];
+				grid21 = A_h_N_bb[y + 1 + z, x];
+				grid12 = A_h_N_bb[y + z, x + 1];
+				grid22 = A_h_N_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_h_N_bb[y + z, x];
+				grid21 = G_h_N_bb[y + 1 + z, x];
+				grid12 = G_h_N_bb[y + z, x + 1];
+				grid22 = G_h_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_h_N_bb[y + z, x];
+				grid21 = Q_h_N_bb[y + 1 + z, x];
+				grid12 = Q_h_N_bb[y + z, x + 1];
+				grid22 = Q_h_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_h_N_bb[y + z, x];
+				grid21 = F_h_N_bb[y + 1 + z, x];
+				grid12 = F_h_N_bb[y + z, x + 1];
+				grid22 = F_h_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_h_N_bb[y + z, x];
+				grid21 = S_h_N_bb[y + 1 + z, x];
+				grid12 = S_h_N_bb[y + z, x + 1];
+				grid22 = S_h_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_h_N_bb[y + z, x];
+				grid21 = V_h_N_bb[y + 1 + z, x];
+				grid12 = V_h_N_bb[y + z, x + 1];
+				grid22 = V_h_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_h_N_bb[y + z, x];
+				grid21 = L_h_N_bb[y + 1 + z, x];
+				grid12 = L_h_N_bb[y + z, x + 1];
+				grid22 = L_h_N_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 27 && fsp > 23) {
+			z = (fsp - 24) * 37;
+			if (resname == "ALA") {
+				grid11 = A_h_Ca_bb[y + z, x];
+				grid21 = A_h_Ca_bb[y + 1 + z, x];
+				grid12 = A_h_Ca_bb[y + z, x + 1];
+				grid22 = A_h_Ca_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_h_Ca_bb[y + z, x];
+				grid21 = G_h_Ca_bb[y + 1 + z, x];
+				grid12 = G_h_Ca_bb[y + z, x + 1];
+				grid22 = G_h_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_h_Ca_bb[y + z, x];
+				grid21 = Q_h_Ca_bb[y + 1 + z, x];
+				grid12 = Q_h_Ca_bb[y + z, x + 1];
+				grid22 = Q_h_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_h_Ca_bb[y + z, x];
+				grid21 = F_h_Ca_bb[y + 1 + z, x];
+				grid12 = F_h_Ca_bb[y + z, x + 1];
+				grid22 = F_h_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_h_Ca_bb[y + z, x];
+				grid21 = S_h_Ca_bb[y + 1 + z, x];
+				grid12 = S_h_Ca_bb[y + z, x + 1];
+				grid22 = S_h_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_h_Ca_bb[y + z, x];
+				grid21 = V_h_Ca_bb[y + 1 + z, x];
+				grid12 = V_h_Ca_bb[y + z, x + 1];
+				grid22 = V_h_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_h_Ca_bb[y + z, x];
+				grid21 = L_h_Ca_bb[y + 1 + z, x];
+				grid12 = L_h_Ca_bb[y + z, x + 1];
+				grid22 = L_h_Ca_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 37 && fsp > 33) {
+			z = (fsp - 34) * 37;
+			if (resname == "ALA") {
+				grid11 = A_h_Cb_bb[y + z, x];
+				grid21 = A_h_Cb_bb[y + 1 + z, x];
+				grid12 = A_h_Cb_bb[y + z, x + 1];
+				grid22 = A_h_Cb_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_h_Cb_bb[y + z, x];
+				grid21 = G_h_Cb_bb[y + 1 + z, x];
+				grid12 = G_h_Cb_bb[y + z, x + 1];
+				grid22 = G_h_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_h_Cb_bb[y + z, x];
+				grid21 = Q_h_Cb_bb[y + 1 + z, x];
+				grid12 = Q_h_Cb_bb[y + z, x + 1];
+				grid22 = Q_h_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_h_Cb_bb[y + z, x];
+				grid21 = F_h_Cb_bb[y + 1 + z, x];
+				grid12 = F_h_Cb_bb[y + z, x + 1];
+				grid22 = F_h_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_h_Cb_bb[y + z, x];
+				grid21 = S_h_Cb_bb[y + 1 + z, x];
+				grid12 = S_h_Cb_bb[y + z, x + 1];
+				grid22 = S_h_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_h_Cb_bb[y + z, x];
+				grid21 = V_h_Cb_bb[y + 1 + z, x];
+				grid12 = V_h_Cb_bb[y + z, x + 1];
+				grid22 = V_h_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_h_Cb_bb[y + z, x];
+				grid21 = L_h_Cb_bb[y + 1 + z, x];
+				grid12 = L_h_Cb_bb[y + z, x + 1];
+				grid22 = L_h_Cb_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 47 && fsp > 43) {
+			z = (fsp - 44) * 37;
+			if (resname == "ALA") {
+				grid11 = A_h_CO_bb[y + z, x];
+				grid21 = A_h_CO_bb[y + 1 + z, x];
+				grid12 = A_h_CO_bb[y + z, x + 1];
+				grid22 = A_h_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_h_CO_bb[y + z, x];
+				grid21 = G_h_CO_bb[y + 1 + z, x];
+				grid12 = G_h_CO_bb[y + z, x + 1];
+				grid22 = G_h_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_h_CO_bb[y + z, x];
+				grid21 = Q_h_CO_bb[y + 1 + z, x];
+				grid12 = Q_h_CO_bb[y + z, x + 1];
+				grid22 = Q_h_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_h_CO_bb[y + z, x];
+				grid21 = F_h_CO_bb[y + 1 + z, x];
+				grid12 = F_h_CO_bb[y + z, x + 1];
+				grid22 = F_h_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_h_CO_bb[y + z, x];
+				grid21 = S_h_CO_bb[y + 1 + z, x];
+				grid12 = S_h_CO_bb[y + z, x + 1];
+				grid22 = S_h_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_h_CO_bb[y + z, x];
+				grid21 = V_h_CO_bb[y + 1 + z, x];
+				grid12 = V_h_CO_bb[y + z, x + 1];
+				grid22 = V_h_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_h_CO_bb[y + z, x];
+				grid21 = L_h_CO_bb[y + 1 + z, x];
+				grid12 = L_h_CO_bb[y + z, x + 1];
+				grid22 = L_h_CO_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 20 && fsp > 16) {
+			z = (fsp - 17) * 37;
+			if (resname == "ALA") {
+				grid11 = A_n_N_bb[y + z, x];
+				grid21 = A_n_N_bb[y + 1 + z, x];
+				grid12 = A_n_N_bb[y + z, x + 1];
+				grid22 = A_n_N_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_n_N_bb[y + z, x];
+				grid21 = G_n_N_bb[y + 1 + z, x];
+				grid12 = G_n_N_bb[y + z, x + 1];
+				grid22 = G_n_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_n_N_bb[y + z, x];
+				grid21 = Q_n_N_bb[y + 1 + z, x];
+				grid12 = Q_n_N_bb[y + z, x + 1];
+				grid22 = Q_n_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_n_N_bb[y + z, x];
+				grid21 = F_n_N_bb[y + 1 + z, x];
+				grid12 = F_n_N_bb[y + z, x + 1];
+				grid22 = F_n_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_n_N_bb[y + z, x];
+				grid21 = S_n_N_bb[y + 1 + z, x];
+				grid12 = S_n_N_bb[y + z, x + 1];
+				grid22 = S_n_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_n_N_bb[y + z, x];
+				grid21 = V_n_N_bb[y + 1 + z, x];
+				grid12 = V_n_N_bb[y + z, x + 1];
+				grid22 = V_n_N_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_n_N_bb[y + z, x];
+				grid21 = L_n_N_bb[y + 1 + z, x];
+				grid12 = L_n_N_bb[y + z, x + 1];
+				grid22 = L_n_N_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 30 && fsp > 26) {
+			z = (fsp - 27) * 37;
+			if (resname == "ALA") {
+				grid11 = A_n_Ca_bb[y + z, x];
+				grid21 = A_n_Ca_bb[y + 1 + z, x];
+				grid12 = A_n_Ca_bb[y + z, x + 1];
+				grid22 = A_n_Ca_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_n_Ca_bb[y + z, x];
+				grid21 = G_n_Ca_bb[y + 1 + z, x];
+				grid12 = G_n_Ca_bb[y + z, x + 1];
+				grid22 = G_n_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_n_Ca_bb[y + z, x];
+				grid21 = Q_n_Ca_bb[y + 1 + z, x];
+				grid12 = Q_n_Ca_bb[y + z, x + 1];
+				grid22 = Q_n_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_n_Ca_bb[y + z, x];
+				grid21 = F_n_Ca_bb[y + 1 + z, x];
+				grid12 = F_n_Ca_bb[y + z, x + 1];
+				grid22 = F_n_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_n_Ca_bb[y + z, x];
+				grid21 = S_n_Ca_bb[y + 1 + z, x];
+				grid12 = S_n_Ca_bb[y + z, x + 1];
+				grid22 = S_n_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_n_Ca_bb[y + z, x];
+				grid21 = V_n_Ca_bb[y + 1 + z, x];
+				grid12 = V_n_Ca_bb[y + z, x + 1];
+				grid22 = V_n_Ca_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_n_Ca_bb[y + z, x];
+				grid21 = L_n_Ca_bb[y + 1 + z, x];
+				grid12 = L_n_Ca_bb[y + z, x + 1];
+				grid22 = L_n_Ca_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 40 && fsp > 36) {
+			z = (fsp - 37) * 37;
+			if (resname == "ALA") {
+				grid11 = A_n_Cb_bb[y + z, x];
+				grid21 = A_n_Cb_bb[y + 1 + z, x];
+				grid12 = A_n_Cb_bb[y + z, x + 1];
+				grid22 = A_n_Cb_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_n_Cb_bb[y + z, x];
+				grid21 = G_n_Cb_bb[y + 1 + z, x];
+				grid12 = G_n_Cb_bb[y + z, x + 1];
+				grid22 = G_n_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "GLN" || resname == "GLU" || resname == "MET"
+				|| resname == "LYS" || resname == "ARG"
+				|| resname == "PRO") {
+				grid11 = Q_n_Cb_bb[y + z, x];
+				grid21 = Q_n_Cb_bb[y + 1 + z, x];
+				grid12 = Q_n_Cb_bb[y + z, x + 1];
+				grid22 = Q_n_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "PHE" || resname == "TYR" || resname == "TRP"
+				|| substr(resname, 1, 2) == "HI") {
+				grid11 = F_n_Cb_bb[y + z, x];
+				grid21 = F_n_Cb_bb[y + 1 + z, x];
+				grid12 = F_n_Cb_bb[y + z, x + 1];
+				grid22 = F_n_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "SER" || resname == "ASN" || resname == "ASP") {
+				grid11 = S_n_Cb_bb[y + z, x];
+				grid21 = S_n_Cb_bb[y + 1 + z, x];
+				grid12 = S_n_Cb_bb[y + z, x + 1];
+				grid22 = S_n_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "VAL" || resname == "ILE" || resname == "THR") {
+				grid11 = V_n_Cb_bb[y + z, x];
+				grid21 = V_n_Cb_bb[y + 1 + z, x];
+				grid12 = V_n_Cb_bb[y + z, x + 1];
+				grid22 = V_n_Cb_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_n_Cb_bb[y + z, x];
+				grid21 = L_n_Cb_bb[y + 1 + z, x];
+				grid12 = L_n_Cb_bb[y + z, x + 1];
+				grid22 = L_n_Cb_bb[y + 1 + z, x + 1];
+			}
+		}
+
+		if (fsp < 50 && fsp > 46) {
+			z = (fsp - 47) * 37;
+			if (resname == "ALA") {
+				grid11 = A_n_CO_bb[y + z, x];
+				grid21 = A_n_CO_bb[y + 1 + z, x];
+				grid12 = A_n_CO_bb[y + z, x + 1];
+				grid22 = A_n_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLY") {
+				grid11 = G_n_CO_bb[y + z, x];
+				grid21 = G_n_CO_bb[y + 1 + z, x];
+				grid12 = G_n_CO_bb[y + z, x + 1];
+				grid22 = G_n_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "GLN" || resname == "GLU"
+					   || resname == "MET" || resname == "LYS"
+					   || resname == "ARG" || resname == "PRO") {
+				grid11 = Q_n_CO_bb[y + z, x];
+				grid21 = Q_n_CO_bb[y + 1 + z, x];
+				grid12 = Q_n_CO_bb[y + z, x + 1];
+				grid22 = Q_n_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "PHE" || resname == "TYR"
+					   || resname == "TRP"
+					   || substr(resname, 1, 2) == "HI") {
+				grid11 = F_n_CO_bb[y + z, x];
+				grid21 = F_n_CO_bb[y + 1 + z, x];
+				grid12 = F_n_CO_bb[y + z, x + 1];
+				grid22 = F_n_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "SER" || resname == "ASN"
+					   || resname == "ASP") {
+				grid11 = S_n_CO_bb[y + z, x];
+				grid21 = S_n_CO_bb[y + 1 + z, x];
+				grid12 = S_n_CO_bb[y + z, x + 1];
+				grid22 = S_n_CO_bb[y + 1 + z, x + 1];
+			} else if (resname == "VAL" || resname == "ILE"
+					   || resname == "THR") {
+				grid11 = V_n_CO_bb[y + z, x];
+				grid21 = V_n_CO_bb[y + 1 + z, x];
+				grid12 = V_n_CO_bb[y + z, x + 1];
+				grid22 = V_n_CO_bb[y + 1 + z, x + 1];
+			}
+			if (resname == "LEU") {
+				grid11 = L_n_CO_bb[y + z, x];
+				grid21 = L_n_CO_bb[y + 1 + z, x];
+				grid12 = L_n_CO_bb[y + z, x + 1];
+				grid22 = L_n_CO_bb[y + 1 + z, x + 1];
+			} else {
+				grid11 = 0;
+				grid21 = 0;
+				grid12 = 0;
+				grid22 = 0;
+			}
+		}
+
+		d_bb1 = (x_low - ph) * (grid11 - grid12) / 20 + grid11;
+		d_bb2 = (x_low - ph) * (grid21 - grid22) / 20 + grid21;
+		d_bb = (ps - y_up) * (d_bb1 - d_bb2) / 10 + d_bb1;
+	}
+	//else if (ph >140 && (fsp==12 || fsp==15 || fsp==18)) {d_bb = 3;}
+	else {
+		d_bb = 0;
+	}
+
+	return (d_bb);
+};
+
+
+int New_diff_N(int i)
+{
+	if (R_name[i + 1] == "ALA") {
+		dN_chi_p[i + 1] = A_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "GLY") {
+		dN_chi_p[i + 1] = G_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "GLN" || R_name[i + 1] == "GLU"
+		|| R_name[i + 1] == "MET" || R_name[i + 1] == "LYS"
+		|| R_name[i + 1] == "ARG") {
+		dN_chi_p[i + 1] = Q_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "PHE" || R_name[i + 1] == "TYR"
+		|| R_name[i + 1] == "TRP" || substr(R_name[i + 1], 1, 2) == "HI") {
+		dN_chi_p[i + 1] = F_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "SER" || R_name[i + 1] == "ASN"
+		|| R_name[i + 1] == "ASP") {
+		dN_chi_p[i + 1] = S_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "VAL") {
+		dN_chi_p[i + 1] = V_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "ILE") {
+		dN_chi_p[i + 1] = I_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "THR") {
+		dN_chi_p[i + 1] = T_Nchi_p[class_chi[i], class_res[i]];
+	}
+	if (R_name[i + 1] == "PRO") {
+		dN_chi_p[i + 1] = P_Nchi_p[class_chi[i], class_res[i]];
+	}
+
+	if (R_name[i + 1] == "LEU") {
+		dN_chi_p[i + 1] = L_Nchi_p[class_chi[i], class_res[i]];
+	}
+	dN_Sum[i + 1] =
+		dN_bb[i + 1, 1] + dN_bb[i + 1, 2] + dN_bb[i + 1,
+												  3] + dN_chi_p[i + 1] +
+		dN_chi12_s[i + 1] + dHB[i + 1];
+	return (0);
+};
+
+int New_diff_CO(int i)
+{
+	if (R_name[i - 1] == "ALA" || R_name[i - 1] == "GLN"
+		|| R_name[i - 1] == "GLU" || R_name[i - 1] == "MET"
+		|| R_name[i - 1] == "LYS" || R_name[i - 1] == "ARG"
+		|| R_name[i - 1] == "PRO" || R_name[i - 1] == "PHE"
+		|| R_name[i - 1] == "TYR" || R_name[i - 1] == "TRP"
+		|| substr(R_name[i - 1], 1, 2) == "HI") {
+		dCO_chi_f[i - 1] = A_COchi_f[class_chi[i], class_res[i]];
+	}
+	if (R_name[i - 1] == "GLY") {
+		dCO_chi_f[i - 1] = G_COchi_f[class_chi[i], class_res[i]];
+	}
+	if (R_name[i - 1] == "SER" || R_name[i - 1] == "ASN"
+		|| R_name[i - 1] == "ASP" || R_name[i - 1] == "LEU"
+		|| R_name[i - 1] == "VAL" || R_name[i - 1] == "ILE"
+		|| R_name[i - 1] == "THR") {
+		dCO_chi_f[i - 1] = V_COchi_f[class_chi[i], class_res[i]];
+	}
+	dCO_Sum[i - 1] =
+		dCO_bb[i - 1, 1] + dCO_bb[i - 1, 2] + dCO_bb[i - 1,
+													 3] + dCO_chi_f[i -
+																	1] +
+		dCO_chi12_s[i - 1] + dHB[i - 1];
+	return (0);
+};
+
+
+int RefineChi()
+{
+	int i, j, k, k2;
+	float try_N[30], try_Ca[30], try_Cb[30], try_CO[30];
+	float tN, tCa, tCb, tCO;
+	int chi2n[3];
+
+	chi2n[1] = 300.;
+	chi2n[2] = 60.;
+	chi2n[3] = 180.;
+
+	for (i = firstprot + 1; i <= lastprot; i++) {
+
+		if (!range[i])
+			continue;
+
+		diff_N[i] = fabs(N_pred[i] - N_exp[i]);
+		diff_Ca[i] = fabs(Ca_pred[i] - Ca_exp[i]);
+		diff_Cb[i] = fabs(Cb_pred[i] - Cb_exp[i]);
+		diff_CO[i] = fabs(CO_pred[i] - CO_exp[i]);
+
+		if (N_exp[i] != 0 && Ca_exp[i] != 0 && Cb_exp[i] != 0
+			&& R_name[i - 1] == RES_exp[i - 1]
+			&& R_name[i] == RES_exp[i]) {
+			if (diff_N[i] <= 2.50)
+				N_ID = 1;
+			else
+				N_ID = 0;
+			if (diff_Ca[i] <= 1.50)
+				Ca_ID = 1;
+			else
+				Ca_ID = 0;
+			if (diff_Cb[i] <= 1.50)
+				Cb_ID = 1;
+			else
+				Cb_ID = 0;
+			if (N_ID * Ca_ID * Cb_ID == 0)
+				mod_ID[i] = 1;
+			else
+				mod_ID[i] = 0;
+		} else
+			mod_ID[i] = 0;
+
+		if (mod_ID[i]) {
+			old_ID =
+				0.9 * diff_N[i] + diff_Ca[i] + 0.8 * diff_Cb[i] +
+				0.5 * diff_CO[i];
+			mid_ID = old_ID;
+			if (class_cf[i] == 1) {
+				for (j = 1; j <= 9; j++) {
+					tN = dN_bb[i, 1] + dN_bb[i, 2] + dN_bb[i, 3] +
+						dN_chi_p[i] + dHB[i] + N_chi12_s[j, class_res[i]] +
+						N_REF[i];
+					tCa =
+						dCa_bb[i, 1] + dCa_bb[i, 2] + dCa_bb[i, 3] +
+						dCa_chi_p[i] + Ca_chi12_s[j, class_res[i]] +
+						Ca_REF[i];
+					tCb =
+						dCb_bb[i, 1] + dCb_bb[i, 2] + dCb_bb[i, 3] +
+						dCb_chi_p[i] + Cb_chi12_s[j, class_res[i]] +
+						Cb_REF[i];
+					tCO =
+						dCO_bb[i, 1] + dCO_bb[i, 2] + dCO_bb[i, 3] +
+						dCO_chi_f[i] + CO_chi12_s[j, class_res[i]] +
+						CO_REF[i];
+
+					try_N[j] = fabs(tN - N_exp[i]);
+					try_Ca[j] = fabs(tCa - Ca_exp[i]);
+					try_Cb[j] = fabs(tCb - Cb_exp[i]);
+					try_CO[j] = fabs(tCO - CO_exp[i]);
+
+					new_ID[j] =
+						0.9 * try_N[j] + try_Ca[j] + 0.8 * try_Cb[j] +
+						0.5 * try_CO[j];
+					if (new_ID[j] < mid_ID
+						&& fabs(new_ID[j] - mid_ID) > 2.0) {
+						k = j;
+						mid_ID = new_ID[j];
+					}
+				}
+				if (mid_ID != old_ID) {
+					class_chi12[i] = k;
+					if (k <= 3) {
+						class_chi[i] = 1;
+						chi[i] = 300;
+					}
+					if (k > 6) {
+						class_chi[i] = 3;
+						chi[i] = 180;
+					}
+					if (k > 3 && k <= 6) {
+						class_chi[i] = 2;
+						chi[i] = 60;
+					}
+					k2 = k % 3;
+					if (k2 == 0)
+						k2 = 3;
+					chi2[i] = chi2n[k2];
+					New_diff_N(i);
+					New_diff_CO(i);
+				}
+			}
+
+			if (class_cf[i] == 2) {
+				for (j = 10; j <= 18; j++) {
+					tN = dN_bb[i, 1] + dN_bb[i, 2] + dN_bb[i, 3] +
+						dN_chi_p[i] + dHB[i] + N_chi12_s[j, class_res[i]] +
+						N_REF[i];
+					tCa = dCa_bb[i, 1] + dCa_bb[i, 2] + dCa_bb[i, 3] +
+						dCa_chi_p[i] + Ca_chi12_s[j,
+												  class_res[i]] +
+						Ca_REF[i];
+					tCb =
+						dCb_bb[i, 1] + dCb_bb[i, 2] + dCb_bb[i,
+															 3] +
+						dCb_chi_p[i] + Cb_chi12_s[j,
+												  class_res[i]] +
+						Cb_REF[i];
+					tCO =
+						dCO_bb[i, 1] + dCO_bb[i, 2] + dCO_bb[i,
+															 3] +
+						dCO_chi_f[i] + CO_chi12_s[j,
+												  class_res[i]] +
+						CO_REF[i];
+
+					try_N[j] = fabs(tN - N_exp[i]);
+					try_Ca[j] = fabs(tCa - Ca_exp[i]);
+					try_Cb[j] = fabs(tCb - Cb_exp[i]);
+					try_CO[j] = fabs(tCO - CO_exp[i]);
+
+					new_ID[j] =
+						0.9 * try_N[j] + try_Ca[j] + 0.8 * try_Cb[j] +
+						0.5 * try_CO[j];
+					if (new_ID[j] < mid_ID
+						&& fabs(new_ID[j] - mid_ID) > 1.0) {
+						k = j;
+						mid_ID = new_ID[j];
+					}
+				}
+				if (mid_ID != old_ID) {
+					class_chi12[i] = k;
+					if (k <= 12) {
+						class_chi[i] = 4;
+						chi[i] = 300;
+					}
+					if (k > 15) {
+						class_chi[i] = 6;
+						chi[i] = 180;
+					}
+					if (k > 12 && k <= 15) {
+						class_chi[i] = 5;
+						chi[i] = 60;
+					}
+					k2 = k % 3;
+					if (k2 == 0)
+						k2 = 3;
+					chi2[i] = chi2n[k2];
+					New_diff_N(i);
+					New_diff_CO(i);
+				}
+			}
+
+			if (class_cf[i] == 3) {
+				for (j = 19; j <= 27; j++) {
+					tN = dN_bb[i, 1] + dN_bb[i, 2] + dN_bb[i, 3] +
+						dN_chi_p[i] + dHB[i] + N_chi12_s[j, class_res[i]] +
+						N_REF[i];
+					tCa =
+						dCa_bb[i, 1] + dCa_bb[i, 2] + dCa_bb[i, 3] +
+						dCa_chi_p[i] + Ca_chi12_s[j, class_res[i]] +
+						Ca_REF[i];
+					tCb =
+						dCb_bb[i, 1] + dCb_bb[i, 2] + dCb_bb[i, 3] +
+						dCb_chi_p[i] + Cb_chi12_s[j, class_res[i]] +
+						Cb_REF[i];
+					tCO =
+						dCO_bb[i, 1] + dCO_bb[i, 2] + dCO_bb[i, 3] +
+						dCO_chi_f[i] + CO_chi12_s[j, class_res[i]] +
+						CO_REF[i];
+
+					try_N[j] = fabs(tN - N_exp[i]);
+					try_Ca[j] = fabs(tCa - Ca_exp[i]);
+					try_Cb[j] = fabs(tCb - Cb_exp[i]);
+					try_CO[j] = fabs(tCO - CO_exp[i]);
+
+					new_ID[j] =
+						0.9 * try_N[j] + try_Ca[j] + 0.8 * try_Cb[j] +
+						0.5 * try_CO[j];
+					if (new_ID[j] < mid_ID
+						&& fabs(new_ID[j] - mid_ID) > 1.0) {
+						k = j;
+						mid_ID = new_ID[j];
+					}
+				}
+				if (mid_ID != old_ID) {
+					class_chi12[i] = k;
+					if (k <= 21) {
+						class_chi[i] = 7;
+						chi[i] = 300;
+					}
+					if (k > 24) {
+						class_chi[i] = 9;
+						chi[i] = 180;
+					}
+					if (k > 21 && k <= 24) {
+						class_chi[i] = 8;
+						chi[i] = 60;
+					}
+					k2 = k % 3;
+					if (k2 == 0)
+						k2 = 3;
+					chi2[i] = chi2n[k2];
+					New_diff_N(i);
+					New_diff_CO(i);
+				}
+			}
+		}
+	}
+
+	return (0);
+};
+
+int CalCorrect_HN(float calc[hashed])
+{
+	int i, j, k, N_ID, Ca_ID, Cb_ID;
+	string idp, idp_prefix;
+
+// MSH: Define variables for HB
+
+	file db;
+	string line, prefix;
+	string indnn[6];
+	string nn[300, 6];
+	float fnn[10, 6];
+	float chi_sum;
+	float hb_sum;
+	int max;
+	float min_HB, min_WHB;
+
+	if (!(prefix = getenv("SHIFTSHOME"))) {
+		fprintf(stderr, "SHIFTSHOME not defined.\n");
+		exit(1);
+	}
+	prefix += "/lib/qdb/";
+
+// MSH: End
+
+// MSH: Read NN-HB parameters
+
+	db = safe_fopen(prefix + "HB_NN", "r");
+	i = 0;
+	j = 0;
+	max = 0;
+	while (line = getline(db)) {
+		split(line, indnn, " ");
+		++i;
+		max = i;
+		for (j = 1; j <= 6; j++) {
+			nn[i, j] = indnn[j];
+			indnn[j] = "0";
+		}
+	}
+	fclose(db);
+
+// MSH: End
+
+	for (i = firstprot + 1; i <= lastprot; i++) {
+		if (!range[i])
+			continue;
+
+// MSH: NN-HB for Protein
+		dHB_D1[i] = 0.0;
+		dHB_D2[i] = 0.0;
+		dHB_D3[i] = 0.0;
+		dHB_D4[i] = 0.0;
+
+		if (DHB01[i] != 0.0 && DHB01[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "HBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DHB01[i] = DHB01[i] / 10.0;
+			DHBA1[i] = DHBA1[i] / 1000.0;
+			DHBT1[i] = DHBT1[i] / 1000.0;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k, 2] * DHB01[i] + 
+						 fnn[k,3] * DHBA1[i] + fnn[k,4] *
+									DHBT1[i] + fnn[k, 5])))) + fnn[k,6];
+				dHB_D1[i] += hb_sum;
+			}
+			dHB_D1[i] = -dHB_D1[i];
+			if (DHB01[i] * 10 <= 3.5 && DHB01[i] * 10 >= 1.5) {
+				dHB_D1[i] = dHB_D1[i] * 10;
+			} else {
+				dHB_D1[i] = 0;
+			}
+			if (dHB_D1[i] > 0)
+				dHB_D1[i] = 0;
+		}
+		if (DHB02[i] != 0.0 && DHB02[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "HBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DHB02[i] = DHB02[i] / 10.0;
+			DHBA2[i] = DHBA2[i] / 1000.0;
+			DHBT2[i] = DHBT2[i] / 1000.0;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DHB02[i] +
+		       			 fnn[k,3] * DHBA2[i] + fnn[k,4] *
+									DHBT2[i] + fnn[k,5])))) + fnn[k,6];
+				dHB_D2[i] += hb_sum;
+			}
+			dHB_D2[i] = -dHB_D2[i];
+			if (DHB02[i] * 10 <= 3.5 && DHB02[i] * 10 >= 1.5) {
+				dHB_D2[i] = dHB_D2[i] * 10;
+			} else {
+				dHB_D2[i] = 0;
+			}
+			if (dHB_D2[i] > 0)
+				dHB_D2[i] = 0;
+		}
+		if (DHB03[i] != 0.0 && DHB03[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "HBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DHB03[i] = DHB03[i] / 10.0;
+			DHBA3[i] = DHBA3[i] / 1000.0;
+			DHBT3[i] = DHBT3[i] / 1000.0;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DHB03[i] +
+						 fnn[k,3] * DHBA3[i] + fnn[k,4] *
+									DHBT3[i] + fnn[k, 5])))) + fnn[k,6];
+				dHB_D3[i] += hb_sum;
+			}
+			dHB_D3[i] = -dHB_D3[i];
+			if (DHB03[i] * 10 <= 3.5 && DHB03[i] * 10 >= 1.5) {
+				dHB_D3[i] = dHB_D3[i] * 10;
+			} else {
+				dHB_D3[i] = 0;
+			}
+			if (dHB_D3[i] > 0)
+				dHB_D3[i] = 0;
+		}
+		if (DHB04[i] != 0.0 && DHB04[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "HBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DHB04[i] = DHB04[i] / 10.0;
+			DHBA4[i] = DHBA4[i] / 1000.0;
+			DHBT4[i] = DHBT4[i] / 1000.0;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DHB04[i] +
+						 fnn[k,3] * DHBA4[i] + fnn[k,4] *
+									DHBT4[i] + fnn[k,5])))) + fnn[k,6];
+				dHB_D4[i] += hb_sum;
+			}
+			dHB_D4[i] = -dHB_D4[i];
+			if (DHB04[i] * 10 <= 3.5 && DHB04[i] * 10 >= 1.5) {
+				dHB_D4[i] = dHB_D4[i] * 10;
+			} else {
+				dHB_D4[i] = 0;
+			}
+			if (dHB_D4[i] > 0)
+				dHB_D4[i] = 0;
+		}
+// MSH: NN-HB for Water
+		dWHB_D1[i] = 0.0;
+		dWHB_D2[i] = 0.0;
+		dWHB_D3[i] = 0.0;
+		dWHB_D4[i] = 0.0;
+		dWHB_D5[i] = 0.0;
+		dWHB_D6[i] = 0.0;
+
+		if (DWHB1[i] != 0.0 && DWHB1[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB1[i] = DWHB1[i] / 10;
+			DWHBA1[i] = DWHBA1[i] / 1000;
+			DWHBT1[i] = DWHBT1[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB1[i] +
+						 fnn[k,3] * DWHBA1[i] + fnn[k,4] *
+									DWHBT1[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D1[i] += hb_sum;
+			}
+			dWHB_D1[i] = -dWHB_D1[i];
+			if (DWHB1[i] * 10 <= 3.5 && DWHB1[i] * 10 >= 1.5) {
+				dWHB_D1[i] = dWHB_D1[i] * 10;
+			} else {
+				dWHB_D1[i] = 0;
+			}
+			if (dWHB_D1[i] > 0)
+				dWHB_D1[i] = 0;
+		}
+		if (DWHB2[i] != 0.0 && DWHB2[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB2[i] = DWHB2[i] / 10;
+			DWHBA2[i] = DWHBA2[i] / 1000;
+			DWHBT2[i] = DWHBT2[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB2[i] +
+						 fnn[k,3] * DWHBA2[i] + fnn[k,4] *
+									DWHBT2[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D2[i] += hb_sum;
+			}
+			dWHB_D2[i] = -dWHB_D2[i];
+			if (DWHB2[i] * 10 <= 3.5 && DWHB2[i] * 10 >= 1.5) {
+				dWHB_D2[i] = dWHB_D2[i] * 10;
+			} else {
+				dWHB_D2[i] = 0;
+			}
+			if (dWHB_D2[i] > 0)
+				dWHB_D2[i] = 0;
+		}
+		if (DWHB3[i] != 0.0 && DWHB3[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB3[i] = DWHB3[i] / 10;
+			DWHBA3[i] = DWHBA3[i] / 1000;
+			DWHBT3[i] = DWHBT3[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB3[i] +
+						 fnn[k,3] * DWHBA3[i] + fnn[k,4] *
+									DWHBT3[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D3[i] += hb_sum;
+			}
+			dWHB_D3[i] = -dWHB_D3[i];
+			if (DWHB3[i] * 10 <= 3.5 && DWHB3[i] * 10 >= 1.5) {
+				dWHB_D3[i] = dWHB_D3[i] * 10;
+			} else {
+				dWHB_D3[i] = 0;
+			}
+			if (dWHB_D3[i] > 0)
+				dWHB_D3[i] = 0;
+		}
+		if (DWHB4[i] != 0.0 && DWHB4[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB4[i] = DWHB4[i] / 10;
+			DWHBA4[i] = DWHBA4[i] / 1000;
+			DWHBT4[i] = DWHBT4[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB4[i] +
+						 fnn[k,3] * DWHBA4[i] + fnn[k,4] *
+									DWHBT4[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D4[i] += hb_sum;
+			}
+			dWHB_D4[i] = -dWHB_D4[i];
+			if (DWHB4[i] * 10 <= 3.5 && DWHB4[i] * 10 >= 1.5) {
+				dWHB_D4[i] = dWHB_D4[i] * 10;
+			} else {
+				dWHB_D4[i] = 0;
+			}
+			if (dWHB_D4[i] > 0)
+				dWHB_D4[i] = 0;
+		}
+		if (DWHB5[i] != 0.0 && DWHB5[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB5[i] = DWHB5[i] / 10;
+			DWHBA5[i] = DWHBA5[i] / 1000;
+			DWHBT5[i] = DWHBT5[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB5[i] +
+						 fnn[k,3] * DWHBA5[i] + fnn[k,4] *
+									DWHBT5[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D5[i] += hb_sum;
+			}
+			dWHB_D5[i] = -dWHB_D5[i];
+			if (DWHB5[i] * 10 <= 3.5 && DWHB5[i] * 10 >= 1.5) {
+				dWHB_D5[i] = dWHB_D5[i] * 10;
+			} else {
+				dWHB_D5[i] = 0;
+			}
+			if (dWHB_D5[i] > 0)
+				dWHB_D5[i] = 0;
+		}
+		if (DWHB6[i] != 0.0 && DWHB6[i] != 999.) {
+			for (k = 1; k <= max; k++) {
+				if (nn[k, 1] == "WHBHD") {
+					for (j = 1; j <= 6; j++) {
+						fnn[1, j] = atof(nn[k + 1, j]);
+						fnn[2, j] = atof(nn[k + 2, j]);
+						fnn[3, j] = atof(nn[k + 3, j]);
+						fnn[4, j] = atof(nn[k + 4, j]);
+						fnn[5, j] = atof(nn[k + 5, j]);
+						fnn[6, j] = atof(nn[k + 6, j]);
+						fnn[7, j] = atof(nn[k + 7, j]);
+						fnn[8, j] = atof(nn[k + 8, j]);
+						fnn[9, j] = atof(nn[k + 9, j]);
+						fnn[10, j] = atof(nn[k + 10, j]);
+					}
+					break;
+				}
+			}
+			DWHB6[i] = DWHB6[i] / 10;
+			DWHBA6[i] = DWHBA6[i] / 1000;
+			DWHBT6[i] = DWHBT6[i] / 1000;
+			hb_sum = 0.0;
+			for (k = 1; k <= 10; k++) {
+				hb_sum = fnn[k,1] * (1 / (1 + exp(- (fnn[k,2] * DWHB6[i] +
+						 fnn[k,3] * DWHBA6[i] + fnn[k,4] *
+									DWHBT6[i] + fnn[k,5])))) + fnn[k,6];
+				dWHB_D6[i] += hb_sum;
+			}
+			dWHB_D6[i] = -dWHB_D6[i];
+			if (DWHB6[i] * 10 <= 3.5 && DWHB6[i] * 10 >= 1.5) {
+				dWHB_D6[i] = dWHB_D6[i] * 10;
+			} else {
+				dWHB_D6[i] = 0;
+			}
+			if (dWHB_D6[i] > 0)
+				dWHB_D6[i] = 0;
+		}
+		if (dHB_D1[i] < dHB_D2[i]) {
+			min_HB = dHB_D1[i];
+		} else {
+			min_HB = dHB_D2[i];
+		}
+		if (dHB_D3[i] < min_HB) {
+			min_HB = dHB_D3[i];
+		}
+		if (dHB_D4[i] < min_HB) {
+			min_HB = dHB_D4[i];
+		}
+
+		if (dWHB_D1[i] < dWHB_D2[i]) {
+			min_WHB = dWHB_D1[i];
+		} else {
+			min_WHB = dWHB_D2[i];
+		}
+		if (dWHB_D3[i] < min_WHB) {
+			min_WHB = dWHB_D3[i];
+		}
+		if (dWHB_D4[i] < min_WHB) {
+			min_WHB = dWHB_D4[i];
+		}
+		if (dWHB_D5[i] < min_WHB) {
+			min_WHB = dWHB_D5[i];
+		}
+		if (dWHB_D6[i] < min_WHB) {
+			min_WHB = dWHB_D6[i];
+		}
+
+		dHB_D[i] = -min_HB;
+		if (dHB_D[i] == 0.0) {
+			dHB_D[i] = 0.0;
+		}
+
+		dHB_WD[i] = -min_WHB;
+		if (dHB_WD[i] == 0.0) {
+			dHB_WD[i] = 0.0;
+		}
+
+		dHB_T[i] = dHB_D[i] + dHB_WD[i];
+
+// END: HB-NN 
+
+	}
+
+	return (0);
+};
+
+int CalCorrect(float calc[hashed])
+{
+	int i, j, k, N_ID, Ca_ID, Cb_ID;
+	string idp, idp_prefix;
+
+	for (i = firstprot + 1; i <= lastprot; i++) {
+
+		if (!range[i])
+			continue;
+
+		assert(class_chi[i] >= 1 && class_chi[i] <= 9);
+		assert(class_chi12[i] >= 1 && class_chi12[i] <= 27);
+		assert(class_res[i] >= 1 && class_res[i] <= 20);
+
+		if (R_name[i] != "CYS") {
+			dN_chi12_s[i] = N_chi12_s[class_chi12[i], class_res[i]];
+			N_REF[i] = N_ref[class_res[i], class_cf[i]];
+			N_RC[i] = N_rc[class_res[i]];
+
+			dCa_chi_p[i] = 0;
+			dCa_chi12_s[i] = Ca_chi12_s[class_chi12[i], class_res[i]];
+			Ca_REF[i] = Ca_ref[class_res[i], class_cf[i]];
+			Ca_RC[i] = Ca_rc[class_res[i]];
+
+			dCb_chi_p[i] = 0;
+			dCb_chi12_s[i] = Cb_chi12_s[class_chi12[i], class_res[i]];
+			Cb_REF[i] = Cb_ref[class_res[i], class_cf[i]];
+			Cb_RC[i] = Cb_rc[class_res[i]];
+
+			dCO_chi_p[i] = 0;
+			dCO_chi12_s[i] = CO_chi12_s[class_chi12[i], class_res[i]];
+			CO_REF[i] = CO_ref[class_res[i], class_cf[i]];
+			CO_RC[i] = CO_rc[class_res[i]];
+
+			if (R_name[i] == "ALA") {
+				dN_chi_p[i] = A_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "GLY") {
+				dN_chi_p[i] = G_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "GLN" || R_name[i] == "GLU"
+				|| R_name[i] == "MET" || R_name[i] == "LYS"
+				|| R_name[i] == "ARG") {
+				dN_chi_p[i] = Q_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "PHE" || R_name[i] == "TYR"
+				|| R_name[i] == "TRP" || substr(R_name[i], 1, 2) == "HI") {
+				dN_chi_p[i] = F_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "SER" || R_name[i] == "ASN"
+				|| R_name[i] == "ASP") {
+				dN_chi_p[i] = S_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "VAL") {
+				dN_chi_p[i] = V_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "ILE") {
+				dN_chi_p[i] = I_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "THR") {
+				dN_chi_p[i] = T_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "PRO") {
+				dN_chi_p[i] = P_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+			if (R_name[i] == "LEU") {
+				dN_chi_p[i] = L_Nchi_p[class_chi[i - 1], class_res[i - 1]];
+			}
+
+			if (class_cf[i] == 1) {
+				dN_bb[i, 1] = BBcorr(11, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+				dN_bb[i, 2] = BBcorr(12, phi[i], psi[i], R_name[i]);
+				dN_bb[i, 3] =
+					BBcorr(13, phi[i - 1], psi[i - 1], R_name[i]);
+			}
+
+			if (class_cf[i] == 2) {
+				dN_bb[i, 1] = BBcorr(14, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+				dN_bb[i, 2] = BBcorr(15, phi[i], psi[i], R_name[i]);
+				dN_bb[i, 3] =
+					BBcorr(16, phi[i - 1], psi[i - 1], R_name[i]);
+			}
+
+			if (class_cf[i] == 3) {
+				dN_bb[i, 1] = BBcorr(17, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+				dN_bb[i, 2] = BBcorr(18, phi[i], psi[i], R_name[i]);
+				dN_bb[i, 3] =
+					BBcorr(19, phi[i - 1], psi[i - 1], R_name[i]);
+			}
+
+		}
+
+		if (class_cf[i] == 1 || class_cf[i] == 3) {
+			if (DHB1[i] != 0 && N_close[i] != 0) {
+				dHB_D[i] = (285400 * exp(-4.2981 * DHB1[i]) + 0.4138 -
+							0.0323 / DHB1[i]) - 2;
+				dHB_D[i] += 0.8 * (285400 * exp(-4.2981 * N_close[i]) +
+								   0.4138 - 0.0323 / N_close[i]);
+			}
+			if (IHB1[i - 1] != 0 && O_close[i - 1] != 0) {
+				dHB_I[i] =
+					(257.9079 * exp(-1.5351 * IHB1[i - 1]) - 0.2918 +
+					 5.1734 / IHB1[i - 1]) - 5.3;
+				dHB_I[i] +=
+					0.8 * (257.9079 * exp(-1.5351 * O_close[i - 1]) -
+						   0.2918 + 5.1734 / O_close[i - 1]);
+			}
+			if (dHB_D[i] >= 1)
+				dHB_D[i] = 0.1 * dHB_D[i];
+			if (dHB_I[i] >= 1)
+				dHB_I[i] = 0.1 * dHB_I[i];
+			dHB[i] = dHB_D[i] + dHB_I[i];
+
+		}
+		CO_dHB_D[i] = 0;
+		CO_dHB_I[i] = 0;
+		CO_dHB[i] = 0;
+
+		if (class_cf[i] == 2) {
+			if (DHB1[i] != 0 && N_close[i] != 0) {
+				dHB_D1[i] = (636370 * exp(-4.8382 * DHB1[i]) + 0.0376 -
+							 0.1352 / DHB1[i]) - 0.50;
+				dHB_D1[i] += 0.8 * (636370 * exp(-4.8382 * N_close[i]) +
+									0.0376 - 0.1352 / N_close[i]);
+			}
+			if (DHB2[i] != 0) {
+				dHB_D2[i] = (1187400 * exp(-4.6462 * DHB2[i]) + 0.1261 +
+							 2.5812 / DHB2[i]) - 2.00;
+			}
+			if (IHB1[i - 1] != 0 && O_close[i - 1] != 0) {
+				dHB_I1[i] =
+					(1543000 * exp(-4.5571 * IHB1[i - 1]) + 0.2038 +
+					 1.4187 / IHB1[i - 1]) - 3.5;
+				dHB_I1[i] +=
+					0.8 * (1543000 * exp(-4.5571 * O_close[i - 1]) +
+						   0.2038 + 1.4187 / O_close[i - 1]);
+			}
+			if (IHB2[i - 1] != 0) {
+				dHB_I2[i] = (636370 * exp(-4.8382 * IHB2[i - 1]) + 0.0376 -
+							 0.1352 / IHB2[i - 1]) - 0.60;
+			}
+
+			dHB_D[i] = dHB_D1[i] + dHB_D2[i];
+			dHB_I[i] = dHB_I1[i] + dHB_I2[i];
+			if (dHB_D[i] >= 1)
+				dHB_D[i] = 0.1 * dHB_D[i];
+			if (dHB_I[i] >= 1)
+				dHB_I[i] = 0.1 * dHB_I[i];
+			dHB[i] = dHB_D[i] + dHB_I[i];
+
+
+			CO_dHB_D[i] = 0.00;
+			CO_dHB_I[i] = 0.00;
+			CO_dHB[i] = 0.00;
+
+		}
+
+		dN_Sum[i] = dN_bb[i, 1] + dN_bb[i, 2] + dN_bb[i, 3] + dN_chi_p[i] +
+			dN_chi12_s[i] + dHB[i];
+		N_pred[i] = dN_Sum[i] + N_REF[i];
+		if (class_cf[i] == 1) {
+			dCa_bb[i, 1] = BBcorr(21, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCa_bb[i, 2] = BBcorr(22, phi[i], psi[i], R_name[i]);
+			dCa_bb[i, 3] = BBcorr(23, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 2) {
+			dCa_bb[i, 1] = BBcorr(24, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCa_bb[i, 2] = BBcorr(25, phi[i], psi[i], R_name[i]);
+			dCa_bb[i, 3] = BBcorr(26, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 3) {
+			dCa_bb[i, 1] = BBcorr(27, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCa_bb[i, 2] = BBcorr(28, phi[i], psi[i], R_name[i]);
+			dCa_bb[i, 3] = BBcorr(29, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		dCa_Sum[i] =
+			dCa_bb[i, 1] + dCa_bb[i, 2] + dCa_bb[i,
+												 3] + dCa_chi_p[i] +
+			dCa_chi12_s[i];
+		Ca_pred[i] = dCa_Sum[i] + Ca_REF[i];
+
+		if (class_cf[i] == 1) {
+			dCb_bb[i, 1] = BBcorr(31, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCb_bb[i, 2] = BBcorr(32, phi[i], psi[i], R_name[i]);
+			dCb_bb[i, 3] = BBcorr(33, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 2) {
+			dCb_bb[i, 1] = BBcorr(34, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCb_bb[i, 2] = BBcorr(35, phi[i], psi[i], R_name[i]);
+			dCb_bb[i, 3] = BBcorr(36, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 3) {
+			dCb_bb[i, 1] = BBcorr(37, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCb_bb[i, 2] = BBcorr(38, phi[i], psi[i], R_name[i]);
+			dCb_bb[i, 3] = BBcorr(39, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		dCb_Sum[i] =
+			dCb_bb[i, 1] + dCb_bb[i, 2] + dCb_bb[i,
+												 3] + dCb_chi_p[i] +
+			dCb_chi12_s[i];
+		if (R_name[i] == "GLY")
+			dCb_Sum[i] = 0;
+		Cb_pred[i] = dCb_Sum[i] + Cb_REF[i];
+
+		if (class_cf[i] == 1) {
+			dCO_bb[i, 1] = BBcorr(41, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCO_bb[i, 2] = BBcorr(42, phi[i], psi[i], R_name[i]);
+			dCO_bb[i, 3] = BBcorr(43, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 2) {
+			dCO_bb[i, 1] = BBcorr(44, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCO_bb[i, 2] = BBcorr(45, phi[i], psi[i], R_name[i]);
+			dCO_bb[i, 3] = BBcorr(46, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (class_cf[i] == 3) {
+			dCO_bb[i, 1] = BBcorr(47, phi[i + 1], psi[i + 1], R_name[i]);	// foll-residue
+			dCO_bb[i, 2] = BBcorr(48, phi[i], psi[i], R_name[i]);
+			dCO_bb[i, 3] = BBcorr(49, phi[i - 1], psi[i - 1], R_name[i]);
+		}
+
+		if (R_name[i] == "GLY") {
+			dCO_chi_f[i] = G_COchi_f[class_chi[i + 1], class_res[i + 1]];
+		}
+
+		if (R_name[i] == "ALA" || R_name[i] == "GLN" || R_name[i] == "GLU"
+			|| R_name[i] == "MET" || R_name[i] == "PRO"
+			|| R_name[i] == "LYS" || R_name[i] == "ARG"
+			|| R_name[i] == "PHE" || R_name[i] == "TYR"
+			|| R_name[i] == "TRP" || substr(R_name[i], 1, 2) == "HI") {
+			dCO_chi_f[i] = A_COchi_f[class_chi[i + 1], class_res[i + 1]];
+		}
+
+		if (R_name[i] == "VAL" || R_name[i] == "ILE" || R_name[i] == "THR"
+			|| R_name[i] == "LEU" || R_name[i] == "SER"
+			|| R_name[i] == "ASN" || R_name[i] == "ASP") {
+			dCO_chi_f[i] = V_COchi_f[class_chi[i + 1], class_res[i + 1]];
+		}
+
+		dCO_Sum[i] =
+			dCO_bb[i, 1] + dCO_bb[i, 2] + dCO_bb[i, 3] + dCO_chi_p[i] +
+			dCO_chi_f[i] + dCO_chi12_s[i];
+		CO_pred[i] = dCO_Sum[i] + CO_REF[i];
+
+		//  put predicted values into a hashed array:
+		idp_prefix = sprintf("%s:%d:", R_name[i], R_num[i]);
+		idp = idp_prefix + "N";
+		calc[idp] = N_pred[i];
+		idp = idp_prefix + "CA";
+		calc[idp] = Ca_pred[i];
+		idp = idp_prefix + "CB";
+		calc[idp] = Cb_pred[i];
+		idp = idp_prefix + "C";
+		calc[idp] = CO_pred[i];
+
+	}
+
+	return (0);
+};
+
+int PrintQdbResults(string outfile, string opts)
+{
+	int i, have_obs;
+	file out;
+	string pdb_ID, fmt;
+
+	fmt =
+		"%-5s%-2s%-5s%-4d%-3s    %6.2f%6.2f%6.2f%6.2f%6.2f%6.2f%6.2f%8.2f    %8.2f";
+
+	have_obs = 0;
+	if (opts =~ "readobs")
+		have_obs = 1;
+
+	pdb_ID = substr(outfile, 1, 4);
+	out = safe_fopen(outfile, "w");
+
+	fprintf(out,
+			"#PDB cf residue atom     bb_p  bb_s  bb_f  chi_p chi_s  HB-D  HB-I  REF         pred");
+	if (have_obs)
+		fprintf(out, "     obs\n");
+	else
+		fprintf(out, "\n");
+	fprintf(out, "%s\n",
+			"#---------------------------------------------------------------------------------------------");
+	for (i = firstprot + 1; i <= lastprot - 1; i++) {
+
+		if (!range[i])
+			continue;
+
+		fprintf(out, fmt,
+				pdb_ID, cf[i], R_name[i], R_num[i], "N", dN_bb[i, 3],
+				dN_bb[i, 2], dN_bb[i, 1], dN_chi_p[i],
+				dN_chi12_s[i], dHB_D[i], dHB_I[i], N_REF[i], N_pred[i]);
+		if (have_obs) {
+			fprintf(out, "%8.2f", N_exp[i]);
+			if (R_name[i - 1] != RES_exp[i - 1] || R_name[i] != RES_exp[i])
+				fprintf(out, " diff");
+		}
+		fprintf(out, "\n");
+
+		fprintf(out, fmt,
+				pdb_ID, cf[i], R_name[i], R_num[i], "Ca", dCa_bb[i, 3],
+				dCa_bb[i, 2], dCa_bb[i, 1], dCa_chi_p[i],
+				dCa_chi12_s[i], 0.0, 0.0, Ca_REF[i], Ca_pred[i]);
+		if (have_obs) {
+			fprintf(out, "%8.2f", Ca_exp[i]);
+			if (R_name[i - 1] != RES_exp[i - 1] || R_name[i] != RES_exp[i])
+				fprintf(out, " diff");
+		}
+		fprintf(out, "\n");
+
+		if (R_name[i] != "GLY") {
+			fprintf(out, fmt,
+					pdb_ID, cf[i], R_name[i], R_num[i], "Cb", dCb_bb[i, 3],
+					dCb_bb[i, 2], dCb_bb[i, 1], dCb_chi_p[i],
+					dCb_chi12_s[i], 0.0, 0.0, Cb_REF[i], Cb_pred[i]);
+			if (have_obs) {
+				fprintf(out, "%8.2f", Cb_exp[i]);
+				if (R_name[i - 1] != RES_exp[i - 1]
+					|| R_name[i] != RES_exp[i])
+					fprintf(out, " diff");
+			}
+			fprintf(out, "\n");
+		}
+
+		fprintf(out, fmt,
+				pdb_ID, cf[i], R_name[i], R_num[i], "CO", dCO_bb[i, 3],
+				dCO_bb[i, 2], dCO_bb[i, 1], dCO_chi_f[i],
+				dCO_chi12_s[i], CO_dHB_D[i], CO_dHB_I[i],
+				CO_REF[i], CO_pred[i]);
+		if (have_obs) {
+			fprintf(out, "%8.2f", CO_exp[i]);
+			if (R_name[i - 1] != RES_exp[i - 1] || R_name[i] != RES_exp[i])
+				fprintf(out, " diff");
+		}
+		fprintf(out, "\n");
+
+	}
+
+	fclose(out);
+	return (0);
+};
+
+int PrintQdbResults_HN(string outfile, string opts, float calc2[hashed],
+                       float obs[hashed] )
+{
+	int i, have_obs;
+	file out;
+	string pdb_ID, fmt, idp, tname;
+	float emp;
+
+	fmt = "%-11s%-5s%-4d%-3s    %7.2f %7.2f %7.2f    %8.2f";
+
+	have_obs = 0;
+	if (opts =~ "readobs")
+		have_obs = 1;
+
+	pdb_ID = substr(outfile, 1, 10);
+	out = safe_fopen(outfile, "w");
+
+	fprintf(out,
+			"# PDB        residue atom      emp    HBD     HBWD        HB-Total");
+	if (have_obs)
+		fprintf(out, "     obs\n");
+	else
+		fprintf(out, "\n");
+	fprintf(out, "%s\n",
+			"#---------------------------------------------------------------------");
+	for (i = firstprot + 1; i <= lastprot; i++) {
+
+		if (!range[i])
+			continue;
+		if (R_name[i] == "PRO" || R_relnum[i] == 1)
+			continue;
+
+        tname = R_name[i];
+        if( tname == "HIE" || tname == "HID" ) tname = "HIS";
+		idp = sprintf("%s:%d:H", tname, R_num[i]);
+		if (idp in calc2) {
+			emp = calc2[idp];
+		} else {
+			fprintf(stderr, "cannot find %s in calc2\n", idp);
+			emp = 0.0;
+		}
+
+		fprintf(out, fmt, pdb_ID, R_name[i], R_num[i], "H", emp,
+				dHB_D[i], dHB_WD[i], dHB_T[i] + emp);
+
+		if (have_obs) fprintf(out, "%8.2f", obs[ idp ]);
+		fprintf(out, "\n");
+
+	}
+
+	fclose(out);
+	return (0);
+};

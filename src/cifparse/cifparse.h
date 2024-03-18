@@ -58,12 +58,10 @@ typedef struct NdbCifDatablocksFormat {
 
 
 int cifpparse();
-char *ndb_cif_copy_item_value();
-char ndb_cif_set_null_char();
+char *ndb_cif_copy_item_value(int);
+char ndb_cif_set_null_char(char);
 int ndb_cif_init();
-int ndb_cif_close();
 int ndb_cif_read_file(FILE *fp);
-int ndb_cif_write_file(FILE *fp);
 int get_category_index(int blockIndex, char *categoryName);
 int get_column_index(int blockIndex, int categoryIndex, char *columnName);
 void ndb_cif_process_item_name_list();
@@ -102,9 +100,8 @@ int ndb_cif_reset_category_by_id(int, int);
 int ndb_cif_remove_row_by_id(int, int, int);
 int ndb_cif_get_category_id(char*, char*);
 
-
 #ifdef CIF_GLOBAL
-	FILE *cifpin;
+	extern FILE *cifpin;
 	char TempKeyword[MxNameLen+1], TempValue[MAXVALUELENGTH+1];
 	NdbCifDatablocksFormat cifFiles;
 	int  lineNo;      

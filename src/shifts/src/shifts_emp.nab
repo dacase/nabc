@@ -1,0 +1,678 @@
+//
+//============================================================================
+//
+//   Compute proton chemical shifts, using coordinates from an input 
+//      molecule, and empirical formulas various interaction terms
+//
+//   Usage:  shifts( molecule m, string basename, string atom_expr,
+//                   string strtype[1], float calculated[ hashed ], string opts )
+//
+//       "basename" is used to construct file names
+//                <basename>.emp   will hold the human-readable output
+//                <basename>.bmrb  has NMR-star formatted shifts
+//                <basename>.emp.rdb  is in rdb format
+//
+//       "atom_expr" matches the atoms whose shifts are to be calculated
+//
+//       "strtype" is an input string that identifies the type of each strand
+//
+//       "opts"  gives options:
+//                if opts =~ "verbose"      extra info to stdout
+//                           "details"      even more info to stdout
+//                           "CSA"          compute full shift tensors, rather
+//                                          than just the isotropic 
+//                                          part (under development)
+//                           "readobs"      read observed shifts
+//                           "version3"     use 1995 ring_current strengths
+//
+//       "calculated[]" is a hashed output array containing the computed
+//           shifts. The key consists of resname:pdb_resnum:atom_name
+//
+//  In this version, protein shifts are computed as in K. Osapay and D.A. Case,
+//  "A new analysis of proton chemical shifts in proteins", J. Am. Chem.
+//  Soc. 113, 9436-9444 (1991), or from A.P. Dejaegere, R.A. Bryce and
+//  D.A.Case, "An empirical analysis of proton chemical shifts in nucleic
+//  acids",  in Modeling NMR Chemical Shifts, J.C. Facelli and A.C. de
+//  Dios, eds.  (Washington, American Chemical Society, 1999), pp. 194-206.
+
+//
+//============================================================================
+//
+
+int write_bmrb_header();
+int write_header();
+int write_shifts_header();
+int bonded_atoms() c;
+float ax_susc();
+int read_obs_shifts();
+int sbcoil();
+int write_sander_inp();
+int swap_shifts();
+int get_ring_info();
+float haigh_mallion();
+
+float get_lp();					// variables for electrostatics:
+float el_gas();
+float el_gas_o();
+int get_pep_info();				// variables for peptide anisotropy:
+int get_sugar_info();			// variables for sugar anis
+int get_banis_info();			// variables for bond anisotropy
+int get_chi_info();				// variables for general anisotropy
+int get_dist_ang();				// getting HN dist, angle
+string shiftshome;
+float ringc[ hashed ];
+
+int shifts_emp(molecule m, string basename, string atom_expr,
+			   string strtype[1], float calculated[hashed], string opts)
+{
+
+#include "shifts_emp.h"
+#include "map.h"
+#include "constants.h"
+
+//
+//============================================================================
+//
+
+	verbose = (opts =~ "verbose");
+	if (opts =~ "details")
+		verbose = 2;
+	do_CSA = (opts =~ "CSA");
+	use_rmd = (opts =~ "rmd");
+	use_lp = 0;					// hard-wired for now
+	version2 = 1;
+    if (opts =~ "version3") version2 = 0;
+	obs_found = 0;
+	rinfo = (opts =~ "rinfo");
+
+	outfile = basename + ".emp";
+	outf = safe_fopen(outfile, "w");
+	watfile = basename + ".wat.pdb";
+	obsfile = basename + ".obs";
+	bmrbfile = basename + ".bmrb";
+	rdbfile = basename + ".emp.rdb";
+	banisfile = basename + ".ban";
+	anisfile = basename + ".chi";
+	neighfile = basename + ".nei";
+	if (verbose)
+		write_header(outf);
+
+	allocate hFly_aa[2 * m.natoms];
+	allocate aa_v[2 * m.natoms];
+	allocate aa_c[2 * m.natoms];
+	allocate do_aa[2 * m.natoms];
+	allocate aa1[2 * m.natoms];
+	allocate aa2[2 * m.natoms];
+	allocate btype[2 * m.natoms];
+	allocate pc[m.nresidues];
+	allocate pn[m.nresidues];
+	allocate pbis[m.nresidues];
+	allocate pb[m.nresidues];
+	allocate pepres[m.nresidues];
+
+	if (verbose)
+		fprintf(outf,
+				"   shifts will be computed for atoms matching %s\n",
+				atom_expr);
+
+//
+//============================================================================
+//
+//    Read in the observed shifts:
+
+	if (opts =~ "readobs")
+		obs_found = read_obs_shifts(strtype, obsfile, observed);
+
+//
+//============================================================================
+//
+//
+//   set up arrays with info about rings, peptides, etc:
+//
+
+	get_ring_info(m, ringskip, rinfo, version2, verbose, outf);
+	npep = get_pep_info(m, pn, pc, pbis, pb, pepres);
+
+	if (opts =~ "sander") {
+		// sander doesn't know about random-coil shifts, so we have to
+		//  subtract them from the observed shifts before writing the sander
+		//  input file....
+		sbcoil( strtype, observed, no_coil, "subtract" );
+		write_sander_inp(m, observed, basename + ".shf", strtype, no_coil);
+		// then, add the random-coil values back in for later printing here:
+		sbcoil( strtype, observed, no_coil, "add" );
+	}
+
+// get_sugar_info( m, strtype, h1p, h2p1, h2p2, h3p, h4p );
+
+	do_banis = get_banis_info(banisfile, neighfile, m,
+							  aa_v, aa_c, naa, aa1, aa2, hFly_aa, btype);
+	nchi = get_chi_info(m, anisfile, chi_c, chi_v, chi_iso, chi_anis, MAXCHI);
+	if (use_lp)
+		get_lp(m);
+	nwo = 0;					// no waters for now
+
+	if (strtype[1] == "protein") {
+
+//   set up charges like in Osapay & Case's old shifts program:
+
+		for (a in m) {
+			a.charge = 0.0;
+			if (a.atomname == "C")
+				a.charge = 0.55;
+			if (a.atomname == "O")
+				a.charge = -0.55;
+			if (a.atomname == "H")
+				a.charge = 0.25;
+			if (a.atomname == "CA")
+				a.charge = 0.10;
+			if (a.atomname == "N") {
+				if (a.resname == "PRO")
+					a.charge = -0.20;
+				else
+					a.charge = -0.35;
+			}
+		}
+	}
+//
+//============================================================================
+//
+//   loop over all protons:
+
+	nprot = nh = 0;
+	shhm_t = she_t = shp_t = shb_t = 0.0;
+	shv_t = shvh_t = shvc_t = 0.0;
+	shex2_t = shep2_t = 0.0;
+	shdist_t = shhnca_t = shhnco_t = 0.0;
+
+	nneigh = 0.0;				// default assumes proton not bound to N
+	aneigh = 1.0;				// default assumes proton     bound to atom other than N
+
+
+	for (a in m) {
+
+		if (a !~ atom_expr)
+			continue;			// only process nuclei that match 
+
+//  constructing unique label for atom that should match label in .obs file
+//  label consists of   resname:pdb_resnum:atom_name
+
+		nh++;
+		idp = sprintf("%s:%d:%s", a.resname, 
+					  atoi(substr(a.resid, 2, 4)), a.atomname);
+		if (a.resname == "HID" || a.resname == "HIE")
+			idp = sprintf("HIS:%d:%s", 
+						  atoi(substr(a.resid, 2, 4)), a.atomname);
+
+		if (verbose > 1) {
+			fprintf(outf,
+					"===================================================================\n\n");
+			fprintf(outf, "Detailed contributions for atom %s:\n\n", idp);
+		}
+
+//
+//============================================================================
+//
+
+//  get Haigh-Mallion ring-current contribution:
+
+		shhm =
+			haigh_mallion(a, sigma, do_CSA, use_rmd, ringskip, verbose,
+						  outf, ringc);
+		if (verbose > 1)
+			fprintf(outf, "shhm = %8.3f\n", shhm);
+
+//============================================================================
+//
+//   Electrostatics contribution:
+
+		she = 0.0;
+		nbonds = bonded_atoms(a, neighbors);
+		if (nbonds != 1) {
+			if (!rinfo)
+				fprintf(stderr, "wrong number of bonds: %d %s\n", nbonds,
+						a.fullname);
+		} else {
+			if (neighbors[1].atomname == "N") {
+				nneigh = 1.0;
+				aneigh = 0.0;
+				helst = hel_hn;
+			} else {
+				helst = hel_hc;
+			}
+			she = helst * el_gas(a, m, strtype, neighbors, wocoor,
+								 nwo, woh, version2, use_lp);
+		}
+		if (verbose > 1)
+			fprintf(outf, "she  = %8.3f\n", she);
+
+//
+//============================================================================
+//
+//   Peptide anisotropy contribution:
+
+		shp = 0.0;
+		for (ipep = 1; ipep <= npep; ipep++) {
+
+			//skip peptide cont. to its own H proton
+			if ((a.atomname == "H" ||
+				 a.atomname == "H1" || a.atomname == "H2") &&
+				pepres[ipep] == a.tresnum)
+				continue;
+
+			p = a.pos;
+			if (do_CSA) {
+				//  use NMA chi tensor from Table 3 of Sitkoff & Case:
+				shp += ax_susc(p, pc[ipep], pn[ipep], -79.2, -11.6,
+							   sigma_p, 0);
+				fprintf(outf,
+						"%11s  pep.%4d %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f\n",
+						a.fullname, ipep, sigma_p[1, 1], sigma_p[1, 2],
+						sigma_p[2, 2], sigma_p[1, 3], sigma_p[2, 3],
+						sigma_p[3, 3]);
+				for (i = 1; i <= 3; i++) {
+					for (j = 1; j <= 3; j++) {
+						sigma[i, j] += sigma_p[i, j];
+					}
+				}
+			} else {
+				shp += ax_susc(p, pc[ipep], pn[ipep], 0.0, hFly, sigma_p, 1);
+			}
+		}
+		if (verbose > 1)
+			fprintf(outf, "shp  = %8.3f\n", shp);
+
+
+//============================================================================
+//
+//   Bond anisotropy contributions:
+
+		shb = 0.0;
+		if (do_banis) {
+
+			for (nb = 1; nb <= naa; nb++) {
+
+				do_aa[nb] = 1;	// means calc bond anis from this bond
+//          skip bonds involving atoms 2 and 3 neighbors away
+				if (a.tatomnum == aa1[nb] || a.tatomnum == aa2[nb])
+					continue;
+				ni = bonded_atoms(a, ai);
+				for (i = 1; i <= ni; i++) {
+					if ((ai[i].tatomnum == aa1[nb]) ||
+						(ai[i].tatomnum == aa2[nb]))
+						do_aa[nb] = 0;
+				}
+				if (do_aa[nb]) {
+					p = a.pos;
+					shb += ax_susc(p, aa_c[nb], aa_v[nb], 0.0,
+								   hFlyconv * hFly_aa[nb], sigma, 1);
+
+				}
+			}
+			if (verbose > 1)
+				fprintf(outf, "shb  = %8.3f\n", shb);
+		}
+//============================================================================
+//
+//   General anisotropy contributions:
+
+		if (nchi) {
+
+			for (nb = 1; nb <= nchi; nb++) {
+				p = a.pos;
+
+				if (do_CSA) {
+					shb += ax_susc(p, chi_c[nb], chi_v[nb],
+								   chi_iso[nb], chi_anis[nb], sigma_p, 0);
+					fprintf(outf,
+							"chi %4d %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f\n",
+							nb, sigma_p[1, 1], sigma_p[1, 2], sigma_p[2,
+																	  2],
+							sigma_p[1, 3], sigma_p[2, 3], sigma_p[3, 3]);
+					for (i = 1; i <= 3; i++) {
+						for (j = 1; j <= 3; j++) {
+							sigma[i, j] += sigma_p[i, j];
+						}
+					}
+				} else {
+					shb_r = ax_susc(p, chi_c[nb], chi_v[nb],
+									chi_iso[nb], chi_anis[nb], sigma_p, 1);
+					shb += shb_r;
+					if (verbose > 1) {
+						fprintf(outf, "nchi:  %3d  %8.3f\n", nb, shb_r);
+					}
+				}
+			}
+			if (verbose > 1)
+				fprintf(outf, "shb  = %8.3f\n", shb);
+		}
+// 
+//============================================================================
+//
+//   van der Waals contribution: (dummy for now)
+
+		shv = shvh = shvc = 0.0;
+
+		if (do_CSA) {
+			fprintf(outf,
+					"%11s     total %8.3f %8.3f %8.3f %8.3f %8.3f %8.3f\n",
+					a.fullname, sigma[1, 1],
+					0.5 * (sigma[1, 2] + sigma[2, 1]), sigma[2, 2],
+					0.5 * (sigma[1, 3] + sigma[3, 1]),
+					0.5 * (sigma[2, 3] + sigma[3, 2]), sigma[3, 3]);
+			fprintf(outf,
+					"%11s     anti:          %8.3f          %8.3f %8.3f\n",
+					a.fullname, 0.5 * (sigma[2, 1] - sigma[1, 2]),
+					0.5 * (sigma[3, 1] - sigma[1, 3]),
+					0.5 * (sigma[3, 2] - sigma[2, 3]));
+		}
+// 
+//============================================================================
+//
+//   For amide H's, compute H-N dist, H-N-Ca and H-N-C(O) angles
+
+#ifdef LOC_HN
+		hndist = hnca = hnco = 0.0;
+		ni = bonded_atoms(a, ai);	// getting connections
+		if (ai[1].atomname == "N") {
+			get_dist_ang(m, a, ai, hndist, hnca, hnco);
+			}
+		shdist = hndist;
+		shhnca = hnca;
+		shhnco = hnco;
+#else
+		shdist = shhnca = shhnco = 0.0;
+#endif
+
+
+// 
+//============================================================================
+//
+//   Now we are ready to print the totals; first see if this proton is
+//    part of an equivalent set that needs to be averaged.
+
+		nprot++;
+		shhm_t += shhm;
+		she_t += she;
+		shp_t += shp;
+		shb_t += shb;
+		shv_t += shv;
+		shvc_t += shvc;
+		shvh_t += shvh;
+		shdist_t += shdist;
+		shhnca_t += shhnca;
+		shhnco_t += shhnco;
+
+//  average methyls:
+		if ((a.resname == "ALA" && a.atomname =~ "HB[12]") ||
+			(a.resname != "ASN" && a.atomname =~ "HD[12][12]") ||
+			(a.resname == "MET" && a.atomname =~ "HE[12]") ||
+			(a.resname == "DT" && a.atomname =~ "H7[12]") ||
+			(a.resname == "VAL" && a.atomname =~ "HG1[12]") ||
+			(a.resname == "HEM" && a.atomname =~ "H7[12]") ||
+			a.atomname =~ "HG2[12]" || a.atomname =~ "HH3[12]")
+			continue;
+
+		shhm_t /= nprot;
+		she_t /= nprot;
+		shp_t /= nprot;
+		shb_t /= nprot;
+		shv_t /= nprot;
+		shvc_t /= nprot;
+		shvh_t /= nprot;
+		shdist_t /= nprot;
+		shhnca_t /= nprot;
+		shhnco_t /= nprot;
+
+//  average aromatics in TYR and PHE:
+		if ((a.resname == "PHE" || a.resname == "TYR") &&
+			(a.atomname == "HD2" || a.atomname == "HE2")) {
+			harom = substr(a.atomname, 2, 1);
+			shhm_t = 0.5 * (shhm + shhm_save[harom]);
+			she_t = 0.5 * (she + she_save[harom]);
+			shp_t = 0.5 * (shp + shp_save[harom]);
+			shb_t = 0.5 * (shb + shb_save1[harom]);
+			shv_t = 0.5 * (shv + shv_save[harom]);
+			shvc_t = 0.5 * (shvc + shvc_save[harom]);
+			shvh_t = 0.5 * (shvh + shvh_save[harom]);
+			shdist_t = 0.5 * (shdist + shdist_save[harom]);
+			shhnca_t = 0.5 * (shhnca + shhnca_save[harom]);
+			shhnco_t = 0.5 * (shhnco + shhnco_save[harom]);
+		}
+// 
+//============================================================================
+//
+//  Get a constant contribution to the shift, based on its location:
+
+		sconst = 0.0;
+
+		if (strtype[a.strandnum] == "protein") {
+//                    default is to use constants from Osapay and Case:
+			sconst = consthm;
+			if (a.atomname == "H")
+				sconst = consthn;
+			if (a.atomname == "H1" && a.resname == "NH2")
+				sconst = consthn;
+
+			if (a.atomname =~ "HA") {
+				sconst = constha;
+				if (a.resname == "GLY" || a.resname == "PRO") {
+					sconst = consthapg;
+				}
+			}
+
+#if 0
+		} else if (strtype[a.strandnum] =~ "na") {
+//                     nucleic acid constants from Dejaegere, Bryce and Case:
+			sconst = 0.0;
+			if (a.atomname == "H1'") {
+				if (a.resname == "DT" || a.resname == "DC" ||
+				    a.resname == "U"  || a.resname == "C" )
+					sconst = consth1p_pyrimidine;
+				if (a.resname == "DA" || a.resname == "DG" ||
+				    a.resname == "A"  || a.resname == "G")
+					sconst = consth1p_purine;
+			}
+			if (a.atomname == "H8" && a.resname == "DG")
+				sconst = consth8_guanine;
+#endif
+		}
+		if (verbose > 1)
+			fprintf(outf, "cons = %8.3f\n", sconst);
+
+// 
+//============================================================================
+//
+// add up the shifts
+//
+
+		calculated[idp] = shhm_t + she_t + shp_t + shb_t +
+			shv_t + shvc_t + shvh_t + sconst;
+
+		calculated[idp] += shdist_t + shhnca_t + shhnco_t;
+		// fprintf( outf, "calculated: %s %8.3f\n", idp, calculated[idp] );
+
+// save for later printing:
+		shhm_p[idp] = shhm_t;
+		shhm_G6[idp] = ringc["G6"];
+		shhm_G[idp]  = ringc["G"];
+		shhm_A6[idp] = ringc["A6"];
+		shhm_A[idp]  = ringc["A"];
+		shhm_C[idp]  = ringc["C"];
+		shhm_U[idp]  = ringc["U"];
+		shehn_p[idp] = nneigh * she_t;
+		sheha_p[idp] = aneigh * she_t;
+		shp_p[idp] = shp_t;
+		shb_p1[idp] = shb_t;
+		shv_p[idp] = shv_t;
+		shvc_p[idp] = shvc_t;
+		shvh_p[idp] = shvh_t;
+		shex2_p[idp] = shex2_t;
+		shep2_p[idp] = shep2_t;
+		shdist_p[idp] = shdist_t;
+		shhnca_p[idp] = shhnca_t;
+		shhnco_p[idp] = shhnco_t;
+		sconst_p[idp] = sconst;
+
+// 
+//============================================================================
+//
+//  average aromatics in TYR and PHE:
+
+		if ((a.resname == "PHE" || a.resname == "TYR") &&
+			(a.atomname == "HD1" || a.atomname == "HE1")) {
+
+			harom = substr(a.atomname, 2, 1);
+			shhm_save[harom] = shhm;
+			she_save[harom] = she;
+			shp_save[harom] = shp;
+			shb_save1[harom] = shb;
+			shv_save[harom] = shv;
+			shvc_save[harom] = shvc;
+			shvh_save[harom] = shvh;
+			shdist_save[harom] = shdist;
+			shhnca_save[harom] = shhnca;
+			shhnco_save[harom] = shhnco;
+		}
+
+		nprot = 0;
+		shhm_t = she_t = shp_t = shb_t = 0.0;
+		shv_t = shvc_t = shvh_t = 0.0;
+		shex2_t = shep2_t = 0.0;
+		shdist_t = shhnca_t = shhnco_t = 0.0;
+		nneigh = 0.0;
+		aneigh = 1.0;
+
+
+	}							//   (end of big loop over all protons)
+
+	if (do_CSA)
+		exit(0);
+
+	for (idp in calculated)
+		calc_plus_rc[idp] = calculated[idp];
+	if (opts !~ "nocoil")
+		sbcoil(strtype, calc_plus_rc, no_coil, "add");
+
+// 
+//============================================================================
+//
+//  Swap pro-chiral pairs of shifts:
+//
+
+	if (opts =~ "swap") {
+		nswap = swap_shifts(observed, calc_plus_rc, outf);
+		if (verbose)
+			fprintf(outf, "%d pairs of pro-chiral shifts were swapped\n",
+					nswap);
+	}
+// 
+//============================================================================
+//
+//  Print out the total shifts:
+//
+//   general detailed human-readable output goes to stdout,
+//       if verbose is set
+//   "star" format for BMRB goes to bmrbf; rdb format goes to rdbf
+//
+
+	bmrbf = safe_fopen(bmrbfile, "w");
+	write_bmrb_header(bmrbf, basename);
+	if (verbose)
+		write_shifts_header(outf, opts);
+
+	i = 0;
+	for (a in m) {	// doing loop this way to get output in the desired
+		//  order; later may change to a "for( idp in calculated)"
+		//  loop....
+
+		if (a !~ atom_expr)
+			continue;
+
+		// construct a string to match that
+		// described above for observed string:
+		idp = sprintf("%s:%d:%s", a.resname, 
+					  atoi(substr(a.resid, 2, 4)), a.atomname);
+		if (a.resname == "HID" || a.resname == "HIE")
+			idp = sprintf("HIS:%d:%s", 
+						  atoi(substr(a.resid, 2, 4)), a.atomname);
+
+		if (!(idp in calculated) || no_coil[idp])
+			continue;
+
+		split(idp, fields_p, ":");
+
+//   first, print out the human-readable file:
+
+		if (verbose) {
+			fprintf(outf, "%-10s %3s %3d %-4s %6.2f %6.2f %6.2f",
+					basename, a.resname, atoi(substr(a.resid, 2, 4)),
+					a.atomname, shhm_p[idp], shehn_p[idp] + sheha_p[idp],
+					shp_p[idp]);
+
+#ifdef LOC_HN
+			fprintf(outf, "  %8.4f  %8.3f  %8.3f",
+					shdist_p[idp], shhnca_p[idp], shhnco_p[idp]);
+#endif
+
+			fprintf(outf, " %6.2f %6.2f   %6.2f",
+					sconst_p[idp], calc_plus_rc[idp] - calculated[idp],
+					calc_plus_rc[idp]);
+
+			if (idp in observed)
+				fprintf(outf, " %6.2f\n", observed[idp]);
+			else
+				fprintf(outf, "\n");
+		}
+//    finally, print out a star-format file for BMRB:
+
+		i++;
+		aname = fields_p[3];
+		rname = fields_p[1];
+
+//           convert protein methyl names from Amber/NAB format:
+
+		if (rname == "ALA" && aname == "HB3")  aname = "HB";
+		if (rname == "MET" && aname == "HE3")  aname = "HE";
+		if (rname == "VAL" && aname == "HG13") aname = "HG1";
+		if (rname == "VAL" && aname == "HG23") aname = "HG2";
+		if (rname == "THR" && aname == "HG23") aname = "HG2";
+		if (rname == "LEU" && aname == "HD13") aname = "HD1";
+		if (rname == "LEU" && aname == "HD23") aname = "HD2";
+		if (rname == "ILE" && aname == "HG23") aname = "HG2";
+		if (rname == "ILE" && aname == "HD13") aname = "HD1";
+
+		fprintf(bmrbf, "%5d . %5d   %4s   %-4s  H   %7.2f  .   1\n", i,
+				atoi(fields_p[2]), rname, aname, calc_plus_rc[idp]);
+
+	}
+
+//  finish off the star-format:
+	fprintf(bmrbf, "  stop_\nsave_\n");
+
+	fclose(bmrbf);
+	fclose(outf);
+
+//  create the rdb file from the emp file:
+    shiftshome = getenv("NABCHOME");
+    system(shiftshome + "/bin/emp_to_rdb " + outfile + " > " + rdbfile);
+
+//  finally: return the full calculated shifts:
+	for (idp in calculated)
+		calculated[idp] = calc_plus_rc[idp];
+
+	deallocate hFly_aa;
+	deallocate aa_v;
+	deallocate aa_c;
+	deallocate do_aa;
+	deallocate aa1;
+	deallocate aa2;
+	deallocate btype;
+	deallocate pc;
+	deallocate pn;
+	deallocate pbis;
+	deallocate pb;
+	deallocate pepres;
+
+	return (0);
+};

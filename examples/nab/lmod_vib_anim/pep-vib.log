@@ -1,0 +1,1727 @@
+Reading parm file (pep.prmtop)
+title:
+default_name
+	mm_options:  ntpr=1
+	mm_options:  gb=0
+	mm_options:  kappa=0.0
+	mm_options:  cut=999.9
+	mm_options:  diel=R
+ff:     1    123.80    371.06      7.49   -254.74      0.00      0.00  1.07e+01
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     123.79992  RMSG = 1.0693960e+01
+ MIN: Iter =    1  NFunc =     7  E =      50.06887  RMSG = 2.9363634e+00
+ MIN: Iter =    2  NFunc =    29  E =      43.38434  RMSG = 3.5738175e+00
+ MIN: Iter =    3  NFunc =    39  E =      14.62982  RMSG = 1.6696577e+00
+ MIN: Iter =    4  NFunc =    73  E =       3.16552  RMSG = 2.9665370e+00
+ MIN: Iter =    5  NFunc =    82  E =     -11.88057  RMSG = 1.3457880e+00
+ MIN: Iter =    6  NFunc =   110  E =     -20.33690  RMSG = 2.8871013e+00
+ MIN: Iter =    7  NFunc =   118  E =     -29.91070  RMSG = 1.0048338e+00
+ MIN: Iter =    8  NFunc =   140  E =     -34.00754  RMSG = 1.3673512e+00
+ MIN: Iter =    9  NFunc =   190  E =     -39.32053  RMSG = 2.1568945e+00
+ MIN: Iter =   10  NFunc =   212  E =     -48.63136  RMSG = 2.0440565e+00
+ MIN: Iter =   11  NFunc =   218  E =     -51.43335  RMSG = 7.2009573e-01
+ MIN: Iter =   12  NFunc =   270  E =     -57.25452  RMSG = 1.6289403e+00
+ MIN: Iter =   13  NFunc =   279  E =     -60.71399  RMSG = 5.8161165e-01
+ MIN: Iter =   14  NFunc =   331  E =     -64.82474  RMSG = 8.0980777e-01
+ MIN: Iter =   15  NFunc =   338  E =     -68.03421  RMSG = 9.2566054e-01
+ MIN: Iter =   16  NFunc =   345  E =     -71.16806  RMSG = 9.0605392e-01
+ MIN: Iter =   17  NFunc =   352  E =     -74.36027  RMSG = 8.2258208e-01
+ MIN: Iter =   18  NFunc =   358  E =     -77.41869  RMSG = 9.8203299e-01
+ MIN: Iter =   19  NFunc =   367  E =     -80.38042  RMSG = 6.4623780e-01
+ MIN: Iter =   20  NFunc =   419  E =     -83.00232  RMSG = 6.5692175e-01
+ MIN: Iter =   21  NFunc =   459  E =     -87.75860  RMSG = 1.2083064e+00
+ MIN: Iter =   22  NFunc =   489  E =     -91.26186  RMSG = 1.3407409e+00
+ MIN: Iter =   23  NFunc =   497  E =     -94.31877  RMSG = 6.8790136e-01
+ MIN: Iter =   24  NFunc =   538  E =     -96.84374  RMSG = 1.5022888e+00
+ MIN: Iter =   25  NFunc =   544  E =     -98.45770  RMSG = 3.2055497e-01
+ MIN: Iter =   26  NFunc =   596  E =     -99.62558  RMSG = 4.3223617e-01
+ MIN: Iter =   27  NFunc =   612  E =    -100.67665  RMSG = 7.8783516e-01
+ MIN: Iter =   28  NFunc =   620  E =    -101.87140  RMSG = 5.0179309e-01
+ MIN: Iter =   29  NFunc =   628  E =    -102.55674  RMSG = 7.9383922e-01
+ MIN: Iter =   30  NFunc =   638  E =    -103.19560  RMSG = 2.5371139e-01
+ MIN: Iter =   31  NFunc =   690  E =    -104.13966  RMSG = 4.8345890e-01
+ MIN: Iter =   32  NFunc =   696  E =    -104.75924  RMSG = 5.2457111e-01
+ MIN: Iter =   33  NFunc =   705  E =    -105.24912  RMSG = 2.5163823e-01
+ MIN: Iter =   34  NFunc =   757  E =    -106.11220  RMSG = 4.9868945e-01
+ MIN: Iter =   35  NFunc =   763  E =    -106.79579  RMSG = 8.0970923e-01
+ MIN: Iter =   36  NFunc =   772  E =    -107.96249  RMSG = 5.8710146e-01
+ MIN: Iter =   37  NFunc =   778  E =    -108.59215  RMSG = 4.0492057e-01
+ MIN: Iter =   38  NFunc =   830  E =    -109.75665  RMSG = 5.6493468e-01
+ MIN: Iter =   39  NFunc =   881  E =    -110.71361  RMSG = 1.2690828e+00
+ MIN: Iter =   40  NFunc =   887  E =    -112.33821  RMSG = 5.2237541e-01
+ MIN: Iter =   41  NFunc =   914  E =    -113.37403  RMSG = 6.2158256e-01
+ MIN: Iter =   42  NFunc =   927  E =    -114.28824  RMSG = 8.0123612e-01
+ MIN: Iter =   43  NFunc =   979  E =    -116.09689  RMSG = 9.8599263e-01
+ MIN: Iter =   44  NFunc =   985  E =    -117.60603  RMSG = 5.9888133e-01
+ MIN: Iter =   45  NFunc =  1006  E =    -118.63974  RMSG = 5.5917323e-01
+ MIN: Iter =   46  NFunc =  1012  E =    -118.97491  RMSG = 2.2077784e-01
+ MIN: Iter =   47  NFunc =  1064  E =    -119.82896  RMSG = 3.8346229e-01
+ MIN: Iter =   48  NFunc =  1072  E =    -120.18033  RMSG = 2.2334639e-01
+ MIN: Iter =   49  NFunc =  1097  E =    -120.61197  RMSG = 6.9463786e-01
+ MIN: Iter =   50  NFunc =  1103  E =    -121.01312  RMSG = 2.0544426e-01
+ MIN: Iter =   51  NFunc =  1155  E =    -121.44012  RMSG = 3.2358544e-01
+ MIN: Iter =   52  NFunc =  1161  E =    -121.74103  RMSG = 3.4174446e-01
+ MIN: Iter =   53  NFunc =  1169  E =    -122.07616  RMSG = 1.7388335e-01
+ MIN: Iter =   54  NFunc =  1187  E =    -122.35706  RMSG = 1.6867032e-01
+ MIN: Iter =   55  NFunc =  1238  E =    -122.69691  RMSG = 1.2904864e-01
+ MIN: Iter =   56  NFunc =  1289  E =    -122.85378  RMSG = 7.9096629e-02
+ MIN: Iter =   57  NFunc =  1340  E =    -122.99386  RMSG = 1.5970126e-01
+ MIN: Iter =   58  NFunc =  1349  E =    -123.03041  RMSG = 5.5578961e-02
+ MIN: Iter =   59  NFunc =  1400  E =    -123.10892  RMSG = 2.1837114e-01
+ MIN: Iter =   60  NFunc =  1406  E =    -123.14968  RMSG = 5.2738591e-02
+ MIN: Iter =   61  NFunc =  1445  E =    -123.20323  RMSG = 7.2088193e-02
+ MIN: Iter =   62  NFunc =  1460  E =    -123.21606  RMSG = 2.6266904e-02
+ MIN: Iter =   63  NFunc =  1511  E =    -123.23774  RMSG = 3.3035408e-02
+ MIN: Iter =   64  NFunc =  1562  E =    -123.25608  RMSG = 2.9382722e-02
+ MIN: Iter =   65  NFunc =  1604  E =    -123.26938  RMSG = 2.2049709e-02
+ MIN: Iter =   66  NFunc =  1655  E =    -123.27751  RMSG = 1.5681232e-02
+ MIN: Iter =   67  NFunc =  1696  E =    -123.28115  RMSG = 9.2664806e-03
+ MIN: Iter =   68  NFunc =  1747  E =    -123.28309  RMSG = 6.8666129e-03
+ MIN: Iter =   69  NFunc =  1798  E =    -123.28463  RMSG = 5.6975637e-03
+ MIN: Iter =   70  NFunc =  1849  E =    -123.28581  RMSG = 6.7542949e-03
+ MIN: Iter =   71  NFunc =  1900  E =    -123.28717  RMSG = 6.9149893e-03
+ MIN: Iter =   72  NFunc =  1951  E =    -123.28825  RMSG = 6.5232105e-03
+ MIN: Iter =   73  NFunc =  2002  E =    -123.29010  RMSG = 2.0320544e-02
+ MIN: Iter =   74  NFunc =  2054  E =    -123.29363  RMSG = 4.2601205e-02
+ MIN: Iter =   75  NFunc =  2097  E =    -123.30092  RMSG = 9.2029544e-02
+ MIN: Iter =   76  NFunc =  2105  E =    -123.32199  RMSG = 9.6991788e-02
+ MIN: Iter =   77  NFunc =  2119  E =    -123.35513  RMSG = 1.2971285e-01
+ MIN: Iter =   78  NFunc =  2125  E =    -123.41347  RMSG = 1.7460380e-01
+ MIN: Iter =   79  NFunc =  2131  E =    -123.45164  RMSG = 5.3502317e-02
+ MIN: Iter =   80  NFunc =  2155  E =    -123.50889  RMSG = 1.9151013e-01
+ MIN: Iter =   81  NFunc =  2161  E =    -123.53333  RMSG = 4.6591107e-02
+ MIN: Iter =   82  NFunc =  2194  E =    -123.58094  RMSG = 5.8380294e-02
+ MIN: Iter =   83  NFunc =  2245  E =    -123.62100  RMSG = 5.4987270e-02
+ MIN: Iter =   84  NFunc =  2292  E =    -123.64826  RMSG = 3.7589530e-02
+ MIN: Iter =   85  NFunc =  2343  E =    -123.66287  RMSG = 2.3135159e-02
+ MIN: Iter =   86  NFunc =  2394  E =    -123.67131  RMSG = 1.4541166e-02
+ MIN: Iter =   87  NFunc =  2445  E =    -123.67505  RMSG = 8.2425498e-03
+ MIN: Iter =   88  NFunc =  2485  E =    -123.67620  RMSG = 4.4884935e-03
+ MIN: Iter =   89  NFunc =  2536  E =    -123.67679  RMSG = 3.4090759e-03
+ MIN: Iter =   90  NFunc =  2579  E =    -123.67701  RMSG = 2.0972074e-03
+ MIN: Iter =   91  NFunc =  2626  E =    -123.67710  RMSG = 1.1578663e-03
+ MIN: Iter =   92  NFunc =  2677  E =    -123.67714  RMSG = 9.5484752e-04
+ MIN: Iter =   93  NFunc =  2728  E =    -123.67717  RMSG = 8.9477742e-04
+ MIN: Iter =   94  NFunc =  2779  E =    -123.67719  RMSG = 5.2074897e-04
+ MIN: Iter =   95  NFunc =  2830  E =    -123.67719  RMSG = 3.7794913e-04
+ MIN: Iter =   96  NFunc =  2881  E =    -123.67720  RMSG = 2.8157936e-04
+ MIN: Iter =   97  NFunc =  2923  E =    -123.67720  RMSG = 1.5866351e-04
+ MIN: Iter =   98  NFunc =  2974  E =    -123.67720  RMSG = 2.0276234e-04
+ MIN: Iter =   99  NFunc =  3025  E =    -123.67720  RMSG = 1.5949412e-04
+ MIN: Iter =  100  NFunc =  3067  E =    -123.67720  RMSG = 9.5565098e-05
+ MIN: Iter =  101  NFunc =  3118  E =    -123.67720  RMSG = 6.5331703e-05
+ MIN: Iter =  102  NFunc =  3169  E =    -123.67720  RMSG = 3.6966705e-05
+ MIN: Iter =  103  NFunc =  3220  E =    -123.67720  RMSG = 2.1116541e-05
+ MIN: Iter =  104  NFunc =  3263  E =    -123.67720  RMSG = 1.3662894e-05
+ MIN: Iter =  105  NFunc =  3314  E =    -123.67720  RMSG = 9.8920847e-06
+ MIN: Iter =  106  NFunc =  3365  E =    -123.67720  RMSG = 6.6658960e-06
+ MIN: Iter =  107  NFunc =  3408  E =    -123.67720  RMSG = 4.0441398e-06
+ MIN: Iter =  108  NFunc =  3459  E =    -123.67720  RMSG = 2.8848816e-06
+ MIN: Iter =  109  NFunc =  3507  E =    -123.67720  RMSG = 1.5939622e-06
+ MIN: Iter =  110  NFunc =  3558  E =    -123.67720  RMSG = 1.1709093e-06
+ MIN: Iter =  111  NFunc =  3609  E =    -123.67720  RMSG = 9.5596348e-07
+ MIN: Iter =  112  NFunc =  3660  E =    -123.67720  RMSG = 6.6637084e-07
+ MIN: Iter =  113  NFunc =  3711  E =    -123.67720  RMSG = 4.8116406e-07
+ MIN: Iter =  114  NFunc =  3762  E =    -123.67720  RMSG = 3.3138188e-07
+ MIN: Iter =  115  NFunc =  3813  E =    -123.67720  RMSG = 2.0682416e-07
+ MIN: Iter =  116  NFunc =  3864  E =    -123.67720  RMSG = 1.5740997e-07
+ MIN: Iter =  117  NFunc =  3915  E =    -123.67720  RMSG = 1.4465391e-07
+ MIN: Iter =  118  NFunc =  3966  E =    -123.67720  RMSG = 1.3517269e-07
+ MIN: Iter =  119  NFunc =  3996  E =    -123.67720  RMSG = 8.2502090e-08
+ MIN: Iter =  120  NFunc =  4047  E =    -123.67720  RMSG = 5.4233030e-08
+ MIN: Iter =  121  NFunc =  4096  E =    -123.67720  RMSG = 3.1709467e-08
+ MIN: Iter =  122  NFunc =  4143  E =    -123.67720  RMSG = 1.4255762e-08
+ MIN: Iter =  123  NFunc =  4194  E =    -123.67720  RMSG = 8.7800686e-09
+ MIN: Iter =  124  NFunc =  4245  E =    -123.67720  RMSG = 7.0100164e-09
+ MIN: Iter =  125  NFunc =  4288  E =    -123.67720  RMSG = 4.6400736e-09
+ MIN: Iter =  126  NFunc =  4339  E =    -123.67720  RMSG = 3.2571221e-09
+ MIN: Iter =  127  NFunc =  4390  E =    -123.67720  RMSG = 2.3726803e-09
+ MIN: Iter =  128  NFunc =  4441  E =    -123.67720  RMSG = 1.5831347e-09
+ MIN: Iter =  129  NFunc =  4489  E =    -123.67720  RMSG = 9.6590700e-10
+ MIN: Iter =  130  NFunc =  4540  E =    -123.67720  RMSG = 8.6874155e-10
+ MIN: Iter =  131  NFunc =  4588  E =    -123.67720  RMSG = 5.0410692e-10
+ MIN: Iter =  132  NFunc =  4639  E =    -123.67720  RMSG = 4.8386477e-10
+ MIN: Iter =  133  NFunc =  4690  E =    -123.67720  RMSG = 4.1905426e-10
+ MIN: Iter =  134  NFunc =  4727  E =    -123.67720  RMSG = 2.4873322e-10
+ MIN: Iter =  135  NFunc =  4778  E =    -123.67720  RMSG = 1.6744446e-10
+ MIN: Iter =  136  NFunc =  4829  E =    -123.67720  RMSG = 1.6072645e-10
+ MIN: Iter =  137  NFunc =  4880  E =    -123.67720  RMSG = 1.4105301e-10
+ MIN: Iter =  138  NFunc =  4907  E =    -123.67720  RMSG = 7.8367679e-11
+ MIN: Iter =  139  NFunc =  4958  E =    -123.67720  RMSG = 4.5463699e-11
+ MIN: Iter =  140  NFunc =  5009  E =    -123.67720  RMSG = 2.4996615e-11
+ MIN: Iter =  141  NFunc =  5038  E =    -123.67720  RMSG = 1.4996527e-11
+ MIN: Iter =  142  NFunc =  5081  E =    -123.67720  RMSG = 1.0225578e-11
+ MIN: Iter =  143  NFunc =  5132  E =    -123.67720  RMSG = 7.4045244e-12
+ MIN: Iter =  144  NFunc =  5183  E =    -123.67720  RMSG = 6.7413856e-12
+ MIN: Iter =  145  NFunc =  5234  E =    -123.67720  RMSG = 4.2896450e-12
+ MIN: Iter =  146  NFunc =  5285  E =    -123.67720  RMSG = 2.7021030e-12
+ MIN: Iter =  147  NFunc =  5336  E =    -123.67720  RMSG = 1.7506573e-12
+ MIN: Iter =  148  NFunc =  5387  E =    -123.67720  RMSG = 1.3240565e-12
+ MIN: Iter =  149  NFunc =  5438  E =    -123.67720  RMSG = 1.2034400e-12
+ MIN: Iter =  150  NFunc =  5489  E =    -123.67720  RMSG = 8.5314617e-13
+----------------------------------------------------------------
+ END:          :-)  E =    -123.67720  RMSG =   0.0000000
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.92869  RMSG = 2.3232729e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.60845  RMSG = 2.0739666e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.60845  RMSG =   0.2073967
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.58282  RMSG = 2.3177307e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.45846  RMSG = 2.1901484e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.45846  RMSG =   0.2190148
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.85823  RMSG = 2.3169833e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.18327  RMSG = 2.6945148e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.18327  RMSG =   0.2694515
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.44565  RMSG = 2.3170385e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.75615  RMSG = 3.4913924e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.75615  RMSG =   0.3491392
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.29646  RMSG = 2.3174190e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.14642  RMSG = 4.5234239e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.14642  RMSG =   0.4523424
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.43650  RMSG = 2.3180508e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.32421  RMSG = 5.6228788e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.32421  RMSG =   0.5622879
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.87281  RMSG = 2.3188095e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.27037  RMSG = 7.0099087e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.27037  RMSG =   0.7009909
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       9.58159  RMSG = 2.3193761e+01
+ MIN: Iter =    1  NFunc =     7  E =    -118.98902  RMSG = 8.4598245e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -118.98902  RMSG =   0.8459825
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      11.55145  RMSG = 2.3201531e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.43781  RMSG = 9.6078267e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -117.43781  RMSG =   0.9607827
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      13.88214  RMSG = 2.3208128e+01
+ MIN: Iter =    1  NFunc =     7  E =    -115.65701  RMSG = 1.1222187e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -115.65701  RMSG =   1.1222187
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      16.39491  RMSG = 2.3216805e+01
+ MIN: Iter =    1  NFunc =     7  E =    -113.56041  RMSG = 1.2069399e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -113.56041  RMSG =   1.2069399
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.38489  RMSG = 2.3223852e+01
+ MIN: Iter =    1  NFunc =     7  E =    -111.25402  RMSG = 1.3837736e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -111.25402  RMSG =   1.3837736
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      22.43674  RMSG = 2.3234663e+01
+ MIN: Iter =    1  NFunc =     7  E =    -108.58130  RMSG = 1.4404887e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -108.58130  RMSG =   1.4404887
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      26.10205  RMSG = 2.3241644e+01
+ MIN: Iter =    1  NFunc =     7  E =    -105.74518  RMSG = 1.6280941e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -105.74518  RMSG =   1.6280941
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      29.66452  RMSG = 2.3255336e+01
+ MIN: Iter =    1  NFunc =     7  E =    -102.49213  RMSG = 1.6631671e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -102.49213  RMSG =   1.6631671
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      33.98702  RMSG = 2.3261665e+01
+ MIN: Iter =    1  NFunc =     7  E =     -99.14660  RMSG = 1.8519552e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -99.14660  RMSG =   1.8519552
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      38.01088  RMSG = 2.3278248e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.33517  RMSG = 1.8747538e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.33517  RMSG =   1.8747538
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      42.94316  RMSG = 2.3283462e+01
+ MIN: Iter =    1  NFunc =     7  E =     -91.51600  RMSG = 2.0525341e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -91.51600  RMSG =   2.0525341
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      47.37647  RMSG = 2.3302292e+01
+ MIN: Iter =    1  NFunc =     7  E =     -87.18323  RMSG = 2.0748063e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -87.18323  RMSG =   2.0748063
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      52.85755  RMSG = 2.3306240e+01
+ MIN: Iter =    1  NFunc =     7  E =     -82.92816  RMSG = 2.2296197e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -82.92816  RMSG =   2.2296197
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -82.92816  RMSG = 2.2296197e+00
+ MIN: Iter =    1  NFunc =    23  E =     -99.28394  RMSG = 2.0726860e+00
+ MIN: Iter =    2  NFunc =    44  E =    -107.56980  RMSG = 9.3623592e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -107.56980  RMSG =   0.9362359
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.90336  RMSG = 2.3230380e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.60905  RMSG = 2.0694907e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.60905  RMSG =   0.2069491
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.53106  RMSG = 2.3172875e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.46275  RMSG = 2.1839185e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.46275  RMSG =   0.2183919
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.77599  RMSG = 2.3163387e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.19669  RMSG = 2.6879730e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.19669  RMSG =   0.2687973
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.33051  RMSG = 2.3162165e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.78462  RMSG = 3.4844057e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.78462  RMSG =   0.3484406
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.15023  RMSG = 2.3164468e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.19346  RMSG = 4.5001759e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.19346  RMSG =   0.4500176
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.26950  RMSG = 2.3169508e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.38758  RMSG = 5.5991792e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.38758  RMSG =   0.5599179
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.70579  RMSG = 2.3175989e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.33886  RMSG = 7.0030435e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.33886  RMSG =   0.7003044
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       9.45321  RMSG = 2.3181217e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.04073  RMSG = 8.4803726e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.04073  RMSG =   0.8480373
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      11.51041  RMSG = 2.3188900e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.45276  RMSG = 9.7188489e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -117.45276  RMSG =   0.9718849
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      13.95716  RMSG = 2.3195917e+01
+ MIN: Iter =    1  NFunc =     7  E =    -115.61775  RMSG = 1.1355613e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -115.61775  RMSG =   1.1355613
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      16.61519  RMSG = 2.3205244e+01
+ MIN: Iter =    1  NFunc =     7  E =    -113.47033  RMSG = 1.2294445e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -113.47033  RMSG =   1.2294445
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.72193  RMSG = 2.3212984e+01
+ MIN: Iter =    1  NFunc =     7  E =    -111.11685  RMSG = 1.4011983e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -111.11685  RMSG =   1.4011983
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      22.90402  RMSG = 2.3224678e+01
+ MIN: Iter =    1  NFunc =     7  E =    -108.42129  RMSG = 1.4629671e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -108.42129  RMSG =   1.4629671
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      26.61770  RMSG = 2.3232233e+01
+ MIN: Iter =    1  NFunc =     7  E =    -105.58121  RMSG = 1.6422072e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -105.58121  RMSG =   1.6422072
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      30.24624  RMSG = 2.3247389e+01
+ MIN: Iter =    1  NFunc =     7  E =    -102.37032  RMSG = 1.6750966e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -102.37032  RMSG =   1.6750966
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      34.48794  RMSG = 2.3253896e+01
+ MIN: Iter =    1  NFunc =     7  E =     -99.10472  RMSG = 1.8581469e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -99.10472  RMSG =   1.8581469
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      38.45651  RMSG = 2.3272622e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.43845  RMSG = 1.8653022e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.43845  RMSG =   1.8653022
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      43.14330  RMSG = 2.3276960e+01
+ MIN: Iter =    1  NFunc =     7  E =     -91.80616  RMSG = 2.0464249e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -91.80616  RMSG =   2.0464249
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      47.38289  RMSG = 2.3298522e+01
+ MIN: Iter =    1  NFunc =     7  E =     -87.73213  RMSG = 2.0372652e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -87.73213  RMSG =   2.0372652
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      52.46623  RMSG = 2.3300538e+01
+ MIN: Iter =    1  NFunc =     7  E =     -83.79026  RMSG = 2.2150530e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -83.79026  RMSG =   2.2150530
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -83.79026  RMSG = 2.2150530e+00
+ MIN: Iter =    1  NFunc =    12  E =     -95.67733  RMSG = 1.3179627e+00
+ MIN: Iter =    2  NFunc =    63  E =    -105.23040  RMSG = 2.6044218e+00
+ MIN: Iter =    3  NFunc =    69  E =    -109.74481  RMSG = 5.8326476e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -109.74481  RMSG =   0.5832648
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.91506  RMSG = 2.3226249e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.57382  RMSG = 2.0981332e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.57382  RMSG =   0.2098133
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.71628  RMSG = 2.3163221e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.29834  RMSG = 2.4947286e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.29834  RMSG =   0.2494729
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.40961  RMSG = 2.3150577e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.76570  RMSG = 3.6850462e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.76570  RMSG =   0.3685046
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.65165  RMSG = 2.3143957e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.92867  RMSG = 5.3567089e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.92867  RMSG =   0.5356709
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.44182  RMSG = 2.3143185e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.69257  RMSG = 6.8979898e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.69257  RMSG =   0.6897990
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      10.00464  RMSG = 2.3152258e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.01231  RMSG = 9.4630268e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.01231  RMSG =   0.9463027
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      13.18650  RMSG = 2.3161707e+01
+ MIN: Iter =    1  NFunc =     7  E =    -116.74119  RMSG = 1.1545727e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -116.74119  RMSG =   1.1545727
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      17.47169  RMSG = 2.3177656e+01
+ MIN: Iter =    1  NFunc =     7  E =    -113.66906  RMSG = 1.4234212e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -113.66906  RMSG =   1.4234212
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      23.20154  RMSG = 2.3196985e+01
+ MIN: Iter =    1  NFunc =     7  E =    -109.26903  RMSG = 1.6384549e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -109.26903  RMSG =   1.6384549
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      31.61169  RMSG = 2.3228122e+01
+ MIN: Iter =    1  NFunc =     7  E =    -103.21152  RMSG = 1.9896733e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -103.21152  RMSG =   1.9896733
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      42.55514  RMSG = 2.3284305e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.50491  RMSG = 2.2677876e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.50491  RMSG =   2.2677876
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      86.58000  RMSG = 2.5830777e+01
+ MIN: Iter =    1  NFunc =     7  E =     -84.40229  RMSG = 2.5830183e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -84.40229  RMSG =   2.5830183
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      74.97939  RMSG = 2.3414840e+01
+ MIN: Iter =    1  NFunc =     7  E =     -75.95538  RMSG = 3.2212972e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -75.95538  RMSG =   3.2212972
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      88.04276  RMSG = 2.3725228e+01
+ MIN: Iter =    1  NFunc =     7  E =     -67.68490  RMSG = 3.6362897e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -67.68490  RMSG =   3.6362897
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     100.78628  RMSG = 2.3847558e+01
+ MIN: Iter =    1  NFunc =     7  E =     -57.84409  RMSG = 3.4464542e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -57.84409  RMSG =   3.4464542
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     117.68667  RMSG = 2.3972494e+01
+ MIN: Iter =    1  NFunc =     7  E =     -46.83595  RMSG = 3.9226220e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -46.83595  RMSG =   3.9226220
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     137.16865  RMSG = 2.4338167e+01
+ MIN: Iter =    1  NFunc =     7  E =     -32.88949  RMSG = 4.2852433e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -32.88949  RMSG =   4.2852433
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     191.27285  RMSG = 2.6217945e+01
+ MIN: Iter =    1  NFunc =     7  E =     -19.80811  RMSG = 3.7480251e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -19.80811  RMSG =   3.7480251
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     183.24088  RMSG = 2.4567768e+01
+ MIN: Iter =    1  NFunc =     7  E =      -3.67631  RMSG = 5.2332697e+00
+----------------------------------------------------------------
+ END:          :-)  E =      -3.67631  RMSG =   5.2332697
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     221.43830  RMSG = 2.7712990e+01
+ MIN: Iter =    1  NFunc =     7  E =      20.68223  RMSG = 6.2155327e+00
+----------------------------------------------------------------
+ END:          :-)  E =      20.68223  RMSG =   6.2155327
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      20.68223  RMSG = 6.2155327e+00
+ MIN: Iter =    1  NFunc =    11  E =     -44.25253  RMSG = 3.5440021e+00
+ MIN: Iter =    2  NFunc =    17  E =     -63.97301  RMSG = 1.6586528e+00
+ MIN: Iter =    3  NFunc =    69  E =     -76.90103  RMSG = 1.8746355e+00
+ MIN: Iter =    4  NFunc =    80  E =     -85.14666  RMSG = 1.6226142e+00
+ MIN: Iter =    5  NFunc =    88  E =     -97.04979  RMSG = 1.6173002e+00
+ MIN: Iter =    6  NFunc =   100  E =    -103.31144  RMSG = 7.7282241e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -103.31144  RMSG =   0.7728224
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.96790  RMSG = 2.3231976e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.57011  RMSG = 2.1041556e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.57011  RMSG =   0.2104156
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.84027  RMSG = 2.3174386e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.26932  RMSG = 2.5032095e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.26932  RMSG =   0.2503210
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.65258  RMSG = 2.3167436e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.66696  RMSG = 3.6964392e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.66696  RMSG =   0.3696439
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.08456  RMSG = 2.3166494e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.69501  RMSG = 5.3783424e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.69501  RMSG =   0.5378342
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       8.14736  RMSG = 2.3171029e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.24593  RMSG = 6.9388393e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.24593  RMSG =   0.6938839
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      11.06020  RMSG = 2.3185235e+01
+ MIN: Iter =    1  NFunc =     7  E =    -118.29644  RMSG = 9.5377051e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -118.29644  RMSG =   0.9537705
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.56155  RMSG = 2.3198571e+01
+ MIN: Iter =    1  NFunc =     7  E =    -115.78881  RMSG = 1.1649267e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -115.78881  RMSG =   1.1649267
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      18.88836  RMSG = 2.3217663e+01
+ MIN: Iter =    1  NFunc =     7  E =    -112.75843  RMSG = 1.4386857e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -112.75843  RMSG =   1.4386857
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      23.74886  RMSG = 2.3236942e+01
+ MIN: Iter =    1  NFunc =     7  E =    -109.13049  RMSG = 1.6312336e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -109.13049  RMSG =   1.6312336
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      29.41987  RMSG = 2.3259056e+01
+ MIN: Iter =    1  NFunc =     7  E =    -105.04166  RMSG = 1.9042888e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -105.04166  RMSG =   1.9042888
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      35.38794  RMSG = 2.3284198e+01
+ MIN: Iter =    1  NFunc =     7  E =    -100.43510  RMSG = 2.0612868e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -100.43510  RMSG =   2.0612868
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      41.99198  RMSG = 2.3307307e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.53591  RMSG = 2.3121708e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.53591  RMSG =   2.3121708
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      48.62748  RMSG = 2.3336943e+01
+ MIN: Iter =    1  NFunc =     7  E =     -90.16384  RMSG = 2.4201670e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -90.16384  RMSG =   2.4201670
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      55.92947  RMSG = 2.3357872e+01
+ MIN: Iter =    1  NFunc =     7  E =     -84.51360  RMSG = 2.6419902e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -84.51360  RMSG =   2.6419902
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      63.29448  RMSG = 2.3390203e+01
+ MIN: Iter =    1  NFunc =     7  E =     -78.27579  RMSG = 2.7176097e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -78.27579  RMSG =   2.7176097
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      71.53578  RMSG = 2.3408337e+01
+ MIN: Iter =    1  NFunc =     7  E =     -71.70698  RMSG = 2.9322521e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -71.70698  RMSG =   2.9322521
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      79.85089  RMSG = 2.3444036e+01
+ MIN: Iter =    1  NFunc =     7  E =     -64.53270  RMSG = 3.0057343e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -64.53270  RMSG =   3.0057343
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     118.79730  RMSG = 2.5801939e+01
+ MIN: Iter =    1  NFunc =     7  E =     -54.47813  RMSG = 3.1507924e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -54.47813  RMSG =   3.1507924
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     105.10897  RMSG = 2.3441875e+01
+ MIN: Iter =    1  NFunc =     7  E =     -46.94164  RMSG = 3.5704788e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -46.94164  RMSG =   3.5704788
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     113.47529  RMSG = 2.3639477e+01
+ MIN: Iter =    1  NFunc =     7  E =     -39.52912  RMSG = 3.8492736e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -39.52912  RMSG =   3.8492736
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -39.52912  RMSG = 3.8492736e+00
+ MIN: Iter =    1  NFunc =    12  E =     -71.57762  RMSG = 1.9926405e+00
+ MIN: Iter =    2  NFunc =    22  E =     -83.77479  RMSG = 1.3341041e+00
+ MIN: Iter =    3  NFunc =    73  E =     -95.61298  RMSG = 1.5406659e+00
+ MIN: Iter =    4  NFunc =    90  E =    -104.97794  RMSG = 1.2502811e+00
+ MIN: Iter =    5  NFunc =   110  E =    -111.19643  RMSG = 1.4720442e+00
+ MIN: Iter =    6  NFunc =   116  E =    -112.89904  RMSG = 4.7104029e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -112.89904  RMSG =   0.4710403
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.00110  RMSG = 2.3233340e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.56059  RMSG = 2.1664542e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.56059  RMSG =   0.2166454
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.19988  RMSG = 2.3187324e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.19465  RMSG = 2.9701856e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.19465  RMSG =   0.2970186
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.70439  RMSG = 2.3199536e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.39069  RMSG = 4.5308800e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.39069  RMSG =   0.4530880
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       8.25291  RMSG = 2.3219939e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.92728  RMSG = 6.4454418e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.92728  RMSG =   0.6445442
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      12.15463  RMSG = 2.3252462e+01
+ MIN: Iter =    1  NFunc =     7  E =    -118.42700  RMSG = 8.9774353e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -118.42700  RMSG =   0.8977435
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      18.13716  RMSG = 2.3319096e+01
+ MIN: Iter =    1  NFunc =     7  E =    -114.75904  RMSG = 1.1702815e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -114.75904  RMSG =   1.1702815
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      25.46388  RMSG = 2.3374843e+01
+ MIN: Iter =    1  NFunc =     7  E =    -109.91731  RMSG = 1.4065941e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -109.91731  RMSG =   1.4065941
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      34.23397  RMSG = 2.3444348e+01
+ MIN: Iter =    1  NFunc =     7  E =    -104.03362  RMSG = 1.6811787e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -104.03362  RMSG =   1.6811787
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      44.02776  RMSG = 2.3525820e+01
+ MIN: Iter =    1  NFunc =     7  E =     -97.23409  RMSG = 1.9268334e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -97.23409  RMSG =   1.9268334
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      54.73268  RMSG = 2.3624413e+01
+ MIN: Iter =    1  NFunc =     7  E =     -89.71305  RMSG = 2.1767845e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -89.71305  RMSG =   2.1767845
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      66.12522  RMSG = 2.3752810e+01
+ MIN: Iter =    1  NFunc =     7  E =     -81.49149  RMSG = 2.4011248e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -81.49149  RMSG =   2.4011248
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      78.55949  RMSG = 2.3939600e+01
+ MIN: Iter =    1  NFunc =     7  E =     -72.62847  RMSG = 2.7278041e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -72.62847  RMSG =   2.7278041
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      92.14064  RMSG = 2.4225515e+01
+ MIN: Iter =    1  NFunc =     7  E =     -63.16626  RMSG = 3.1995244e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -63.16626  RMSG =   3.1995244
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     106.69852  RMSG = 2.4619992e+01
+ MIN: Iter =    1  NFunc =     7  E =     -53.05700  RMSG = 3.7243333e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -53.05700  RMSG =   3.7243333
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     122.73297  RMSG = 2.5229747e+01
+ MIN: Iter =    1  NFunc =     7  E =     -42.31261  RMSG = 4.1509489e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -42.31261  RMSG =   4.1509489
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     139.16107  RMSG = 2.5881482e+01
+ MIN: Iter =    1  NFunc =     7  E =     -30.84773  RMSG = 4.7239603e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -30.84773  RMSG =   4.7239603
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     156.44844  RMSG = 2.6710535e+01
+ MIN: Iter =    1  NFunc =     7  E =     -18.78058  RMSG = 5.3564540e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -18.78058  RMSG =   5.3564540
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     174.41075  RMSG = 2.7799774e+01
+ MIN: Iter =    1  NFunc =     7  E =      -6.21247  RMSG = 6.1805970e+00
+----------------------------------------------------------------
+ END:          :-)  E =      -6.21247  RMSG =   6.1805970
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     194.65375  RMSG = 2.9331759e+01
+ MIN: Iter =    1  NFunc =     7  E =       7.66271  RMSG = 6.9393785e+00
+----------------------------------------------------------------
+ END:          :-)  E =       7.66271  RMSG =   6.9393785
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     214.03710  RMSG = 3.1129193e+01
+ MIN: Iter =    1  NFunc =     7  E =      21.90977  RMSG = 8.3668573e+00
+----------------------------------------------------------------
+ END:          :-)  E =      21.90977  RMSG =   8.3668573
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      21.90977  RMSG = 8.3668573e+00
+ MIN: Iter =    1  NFunc =    13  E =      -9.43206  RMSG = 5.8395011e+00
+ MIN: Iter =    2  NFunc =    19  E =     -38.19279  RMSG = 1.6387623e+00
+ MIN: Iter =    3  NFunc =    70  E =     -62.69310  RMSG = 1.7266228e+00
+ MIN: Iter =    4  NFunc =   120  E =     -74.69359  RMSG = 1.8232227e+00
+ MIN: Iter =    5  NFunc =   148  E =     -88.53926  RMSG = 2.3723828e+00
+ MIN: Iter =    6  NFunc =   157  E =     -95.25341  RMSG = 6.5025863e-01
+----------------------------------------------------------------
+ END:          :-)  E =     -95.25341  RMSG =   0.6502586
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.98593  RMSG = 2.3230867e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.56798  RMSG = 2.1409364e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.56798  RMSG =   0.2140936
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.12808  RMSG = 2.3182502e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.25498  RMSG = 2.8973457e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.25498  RMSG =   0.2897346
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.45454  RMSG = 2.3192617e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.61956  RMSG = 4.3583746e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.61956  RMSG =   0.4358375
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.55975  RMSG = 2.3211162e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.55051  RMSG = 6.0138021e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.55051  RMSG =   0.6013802
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      10.53363  RMSG = 2.3239855e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.83979  RMSG = 8.2465776e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.83979  RMSG =   0.8246578
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.78124  RMSG = 2.3293896e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.39269  RMSG = 1.0167356e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -117.39269  RMSG =   1.0167356
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.84976  RMSG = 2.3339118e+01
+ MIN: Iter =    1  NFunc =     7  E =    -114.23980  RMSG = 1.2123692e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -114.23980  RMSG =   1.2123692
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      25.58774  RMSG = 2.3382872e+01
+ MIN: Iter =    1  NFunc =     7  E =    -110.39965  RMSG = 1.3690799e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -110.39965  RMSG =   1.3690799
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      32.04975  RMSG = 2.3428134e+01
+ MIN: Iter =    1  NFunc =     7  E =    -105.99107  RMSG = 1.5420250e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -105.99107  RMSG =   1.5420250
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      38.98167  RMSG = 2.3471793e+01
+ MIN: Iter =    1  NFunc =     7  E =    -101.08183  RMSG = 1.6998294e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -101.08183  RMSG =   1.6998294
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      46.41989  RMSG = 2.3515001e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.72128  RMSG = 1.8712777e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.72128  RMSG =   1.8712777
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      54.32146  RMSG = 2.3557317e+01
+ MIN: Iter =    1  NFunc =     7  E =     -89.86583  RMSG = 2.0359255e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -89.86583  RMSG =   2.0359255
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      62.85810  RMSG = 2.3600339e+01
+ MIN: Iter =    1  NFunc =     7  E =     -83.44982  RMSG = 2.2114887e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -83.44982  RMSG =   2.2114887
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      72.13120  RMSG = 2.3644663e+01
+ MIN: Iter =    1  NFunc =     7  E =     -76.42117  RMSG = 2.3935981e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -76.42117  RMSG =   2.3935981
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      82.19917  RMSG = 2.3694004e+01
+ MIN: Iter =    1  NFunc =     7  E =     -68.84401  RMSG = 2.5803662e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -68.84401  RMSG =   2.5803662
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      92.83107  RMSG = 2.3748014e+01
+ MIN: Iter =    1  NFunc =     7  E =     -60.91184  RMSG = 2.7644410e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -60.91184  RMSG =   2.7644410
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     103.73425  RMSG = 2.3810575e+01
+ MIN: Iter =    1  NFunc =     7  E =     -52.73850  RMSG = 2.9437777e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -52.73850  RMSG =   2.9437777
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     114.72274  RMSG = 2.3877758e+01
+ MIN: Iter =    1  NFunc =     7  E =     -44.42102  RMSG = 3.1358459e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -44.42102  RMSG =   3.1358459
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     125.60598  RMSG = 2.3952616e+01
+ MIN: Iter =    1  NFunc =     7  E =     -35.97432  RMSG = 3.3191935e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -35.97432  RMSG =   3.3191935
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     136.32914  RMSG = 2.4024890e+01
+ MIN: Iter =    1  NFunc =     7  E =     -27.47161  RMSG = 3.5154041e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -27.47161  RMSG =   3.5154041
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -27.47161  RMSG = 3.5154041e+00
+ MIN: Iter =    1  NFunc =    12  E =     -63.79281  RMSG = 2.4611039e+00
+ MIN: Iter =    2  NFunc =    53  E =     -66.58688  RMSG = 2.7451662e+00
+ MIN: Iter =    3  NFunc =    69  E =     -84.26281  RMSG = 1.8382790e+00
+ MIN: Iter =    4  NFunc =    93  E =     -91.03143  RMSG = 2.4972768e+00
+ MIN: Iter =    5  NFunc =    99  E =     -95.87562  RMSG = 1.0091198e+00
+ MIN: Iter =    6  NFunc =   106  E =     -98.55514  RMSG = 2.7173287e+00
+ MIN: Iter =    7  NFunc =   112  E =    -101.17149  RMSG = 5.3345046e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -101.17149  RMSG =   0.5334505
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.94855  RMSG = 2.3229888e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.57212  RMSG = 2.0881558e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.57212  RMSG =   0.2088156
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.74446  RMSG = 2.3168870e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.29416  RMSG = 2.4025971e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.29416  RMSG =   0.2402597
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.36749  RMSG = 2.3157025e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.77811  RMSG = 3.3433480e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.77811  RMSG =   0.3343348
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.45938  RMSG = 2.3150704e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.99092  RMSG = 4.5925016e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.99092  RMSG =   0.4592502
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.00139  RMSG = 2.3148110e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.88715  RMSG = 6.2207557e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.88715  RMSG =   0.6220756
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       9.06796  RMSG = 2.3151957e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.40337  RMSG = 7.9641154e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.40337  RMSG =   0.7964115
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      11.72473  RMSG = 2.3160577e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.54966  RMSG = 1.0201263e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -117.54966  RMSG =   1.0201263
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.75281  RMSG = 2.3165415e+01
+ MIN: Iter =    1  NFunc =     7  E =    -115.29024  RMSG = 1.1914632e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -115.29024  RMSG =   1.1914632
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      18.33837  RMSG = 2.3173824e+01
+ MIN: Iter =    1  NFunc =     7  E =    -112.67011  RMSG = 1.4017381e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -112.67011  RMSG =   1.4017381
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      22.24173  RMSG = 2.3181669e+01
+ MIN: Iter =    1  NFunc =     7  E =    -109.64667  RMSG = 1.5525397e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -109.64667  RMSG =   1.5525397
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      26.66159  RMSG = 2.3190457e+01
+ MIN: Iter =    1  NFunc =     7  E =    -106.28503  RMSG = 1.7471418e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -106.28503  RMSG =   1.7471418
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      31.35006  RMSG = 2.3201147e+01
+ MIN: Iter =    1  NFunc =     7  E =    -102.53162  RMSG = 1.8799264e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -102.53162  RMSG =   1.8799264
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      36.50953  RMSG = 2.3209879e+01
+ MIN: Iter =    1  NFunc =     7  E =     -98.47023  RMSG = 2.0587632e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -98.47023  RMSG =   2.0587632
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      41.88244  RMSG = 2.3222627e+01
+ MIN: Iter =    1  NFunc =     7  E =     -94.03938  RMSG = 2.1746209e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -94.03938  RMSG =   2.1746209
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      47.67238  RMSG = 2.3230759e+01
+ MIN: Iter =    1  NFunc =     7  E =     -89.34130  RMSG = 2.3368309e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -89.34130  RMSG =   2.3368309
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      53.61565  RMSG = 2.3244821e+01
+ MIN: Iter =    1  NFunc =     7  E =     -84.30678  RMSG = 2.4354632e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -84.30678  RMSG =   2.4354632
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      92.63730  RMSG = 2.5924499e+01
+ MIN: Iter =    1  NFunc =     7  E =     -77.00342  RMSG = 2.4421631e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -77.00342  RMSG =   2.4421631
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     113.60805  RMSG = 2.6884864e+01
+ MIN: Iter =    1  NFunc =     7  E =     -69.20572  RMSG = 2.8287821e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -69.20572  RMSG =   2.8287821
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      79.54612  RMSG = 2.3206966e+01
+ MIN: Iter =    1  NFunc =     7  E =     -65.49802  RMSG = 3.0650303e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -65.49802  RMSG =   3.0650303
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      83.50038  RMSG = 2.3402601e+01
+ MIN: Iter =    1  NFunc =     7  E =     -60.25691  RMSG = 3.1882681e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -60.25691  RMSG =   3.1882681
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -60.25691  RMSG = 3.1882681e+00
+ MIN: Iter =    1  NFunc =    12  E =     -82.37372  RMSG = 1.6227710e+00
+ MIN: Iter =    2  NFunc =    36  E =     -92.21781  RMSG = 1.1338688e+00
+ MIN: Iter =    3  NFunc =    49  E =    -100.62154  RMSG = 1.1247951e+00
+ MIN: Iter =    4  NFunc =   100  E =    -106.30411  RMSG = 1.5870089e+00
+ MIN: Iter =    5  NFunc =   106  E =    -108.61527  RMSG = 4.5984051e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -108.61527  RMSG =   0.4598405
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.91146  RMSG = 2.3228083e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.57663  RMSG = 2.0983280e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.57663  RMSG =   0.2098328
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.64401  RMSG = 2.3166036e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.33327  RMSG = 2.4289842e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.33327  RMSG =   0.2428984
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.14538  RMSG = 2.3153465e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.91164  RMSG = 3.3823725e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.91164  RMSG =   0.3382372
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.03925  RMSG = 2.3147134e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.30415  RMSG = 4.6531623e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.30415  RMSG =   0.4653162
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.30316  RMSG = 2.3145258e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.46765  RMSG = 6.2686776e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.46765  RMSG =   0.6268678
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       8.08647  RMSG = 2.3151307e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.29491  RMSG = 7.9648251e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.29491  RMSG =   0.7964825
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      10.62147  RMSG = 2.3162064e+01
+ MIN: Iter =    1  NFunc =     7  E =    -118.61771  RMSG = 1.0126143e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -118.61771  RMSG =   1.0126143
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.23535  RMSG = 2.3174945e+01
+ MIN: Iter =    1  NFunc =     7  E =    -116.06364  RMSG = 1.2054422e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -116.06364  RMSG =   1.2054422
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.83382  RMSG = 2.3208293e+01
+ MIN: Iter =    1  NFunc =     7  E =    -112.35519  RMSG = 1.5153110e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -112.35519  RMSG =   1.5153110
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      27.86130  RMSG = 2.3298056e+01
+ MIN: Iter =    1  NFunc =     7  E =    -107.19461  RMSG = 1.8746641e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -107.19461  RMSG =   1.8746641
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      39.35402  RMSG = 2.3562071e+01
+ MIN: Iter =    1  NFunc =     7  E =    -100.31969  RMSG = 2.3332511e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -100.31969  RMSG =   2.3332511
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      55.70669  RMSG = 2.4308107e+01
+ MIN: Iter =    1  NFunc =     7  E =     -91.19514  RMSG = 3.0031955e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -91.19514  RMSG =   3.0031955
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      77.84277  RMSG = 2.5925055e+01
+ MIN: Iter =    1  NFunc =     7  E =     -79.78034  RMSG = 4.4598859e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -79.78034  RMSG =   4.4598859
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     107.05203  RMSG = 2.9296905e+01
+ MIN: Iter =    1  NFunc =     7  E =     -65.43929  RMSG = 6.6074135e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -65.43929  RMSG =   6.6074135
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     142.87118  RMSG = 3.4749170e+01
+ MIN: Iter =    1  NFunc =     7  E =     -47.59416  RMSG = 9.5325334e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -47.59416  RMSG =   9.5325334
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     184.24897  RMSG = 4.1729927e+01
+ MIN: Iter =    1  NFunc =     7  E =     -28.65028  RMSG = 1.2418354e+01
+ MIN: Iter =    2  NFunc =    14  E =     -51.73546  RMSG = 8.8889875e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -51.73546  RMSG =   8.8889875
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     151.14774  RMSG = 3.3224577e+01
+ MIN: Iter =    1  NFunc =     7  E =     -38.92034  RMSG = 8.8295720e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -38.92034  RMSG =   8.8295720
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     229.40147  RMSG = 3.5310109e+01
+ MIN: Iter =    1  NFunc =     7  E =     -34.65292  RMSG = 6.8566322e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -34.65292  RMSG =   6.8566322
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     190.92560  RMSG = 3.0097206e+01
+ MIN: Iter =    1  NFunc =     7  E =     -27.59637  RMSG = 5.6554411e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -27.59637  RMSG =   5.6554411
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     168.15352  RMSG = 2.6749432e+01
+ MIN: Iter =    1  NFunc =     7  E =     -20.94353  RMSG = 5.2708700e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -20.94353  RMSG =   5.2708700
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -20.94353  RMSG = 5.2708700e+00
+ MIN: Iter =    1  NFunc =    16  E =     -54.25095  RMSG = 5.3222541e+00
+ MIN: Iter =    2  NFunc =    22  E =     -77.29902  RMSG = 1.7405468e+00
+ MIN: Iter =    3  NFunc =    45  E =     -81.70302  RMSG = 1.9173348e+00
+ MIN: Iter =    4  NFunc =    75  E =     -87.94810  RMSG = 2.0982665e+00
+ MIN: Iter =    5  NFunc =    86  E =     -99.05302  RMSG = 8.1719588e-01
+----------------------------------------------------------------
+ END:          :-)  E =     -99.05302  RMSG =   0.8171959
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.92781  RMSG = 2.3222414e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.52321  RMSG = 2.0908764e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.52321  RMSG =   0.2090876
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.84865  RMSG = 2.3148835e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.05800  RMSG = 2.5374265e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.05800  RMSG =   0.2537427
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.89430  RMSG = 2.3123084e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.12936  RMSG = 3.8314517e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.12936  RMSG =   0.3831452
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.82618  RMSG = 2.3103428e+01
+ MIN: Iter =    1  NFunc =     7  E =    -120.61425  RMSG = 5.6400391e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -120.61425  RMSG =   0.5640039
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       9.74438  RMSG = 2.3092325e+01
+ MIN: Iter =    1  NFunc =     7  E =    -118.39517  RMSG = 7.8961057e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -118.39517  RMSG =   0.7896106
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      13.75837  RMSG = 2.3091847e+01
+ MIN: Iter =    1  NFunc =     7  E =    -115.27119  RMSG = 1.0442848e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -115.27119  RMSG =   1.0442848
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.27251  RMSG = 2.3112062e+01
+ MIN: Iter =    1  NFunc =     7  E =    -111.12863  RMSG = 1.3288259e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -111.12863  RMSG =   1.3288259
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      -3.77588  RMSG = 2.0231425e+01
+ MIN: Iter =    1  NFunc =     7  E =    -105.94954  RMSG = 1.6179300e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -105.94954  RMSG =   1.6179300
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.55175  RMSG = 2.0287049e+01
+ MIN: Iter =    1  NFunc =     7  E =     -99.75778  RMSG = 1.8964276e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -99.75778  RMSG =   1.8964276
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.09823  RMSG = 2.0355098e+01
+ MIN: Iter =    1  NFunc =     7  E =     -92.58525  RMSG = 2.1348301e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -92.58525  RMSG =   2.1348301
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      57.07543  RMSG = 2.3374459e+01
+ MIN: Iter =    1  NFunc =     7  E =     -82.79017  RMSG = 2.2544807e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -82.79017  RMSG =   2.2544807
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      80.76993  RMSG = 2.4323695e+01
+ MIN: Iter =    1  NFunc =     7  E =     -72.08876  RMSG = 2.6453000e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -72.08876  RMSG =   2.6453000
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      54.48349  RMSG = 2.0504444e+01
+ MIN: Iter =    1  NFunc =     7  E =     -64.22110  RMSG = 3.1107054e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -64.22110  RMSG =   3.1107054
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      66.10726  RMSG = 2.0815001e+01
+ MIN: Iter =    1  NFunc =     7  E =     -54.43498  RMSG = 3.2728431e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -54.43498  RMSG =   3.2728431
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     113.26762  RMSG = 2.3939092e+01
+ MIN: Iter =    1  NFunc =     7  E =     -41.10590  RMSG = 3.0531619e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -41.10590  RMSG =   3.0531619
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     139.70427  RMSG = 2.4657303e+01
+ MIN: Iter =    1  NFunc =     7  E =     -27.45370  RMSG = 3.6744702e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -27.45370  RMSG =   3.6744702
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     117.14756  RMSG = 2.0952691e+01
+ MIN: Iter =    1  NFunc =     7  E =     -18.31695  RMSG = 3.9657628e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -18.31695  RMSG =   3.9657628
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     135.66657  RMSG = 2.2042828e+01
+ MIN: Iter =    1  NFunc =     7  E =      -7.57316  RMSG = 4.8586526e+00
+----------------------------------------------------------------
+ END:          :-)  E =      -7.57316  RMSG =   4.8586526
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     202.93948  RMSG = 2.7666202e+01
+ MIN: Iter =    1  NFunc =     7  E =      12.07936  RMSG = 5.8130875e+00
+----------------------------------------------------------------
+ END:          :-)  E =      12.07936  RMSG =   5.8130875
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     262.88338  RMSG = 3.3765073e+01
+ MIN: Iter =    1  NFunc =     7  E =      44.89465  RMSG = 8.1230739e+00
+----------------------------------------------------------------
+ END:          :-)  E =      44.89465  RMSG =   8.1230739
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      44.89465  RMSG = 8.1230739e+00
+ MIN: Iter =    1  NFunc =    16  E =      23.31113  RMSG = 7.4621038e+00
+ MIN: Iter =    2  NFunc =    22  E =     -13.42366  RMSG = 3.1235641e+00
+ MIN: Iter =    3  NFunc =    30  E =     -52.70062  RMSG = 2.6085678e+00
+ MIN: Iter =    4  NFunc =    68  E =     -56.06748  RMSG = 2.7139584e+00
+ MIN: Iter =    5  NFunc =    98  E =     -83.36985  RMSG = 2.2284181e+00
+ MIN: Iter =    6  NFunc =   114  E =     -98.57746  RMSG = 1.6763926e+00
+ MIN: Iter =    7  NFunc =   121  E =    -102.04425  RMSG = 6.6019524e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -102.04425  RMSG =   0.6601952
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.94262  RMSG = 2.3225934e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.53028  RMSG = 2.1105701e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.53028  RMSG =   0.2110570
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.82469  RMSG = 2.3156100e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.12233  RMSG = 2.5615036e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.12233  RMSG =   0.2561504
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.71334  RMSG = 2.3134781e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.36086  RMSG = 3.7882467e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.36086  RMSG =   0.3788247
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.30786  RMSG = 2.3120076e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.17588  RMSG = 5.4561730e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.17588  RMSG =   0.5456173
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       8.68717  RMSG = 2.3114037e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.46443  RMSG = 7.5641858e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.46443  RMSG =   0.7564186
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      12.02356  RMSG = 2.3120089e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.01589  RMSG = 9.8159219e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -117.01589  RMSG =   0.9815922
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      16.72071  RMSG = 2.3145262e+01
+ MIN: Iter =    1  NFunc =     7  E =    -113.70532  RMSG = 1.2668671e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -113.70532  RMSG =   1.2668671
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      -7.73817  RMSG = 2.0230014e+01
+ MIN: Iter =    1  NFunc =     7  E =    -109.51508  RMSG = 1.5401095e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -109.51508  RMSG =   1.5401095
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      -0.81257  RMSG = 2.0278681e+01
+ MIN: Iter =    1  NFunc =     7  E =    -104.58261  RMSG = 1.8302506e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -104.58261  RMSG =   1.8302506
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       6.77990  RMSG = 2.0335559e+01
+ MIN: Iter =    1  NFunc =     7  E =     -98.98779  RMSG = 2.0401727e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -98.98779  RMSG =   2.0401727
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.95665  RMSG = 2.0387904e+01
+ MIN: Iter =    1  NFunc =     7  E =     -92.99702  RMSG = 2.3214922e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -92.99702  RMSG =   2.3214922
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      23.20740  RMSG = 2.0442480e+01
+ MIN: Iter =    1  NFunc =     7  E =     -86.58955  RMSG = 2.4769794e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -86.58955  RMSG =   2.4769794
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      31.81360  RMSG = 2.0478217e+01
+ MIN: Iter =    1  NFunc =     7  E =     -79.99655  RMSG = 2.7124220e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -79.99655  RMSG =   2.7124220
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      40.32311  RMSG = 2.0522485e+01
+ MIN: Iter =    1  NFunc =     7  E =     -73.15578  RMSG = 2.8320928e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -73.15578  RMSG =   2.8320928
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      80.77102  RMSG = 2.3394582e+01
+ MIN: Iter =    1  NFunc =     7  E =     -63.62134  RMSG = 2.9499075e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -63.62134  RMSG =   2.9499075
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     105.70069  RMSG = 2.4504776e+01
+ MIN: Iter =    1  NFunc =     7  E =     -53.25978  RMSG = 3.2742351e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -53.25978  RMSG =   3.2742351
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      75.96184  RMSG = 2.0504915e+01
+ MIN: Iter =    1  NFunc =     7  E =     -47.96380  RMSG = 3.8086218e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -47.96380  RMSG =   3.8086218
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      82.03186  RMSG = 2.0865729e+01
+ MIN: Iter =    1  NFunc =     7  E =     -41.74099  RMSG = 3.8433554e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -41.74099  RMSG =   3.8433554
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     124.98374  RMSG = 2.4083807e+01
+ MIN: Iter =    1  NFunc =     7  E =     -31.87783  RMSG = 3.7213157e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -31.87783  RMSG =   3.7213157
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     145.25037  RMSG = 2.4728149e+01
+ MIN: Iter =    1  NFunc =     7  E =     -21.62806  RMSG = 3.9399068e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -21.62806  RMSG =   3.9399068
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -21.62806  RMSG = 3.9399068e+00
+ MIN: Iter =    1  NFunc =    12  E =     -70.27307  RMSG = 2.5804454e+00
+ MIN: Iter =    2  NFunc =    24  E =     -84.84579  RMSG = 1.3618960e+00
+ MIN: Iter =    3  NFunc =    76  E =     -92.45720  RMSG = 1.1849552e+00
+ MIN: Iter =    4  NFunc =   101  E =    -102.22351  RMSG = 2.3851283e+00
+ MIN: Iter =    5  NFunc =   107  E =    -107.00833  RMSG = 6.7141046e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -107.00833  RMSG =   0.6714105
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.95061  RMSG = 2.3228704e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.56871  RMSG = 2.1491159e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.56871  RMSG =   0.2149116
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.02294  RMSG = 2.3176609e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.25616  RMSG = 2.8853827e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.25616  RMSG =   0.2885383
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.25875  RMSG = 2.3181746e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.61493  RMSG = 4.3408721e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.61493  RMSG =   0.4340872
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.30157  RMSG = 2.3194837e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.51433  RMSG = 6.0989696e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.51433  RMSG =   0.6098970
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      10.32162  RMSG = 2.3218590e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.67829  RMSG = 8.4381153e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.67829  RMSG =   0.8438115
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.93360  RMSG = 2.3272216e+01
+ MIN: Iter =    1  NFunc =     7  E =    -116.96104  RMSG = 1.0886965e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -116.96104  RMSG =   1.0886965
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      20.62835  RMSG = 2.3314007e+01
+ MIN: Iter =    1  NFunc =     7  E =    -113.25511  RMSG = 1.3154098e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -113.25511  RMSG =   1.3154098
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      27.66148  RMSG = 2.3363819e+01
+ MIN: Iter =    1  NFunc =     7  E =    -108.44362  RMSG = 1.5290762e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -108.44362  RMSG =   1.5290762
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      36.15755  RMSG = 2.3418328e+01
+ MIN: Iter =    1  NFunc =     7  E =    -102.41316  RMSG = 1.7438510e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -102.41316  RMSG =   1.7438510
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      46.29138  RMSG = 2.3484529e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.09982  RMSG = 1.9690667e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.09982  RMSG =   1.9690667
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      58.11560  RMSG = 2.3567518e+01
+ MIN: Iter =    1  NFunc =     7  E =     -86.56902  RMSG = 2.2351495e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -86.56902  RMSG =   2.2351495
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      71.60450  RMSG = 2.3685015e+01
+ MIN: Iter =    1  NFunc =     7  E =     -76.82444  RMSG = 2.5158753e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -76.82444  RMSG =   2.5158753
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      86.86538  RMSG = 2.3849018e+01
+ MIN: Iter =    1  NFunc =     7  E =     -66.01704  RMSG = 2.8425798e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -66.01704  RMSG =   2.8425798
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     103.53080  RMSG = 2.4086916e+01
+ MIN: Iter =    1  NFunc =     7  E =     -54.58693  RMSG = 3.1559685e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -54.58693  RMSG =   3.1559685
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     120.67639  RMSG = 2.4390236e+01
+ MIN: Iter =    1  NFunc =     7  E =     -43.03860  RMSG = 3.3823768e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -43.03860  RMSG =   3.3823768
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     136.49896  RMSG = 2.4632365e+01
+ MIN: Iter =    1  NFunc =     7  E =     -31.31217  RMSG = 3.6747960e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -31.31217  RMSG =   3.6747960
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     149.78956  RMSG = 2.4703017e+01
+ MIN: Iter =    1  NFunc =     7  E =     -20.37410  RMSG = 3.9334170e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -20.37410  RMSG =   3.9334170
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     160.20298  RMSG = 2.4678145e+01
+ MIN: Iter =    1  NFunc =     7  E =     -10.88576  RMSG = 4.0456914e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -10.88576  RMSG =   4.0456914
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     167.80091  RMSG = 2.4530571e+01
+ MIN: Iter =    1  NFunc =     7  E =      -2.95380  RMSG = 4.0161088e+00
+----------------------------------------------------------------
+ END:          :-)  E =      -2.95380  RMSG =   4.0161088
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     173.51454  RMSG = 2.4347780e+01
+ MIN: Iter =    1  NFunc =     7  E =       3.42510  RMSG = 3.9417439e+00
+----------------------------------------------------------------
+ END:          :-)  E =       3.42510  RMSG =   3.9417439
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       3.42510  RMSG = 3.9417439e+00
+ MIN: Iter =    1  NFunc =    17  E =     -26.97646  RMSG = 4.3176762e+00
+ MIN: Iter =    2  NFunc =    25  E =     -46.62483  RMSG = 1.5241141e+00
+ MIN: Iter =    3  NFunc =    76  E =     -56.91986  RMSG = 4.8391995e+00
+ MIN: Iter =    4  NFunc =    82  E =     -70.13815  RMSG = 1.6039196e+00
+ MIN: Iter =    5  NFunc =   127  E =     -85.75769  RMSG = 2.0544682e+00
+ MIN: Iter =    6  NFunc =   142  E =    -102.66506  RMSG = 2.2477416e+00
+ MIN: Iter =    7  NFunc =   151  E =    -107.40370  RMSG = 6.7743934e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -107.40370  RMSG =   0.6774393
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.00390  RMSG = 2.3233363e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.56809  RMSG = 2.1451305e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.56809  RMSG =   0.2145130
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       4.12684  RMSG = 2.3185213e+01
+ MIN: Iter =    1  NFunc =     7  E =    -123.25312  RMSG = 2.8576777e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -123.25312  RMSG =   0.2857678
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       5.40267  RMSG = 2.3194480e+01
+ MIN: Iter =    1  NFunc =     7  E =    -122.61761  RMSG = 4.2559580e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -122.61761  RMSG =   0.4255958
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =       7.42568  RMSG = 2.3211491e+01
+ MIN: Iter =    1  NFunc =     7  E =    -121.56189  RMSG = 5.8692598e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -121.56189  RMSG =   0.5869260
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      10.27648  RMSG = 2.3237941e+01
+ MIN: Iter =    1  NFunc =     7  E =    -119.89501  RMSG = 8.0678346e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -119.89501  RMSG =   0.8067835
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      14.35170  RMSG = 2.3289265e+01
+ MIN: Iter =    1  NFunc =     7  E =    -117.52253  RMSG = 9.9952453e-01
+----------------------------------------------------------------
+ END:          :-)  E =    -117.52253  RMSG =   0.9995245
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      19.22309  RMSG = 2.3331775e+01
+ MIN: Iter =    1  NFunc =     7  E =    -114.44775  RMSG = 1.2011124e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -114.44775  RMSG =   1.2011124
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      24.79154  RMSG = 2.3373850e+01
+ MIN: Iter =    1  NFunc =     7  E =    -110.63349  RMSG = 1.3543787e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -110.63349  RMSG =   1.3543787
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      31.16970  RMSG = 2.3417088e+01
+ MIN: Iter =    1  NFunc =     7  E =    -106.18113  RMSG = 1.5307211e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -106.18113  RMSG =   1.5307211
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      38.06101  RMSG = 2.3460092e+01
+ MIN: Iter =    1  NFunc =     7  E =    -101.15217  RMSG = 1.6748698e+00
+----------------------------------------------------------------
+ END:          :-)  E =    -101.15217  RMSG =   1.6748698
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      45.48082  RMSG = 2.3500959e+01
+ MIN: Iter =    1  NFunc =     7  E =     -95.69223  RMSG = 1.8512864e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -95.69223  RMSG =   1.8512864
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      53.18488  RMSG = 2.3542769e+01
+ MIN: Iter =    1  NFunc =     7  E =     -89.83105  RMSG = 1.9984739e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -89.83105  RMSG =   1.9984739
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      61.24392  RMSG = 2.3580929e+01
+ MIN: Iter =    1  NFunc =     7  E =     -83.69300  RMSG = 2.1785562e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -83.69300  RMSG =   2.1785562
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      69.42648  RMSG = 2.3621333e+01
+ MIN: Iter =    1  NFunc =     7  E =     -77.28524  RMSG = 2.3217543e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -77.28524  RMSG =   2.3217543
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      77.81183  RMSG = 2.3656427e+01
+ MIN: Iter =    1  NFunc =     7  E =     -70.73014  RMSG = 2.4940711e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -70.73014  RMSG =   2.4940711
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      86.17909  RMSG = 2.3694708e+01
+ MIN: Iter =    1  NFunc =     7  E =     -63.99565  RMSG = 2.6206672e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -63.99565  RMSG =   2.6206672
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =      94.67276  RMSG = 2.3725841e+01
+ MIN: Iter =    1  NFunc =     7  E =     -57.18106  RMSG = 2.7776910e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -57.18106  RMSG =   2.7776910
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     103.09807  RMSG = 2.3761343e+01
+ MIN: Iter =    1  NFunc =     7  E =     -50.21352  RMSG = 2.8852264e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -50.21352  RMSG =   2.8852264
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     111.64789  RMSG = 2.3788006e+01
+ MIN: Iter =    1  NFunc =     7  E =     -43.19019  RMSG = 3.0284458e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -43.19019  RMSG =   3.0284458
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     120.11440  RMSG = 2.3820465e+01
+ MIN: Iter =    1  NFunc =     7  E =     -36.01912  RMSG = 3.1200081e+00
+----------------------------------------------------------------
+ END:          :-)  E =     -36.01912  RMSG =   3.1200081
+
+Starting TNCG minimisation
+ MIN: Iter =    0  NFunc =     1  E =     -36.01912  RMSG = 3.1200081e+00
+ MIN: Iter =    1  NFunc =    12  E =     -65.62759  RMSG = 1.8723842e+00
+ MIN: Iter =    2  NFunc =    63  E =     -82.47587  RMSG = 2.0794740e+00
+ MIN: Iter =    3  NFunc =    74  E =     -89.94225  RMSG = 9.7122152e-01
+----------------------------------------------------------------
+ END:          :-)  E =     -89.94225  RMSG =   0.9712215
+

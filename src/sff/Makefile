@@ -1,10 +1,18 @@
 include ../../config.h
 
-.c.o:
+%.o: %.c
 	@echo "[SFF]  CC $<"
 	$(VB)$(CC) -c $(COPTFLAGS) $(CFLAGS) $(NETCDFINC) -o $@ $<
 
-OBJS = conjgrad.o lmodC.o memutil.o nblist.o newton.o nmode.o \
+%.o: %.cc
+	@echo "[SFF]  CC $<"
+	$(VB)g++ -c -I/usr/local/cuda/include $(COPTFLAGS) $(CFLAGS) $(NETCDFINC) -o $@ $<
+
+%.o: %.cu
+	@echo "[NABC] nvcc $<"
+	nvcc $(NVFLAGS) -I$(INCDIR) -c $< -o $@
+
+OBJS = conjgrad.o lmodC.o memutil.o nblist.o nmode.o \
 	   prm.o rand2.o sasad.o sff.o xminC.o AmberNetcdf.o ptrajmask.o \
        wallclock.o
 
@@ -44,9 +52,9 @@ hcp_getpdb$(SFX): hcp_getpdb.c
 
 sff.c: lex.mmo.c
 
-depend: $(OBJS:.o=.c)
-	@echo "[SFF] make depend"
-	$(VB)$(CC) -MM $^ > $@
+#depend: $(OBJS:.o=.c)
+#	@echo "[SFF] make depend"
+#	$(VB)$(CC) -MM $^ > $@
 
 include depend
 

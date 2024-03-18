@@ -6,7 +6,6 @@
 #include <complex.h>
 #include "sff.h"
 #include "memutil.h"
-#include "timer.h"
 
 #ifdef SCALAPACK
 #include "mpi.h"
@@ -1349,11 +1348,11 @@ void diagonchol(REAL_T * d, REAL_T * v, REAL_T * h, INT_T nr3, INT_T nev)
 
    dpotrf_(&uplo, &nr3, h, &nr3, &info);
 
+#if 0
    t2 = seconds();
-
    *tnmodeFact = t2 - t1;
-
    t1 = seconds();
+#endif
 
    if (info != 0) {
       printf
@@ -1426,12 +1425,10 @@ void diagonchol(REAL_T * d, REAL_T * v, REAL_T * h, INT_T nr3, INT_T nev)
 
    }
 
+#if 0
    t2 = seconds();
-
    *tnmodeInvdiag = t2 - t1;
-
-
-
+#endif
 
    rvec = 1;
    ei[0] = 'A';
@@ -1453,9 +1450,9 @@ void diagonchol(REAL_T * d, REAL_T * v, REAL_T * h, INT_T nr3, INT_T nev)
            info);
    }
 
+#if 0
    *tnmodeEigenvec = t2 - t1;
-
-
+#endif
 
    if(mytaskid == 0){
      printf("Convergence achieved after  %d iterations \n", iter);
@@ -1559,8 +1556,10 @@ void diagondir(INT_T natom, REAL_T * h)
 
    }
 
+#if 0
    t2 = seconds();
    *tnmodeInvdiag = t2 - t1;
+#endif
 
    if(mytaskid == 0){
      for (i = 0; i < nev; i++) {
@@ -1887,9 +1886,11 @@ int nmode(REAL_T * x, int n,
 
    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
+#if 0
    t2 = seconds();
    *tnmodeHessian += t2 - t1;
    t1 = t2;
+#endif
 
    /*
     * Some ScaLAPACK functions appear to quit unexpectedly
@@ -1949,9 +1950,11 @@ int nmode(REAL_T * x, int n,
 
          if (ntrun == 3) {
 
+#if 0
             t2 = seconds();
             *tnmodeOther += t2 - t1;
             t1 = t2;
+#endif
             nr3 = 3 * natom;
             nr6 = 6 * natom;
 
@@ -1994,9 +1997,11 @@ int nmode(REAL_T * x, int n,
                }
              */
 
+#if 0
             t2 = seconds();
             *tnmodeAmat = t2 - t1;
             t1 = t2;
+#endif
             /*
              * Allocate work array, call dgeev_, and deallocate work array.
              */
@@ -2014,28 +2019,36 @@ int nmode(REAL_T * x, int n,
             lwork = 4 * nr6;
             work = vector(0, lwork);
 
+#if 0
             t2 = seconds();
             *tnmodeOther += t2 - t1;
             t1 = t2;
+#endif
             dgeev_(&jobz, &uplo, &nr6, a, &nr6, wr, wi, du, &ldu, zo, &nr6,
                    work, &lwork, &info);
+#if 0
             t2 = seconds();
             *tnmodeDiagA += t2 - t1;
             t1 = t2;
+#endif
 
             free_vector(work, 0, lwork);
             free_vector(a, 0, nr6 * nr6);
 
             indexsort = ivector(0, nr6);
+#if 0
             t2 = seconds();
             *tnmodeOther += t2 - t1;
             t1 = t2;
+#endif
 
             nreal = leigensort(wr, wi, indexsort, natom);
 
+#if 0
             t2 = seconds();
             *tnmodeSort += t2 - t1;
             t1 = t2;
+#endif
 
             /* Compute the normalized Langevin modes. */
             iclass = ivector(0, nr6);
@@ -2060,10 +2073,12 @@ int nmode(REAL_T * x, int n,
                po += nr3;
             }
 
+#if 0
             t2 = seconds();
             *tnmodeNorm = t2 - t1;
             *tnmodeLan = t2 - t0;
             t1 = t2;
+#endif
 
             if(mytaskid == 0){
               printf
@@ -2187,12 +2202,15 @@ int nmode(REAL_T * x, int n,
             k = 0;
             v = vector(1, ncopy);
 
+#if 0
             t2 = seconds();
             *tnmodeOther += t2 - t1;
             t1 = t2;
+#endif
 
             dsyev_(&jobz, &uplo, &n, h, &n, &v[1], work, &lwork, &info);
 
+#if 0
             t2 = seconds();
             *tnmodeDSYEV += t2 - t1;
             if(mytaskid == 0){
@@ -2200,6 +2218,7 @@ int nmode(REAL_T * x, int n,
               fflush(nabout);
             }
             t1 = t2;
+#endif
 
             free_vector(work, 0, lwork);
 
@@ -2394,14 +2413,18 @@ int nmode(REAL_T * x, int n,
       k = 0;
       v = vector(1, ncopy);
 
+#if 0
       t2 = seconds();
       *tnmodeOther += t2 - t1;
       t1 = t2;
+#endif
       dsyevd_(&jobz, &uplo, &n, h, &n, &v[1], work, &lwork, iwork, &liwork,
               &info);
+#if 0
       t2 = seconds();
       *tnmodeDSYEVD += t2 - t1;
       t1 = t2;
+#endif
 
       /* un-mass-weight the eigenvectors:  */
 
@@ -2564,13 +2587,16 @@ int nmode(REAL_T * x, int n,
          v = vector(1, ncopy);
 
          uplo = 'U';
+#if 0
          t2 = seconds();
          *tnmodeOther += t2 - t1;
          t1 = t2;
+#endif
          pdsyev_(&jobz, &uplo, n,
                  h, &one, &one, descH_PxQ, &v[1],
                  h, &one, &one, descH_PxQ, work, &lwork, &info);
 
+#if 0
          t2 = seconds();
          *tnmodeOther += t2 - t1;
 #ifdef PRINT_NR_TIMES
@@ -2580,6 +2606,7 @@ int nmode(REAL_T * x, int n,
          }
 #endif
          t1 = t2;
+#endif
 
          free_vector(work, 0, lwork);
 
@@ -2747,8 +2774,10 @@ int nmode(REAL_T * x, int n,
 
    free(name);
    ret_val = 0;
+#if 0
    t2 = seconds();
    *tnmodeOther += t2 - t1;
    *tnmode = t2 - tnmode1;
+#endif
    return ret_val;
 }

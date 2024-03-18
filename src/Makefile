@@ -3,10 +3,12 @@
 include ../config.h
 
 install:
-	@cd cifparse && $(MAKE) $(CIFTARGET)
+	@cd cifparse && $(MAKE) libcifparse
 	@cd sff && $(MAKE) libsff
 	@cd nabc && $(MAKE) libnabc
 	@cd arpack && $(MAKE) libarpack
+	@cd lapack && $(MAKE) liblapack
+	@cd blas && $(MAKE) libblas
 
 nab: install
 	@cd ucpp-1.3 && make ucpp
@@ -18,13 +20,21 @@ clean:
 	-(cd sff && $(MAKE) clean )
 	-(cd nabc && $(MAKE) clean )
 	-(cd arpack && $(MAKE) clean )
+	-(cd lapack && $(MAKE) clean )
+	-(cd blas && $(MAKE) clean )
 	-(cd ucpp-1.3 && $(MAKE) clean )
 	-(cd nab && $(MAKE) clean )
 	-(cd nss && $(MAKE) clean )
+	-(cd nss && $(MAKE) clean )
+	-(cd shifts/src && $(MAKE) clean )
+	-(cd netcdf-c-4.7.2 && $(MAKE) clean )
+	-(cd netcdf-fortran-4.5.2 && $(MAKE) clean )
 
 uninstall: clean
 	/bin/rm -f $(INCDIR)/* ../config.h
 
 distclean: clean
-	-(cd .. && /bin/rm -rf $(BINDIR) $(LIBDIR) $(INCDIR) logs config.h)
+	-(cd netcdf-c-4.7.2 && $(MAKE) distclean )
+	-(cd netcdf-fortran-4.5.2 && $(MAKE) distclean )
+	-(cd .. && /bin/rm -rf $(BINDIR) $(LIBDIR) $(INCDIR) logs share config.h)
 

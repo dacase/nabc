@@ -6,7 +6,7 @@
 %FORMAT(12I6)
    418    15   209   215   474   291   859   500     0     0  2321    26
    215   291   500    34    71    28    24     0     0     0     0     0
-     0     0     0     0    24     0
+     0     0     0     0    24     0     0
 %FLAG ATOM_NAME
 %FORMAT(20a4)
 N   H1  H2  H3  CA  HA  CB  HB2 HB3 CG  CD1 HD1 CE1 HE1 CZ  OH  HH  CE2 HE2 CD2 

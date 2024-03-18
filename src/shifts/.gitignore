@@ -1,0 +1,14 @@
+*~
+.*.sw[op]
+*.o
+_*.f
+*.lo
+*.mod
+*.a
+*.la
+*.pyc
+*.pyo
+azurin
+fenwick
+dnadb
+examples/forligand

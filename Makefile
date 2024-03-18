@@ -3,6 +3,12 @@
 install::
 	cd src && make install
 
+nab::
+	cd src && make nab
+
+shifts::
+	cd src/shifts/src && make install
+
 test::
 	cd test && make test
 

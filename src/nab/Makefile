@@ -17,7 +17,7 @@ NAB2COBJS=	\
 	fixexpr.o	\
 	node.o	\
 	symbol.o	\
-	y.tab.o
+	nabgrm.tab.o
 
 LIBNABOBJS=	\
 	axis2frame.o	\
@@ -105,15 +105,15 @@ libnab.a: $(LIBNABOBJS) $(BINDIR)/$(MPI)nab$(SFX) $(BINDIR)/$(MPI)nab2c$(SFX)
 nabhome.h::
 	@echo "#define NABHOME \"$(BASEDIR)\"" > nabhome.h
 
-y.tab.h: y.tab.c
+nabgrm.tab.h: nabgrm.tab.c
 
-y.tab.c:  nabgrm.y lex.yy.c
+nabgrm.tab.c:  nabgrm.y lex.yy.c
 	@echo "[NAB]  BISON $<"
 	$(VB)bison -v -d nabgrm.y
 
-y.tab.o: y.tab.c
+nabgrm.tab.o: nabgrm.tab.c
 	@echo "[NAB]  CC $<"
-	$(VB)$(CC) -c -D$(LEX) $(CFLAGS) $(AMBERCFLAGS) y.tab.c
+	$(VB)$(CC) -c -D$(LEX) $(CFLAGS) $(AMBERCFLAGS) $<
 
 lex.yy.c: nablex.l
 	@echo "[NAB]  FLEX $<"
@@ -127,7 +127,7 @@ embed.o:  embed.c
 	@echo "[NAB]  CC $<"
 	$(VB)$(CC) -c -D$(LEX) $(COPTFLAGS) $(CFLAGS) $(AMBERCFLAGS) embed.c
 
-checkexpr.c: y.tab.o
+checkexpr.c: nabgrm.tab.o
 	(cd semantics; $(MAKE))
 	mv semantics/checkexpr.c .
 
@@ -157,7 +157,7 @@ bonded_atoms.o:  bonded_atoms.c
 
 clean:
 	-rm -f *.o nab$(SFX) nab2c$(SFX) libnab.a checkexpr.c nabhome.h
-	-rm -f y.tab.c y.tab.h lex.dgo.c lex.yy.c 
+	-rm -f nabgrm.tab.c nabgrm.tab.h lex.dgo.c lex.yy.c 
 	(cd semantics && $(MAKE) clean )
 
 uninstall: clean
@@ -197,7 +197,7 @@ boundsutil.o:	\
 cgen.o:	\
 	nab.h	\
 	errormsg.h	\
-	y.tab.h
+	nabgrm.tab.h
 chirvol.o:  \
 	nab.h
 database.o:  \
@@ -206,7 +206,7 @@ dump.o:		\
 	nab.h
 dumpnode.o:	\
 	nab.h	\
-	y.tab.h
+	nabgrm.tab.h
 embed.o: \
 	nab.h  \
 	errormsg.h  \
@@ -219,13 +219,13 @@ errormsg.o:	\
 fixexpr.o:	\
 	nab.h	\
 	errormsg.h	\
-	y.tab.h
+	nabgrm.tab.h
 frameutil.o:	\
 	nab.h	\
 	memutil.h
 genavscode.o:	\
 	nab.h	\
-	y.tab.h
+	nabgrm.tab.h
 gsub.o:    \
 	nab.h
 hashutil.o:	\
@@ -251,7 +251,7 @@ nab2c.o:	\
 node.o:	\
 	nab.h	\
 	errormsg.h	\
-	y.tab.h
+	nabgrm.tab.h
 pointutil.o: \
 	nab.h
 prm.o: \
@@ -274,7 +274,7 @@ temputil.o: \
 	nab.h
 traceback.o: \
 	errormsg.h
-y.tab.o:	\
+nabgrm.tab.o:	\
 	nab.h	\
 	errormsg.h \
 	lex.yy.c

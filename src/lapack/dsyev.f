@@ -178,7 +178,6 @@
       LLWORK = LWORK - INDWRK + 1
       CALL DSYTRD( UPLO, N, A, LDA, W, WORK( INDE ), WORK( INDTAU ),
      $             WORK( INDWRK ), LLWORK, IINFO )
-
 *
 *     For eigenvalues only, call DSTERF.  For eigenvectors, first call
 *     DORGTR to generate the orthogonal matrix, then call DSTEQR.

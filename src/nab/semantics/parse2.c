@@ -106,10 +106,6 @@ static	int	n_kvtab;
 static	DEF_T	avtab[ AVTAB_SIZE ];
 static	int	n_avtab;
 
-	/* symbols (#defines) from y.tab.h	*/
-
-static	char	symfname[ 256 ];
-
 #define	SYMTAB_SIZE	300
 static	DEF_T	symtab[ SYMTAB_SIZE ];
 static	int  n_symtab;
@@ -213,6 +209,7 @@ int	main( int argc, char *argv[] )
 
 	for(int arg_index = 1; arg_index < argc; ++arg_index)
 	{
+        fprintf( stderr, "%d  %s\n", arg_index, argv[arg_index] );
 		if(strcmp(argv[arg_index], "--amber-data-dir") == 0)
 		{
 			amber_data_dir_path = argv[++arg_index];
@@ -220,6 +217,7 @@ int	main( int argc, char *argv[] )
 		else if(strcmp(argv[arg_index], "--y-tab-h") == 0)
 		{
 			y_tab_h_path = argv[++arg_index];
+            fprintf( stderr, "%d  %s\n", arg_index, argv[arg_index] );
 		}
 		else if(strcmp(argv[arg_index], "--attributes-tab") == 0)
 		{
@@ -247,9 +245,13 @@ int	main( int argc, char *argv[] )
 	}
 
 	// check for missing options
-	if(amber_data_dir_path == NULL || y_tab_h_path == NULL || attributes_tab_path == NULL || nab_h_path == NULL || output_file_path == NULL)
+	if(y_tab_h_path == NULL || attributes_tab_path == NULL || nab_h_path == NULL || output_file_path == NULL)
 	{
 		fprintf( stderr, "error: missing arguments\n" );
+		fprintf( stderr, "y_tab_h_path: %s\n", y_tab_h_path );
+		fprintf( stderr, "attributes_tab_path: %s\n", attributes_tab_path );
+		fprintf( stderr, "nab_h_path: %s\n", nab_h_path );
+		fprintf( stderr, "output_file_path: %s\n", nab_h_path );
 		fprintf( stderr, usage_string, progname );
 		exit( 1 );
 	}
@@ -258,7 +260,7 @@ int	main( int argc, char *argv[] )
 	if( ( fp = fopen( y_tab_h_path, "r" ) ) == NULL )
 	{
 		fprintf( stderr, "%s: can't read symbol file %s\n",
-			progname, symfname );
+			progname, y_tab_h_path );
 		exit( 1 );
 	}
 
@@ -2426,7 +2428,7 @@ static	int	mk_checkexpr( char* output_file_path, int n_rules )
 	fprintf( cfp, "#include <string.h>\n" );
 	fprintf( cfp, "\n" );
 	fprintf( cfp, "#include \"nab.h\"\n" );
-	fprintf( cfp, "#include \"y.tab.h\"\n" );
+	fprintf( cfp, "#include \"nabgrm.tab.h\"\n" );
 	fprintf( cfp, "#include \"errormsg.h\"\n" );
 	fprintf( cfp, "#include \"symbol.h\"\n" );
 	fprintf( cfp, "\n" );

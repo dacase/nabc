@@ -13,7 +13,6 @@
 
 #include "sff.h"
 #include "memutil.h"
-#include "timer.h"
 
 #if defined(MPI) || defined(SCALAPACK)
 #include "mpi.h"

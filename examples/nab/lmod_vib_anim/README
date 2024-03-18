@@ -1,0 +1,37 @@
+This directory contains three examples of generating LMOD-vibration 
+visualization by use of the new LMOD verbosity=5 setting. The examples 
+are cyclosporin (csp), a small piece of double stranded DNA (dna), and 
+a mini protein (pep). Here we use the NAB interface, because some of the 
+PyMOL visualization utilizes NAB objects, but generating the animation 
+frames is straightforward with sander as well, which is demonstrated in 
+the sander subdirectory. The NAB script is called lmod-vib.nab and reads 
+command line arguments, so once compiled (mpinab -o lmod-vib.exe lmod-vib.nab) 
+it can be used with any system.
+
+$ ./lmod-vib.exe
+Usage:  orterun -np n_cores  ./lmod-vib.exe  input_pdb_file  \
+input_prmtop_file  output_file_base_name  number_of_vib_modes (max 200)  \
+number_of_frames_per_half_swing (max 50) > log_file 2>&1 &
+
+For example
+$ orterun -np 4 ./lmod-vib.exe dna.pdb dna.prmtop dna 5 20 >& dna-vib.log &
+
+All these examples complete in less than a minute using 4 cores. Each 
+normal mode is represented by a series of animation frames in a multi-
+PDB file, and the numerical values in the B-factor column represent 
+how much that atom is moving in that particular mode. The pseudo mode with 
+the highest serial number is the superposition of all the requested modes. 
+
+The directory also contains a PyMOL script called create-vib-sessipn.pml, 
+which provides animation and graphical rendering of the normal modes in 
+PyMOL. Of course, the multi-PDB files can be played by VMD or some other 
+software, but PyMOL is especially useful. To run the script simple type:
+
+$ PyMOL create-vib-sessipn.pml -- csp
+
+where csp in this case is the base name of the normal mode files. The 
+spectrum coloring from white toward dark purple show residues with 
+increasing mobility, which renders the mode in a still representation 
+without the animation. Another still representation is the use of the 
+putty cartoon for protein structures where the width of the tube is 
+proportional to the mobility of the corresponding residue.

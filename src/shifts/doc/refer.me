@@ -1,0 +1,81 @@
+.nr _0 \n(c.
+.\"	@(#)refer.me 1.6 88/02/08 SMI; from UCB 2.2 8/17/84
+.\"  J. Computat. Chem. style sheet; also good for grants (!?!)
+.de [1
+.\"   journal article
+.(f
+.ip "\\*([F.\0"
+\\*([A,\\0\c
+.\"  uncomment next line to print title:
+.if !"\\*([T"" \\*(lq\\*([T,\\*(rq
+\\*([J\\0\c
+.if !"\\*([V"" \\f3\\*([V,\\0\\f1\c
+.if !"\\*([N"" (\\*([N)\c
+.if !"\\*([P"" \
+\{\
+.\"  uncomment next two lines to print "p." or "pp." :
+.\"  .	ie \\n([P>0 \ pp.\&
+.\"  .	el \ p.\&
+\\*([P \c
+(\\*([D).
+.\}
+.if !"\\*([I"" .if "\\*([R"" \\*([I,
+.if !"\\*([O"" \\*([O
+.)f
+..
+.de [2
+.\"  book
+.(f
+.ip "\\*([F.\0"
+.\"  uncomment next line to print title:
+\\*([A,\\0\c
+\\f2\\*([T\\f1, \c
+.if !"\\*([E"" \\*([E, Ed.,\\0\c
+.if !"\\*([I"" \\*([I,\\0\c
+.if !"\\*([C"" \\*([C,\\0\c
+\\*([D.
+.if !"\\*([P"" ,\\0pp. \\*([P.
+.if !"\\*([O"" \\*([O
+.)f
+..
+.de [3
+.\"  article in book
+.(f
+.ip "\\*([F.\0"
+.\"  uncomment next line to print title:
+.\"  \\*([A, \\*(lq\\*([T,\\*(rq
+\\*([A,\\0
+in \\f2\\*([B\\f1, \c
+.if !"\\*([E"" \\*([E, Ed.\\0\c
+.if !"\\*([I"" (\\*([I,\\0\c
+.if !"\\*([C"" \\*([C,\\0\c
+\\*([D).
+.if !"\\*([P"" \\0pp. \\*([P.
+.if !"\\*([O"" \\*([O
+.)f
+..
+.de [4
+.(d
+.ip "\\*([F.\0"
+\\*([A, \\*(lq\\*([T,\\*(rq
+\\*([R\c
+.if !"\\*([G"" \& (\\*([G)\c
+.if !"\\*([I"" ,  \\*([I\c
+.if !"\\*([C"" ,  \\*([C\c
+ (\\*([D).
+.if !"\\*([O"" \\*([O
+.)d
+..
+.de [5
+.(d
+.ip "\\*([F.\0"
+\\*([A, \\f2\\*([T\\f1,
+.ie \\n(TN \\*([M.
+.el Bell Laboratories internal memorandum (\\*([D).
+.)d
+..
+.de ]<
+.lp
+.rm (f )f
+..
+.nr c. \n(_0

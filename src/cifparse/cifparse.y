@@ -47,7 +47,7 @@ not limited to, any and all claims alleging products liability.
 
 #include "cifparse.h"
 int yylex();
-void yyerror();
+void yyerror(char*);
 
 static int curItemNo, curValueNo, itemIndex;
 static int  *fieldList = NULL;
@@ -151,8 +151,7 @@ DatablockName: DATABLOCK
 
 %%
 
-void yyerror(s)
-char *s;
+void yyerror(char *s)
 /* ---------------------------------------------------------------------------
  * Purpose:  yyerror()
  * 

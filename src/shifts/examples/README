@@ -1,0 +1,18 @@
+This directory contains sample output files for a variety of proteins,
+illustrating the way heavy-atom shifts are calculated.
+
+To test a local version of the program, do the following:
+
+(1) copy one of the pdb files from ../lib/pdb, and the correspodning obs file 
+    from ../lib/obs to a working directory.  For example,  you might
+    get 1acf.pdb and 1acf.obs into a working directory.
+
+(2) cd to that working directory
+
+(3) run:  shifts -qdb -refine 1acf
+          [this assumes "shifts" is in your path, and SHIFTSHOME is set]
+
+(4) compare the output files in your working directory with the ones 
+    that are here
+
+

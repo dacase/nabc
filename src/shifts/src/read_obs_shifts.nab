@@ -1,0 +1,115 @@
+int		read_obs_shifts( string strtype[ 1 ], string obsfile, float observed[ hashed ] )
+{
+
+string		oline, idp, atomname;
+file		obsf;
+string		ofields[ 50 ], mapfields[ 50 ];
+string		map1to3[ hashed ], map3to1[ hashed ];
+int			i, nmap, nfields;
+
+#include "omap.h"
+#include "map.h"
+
+
+//============================================================================
+//
+
+
+//    Read in the observed shifts file.  (After this loop, the
+//     "observed" array will contain the shifts, indexed by a
+//     string that contains the residue name, 
+//     residue number (from pdb file), and atomname
+
+
+	obsf = fopen( obsfile, "r" );
+	if( obsf == NULL ) return( 0 );
+
+	printf( "\nReading observed shifts from %s\n\n", obsfile );
+	printf( "Molecule type is %s\n", strtype[1] );
+	while( oline = getline( obsf ) ) {
+
+		if( length( oline ) == 0 || substr( oline,1,1 ) == "#") continue;
+
+		if( oline =~ ":" ){          // assume file is a proton "table" file
+
+			nfields = split( oline, ofields, ":" );
+
+			if( ofields[1] in omap ) 
+				nmap = split( omap[ofields[1]], mapfields, " " );
+			else {
+				fprintf( stderr, "bad line in obs file:\n%s\n", oline );
+				fprintf( stderr, "residue not found: %s\n", ofields[1] );
+				exit( 1 );
+			}
+
+			if( nfields > nmap + 3 ) {
+				fprintf( stderr, "bad line in obs file:\n%s\n", oline );
+				fprintf( stderr, "nfields = %d, nmap = %d\n", nfields, nmap);
+				exit( 1 );
+			}
+
+			for( i=4; i<= nfields; i = i+1 ) {
+				if( ofields[ i ] =~ "^[ \t]*$" ) continue;
+                                    // skip fields with white-space only
+				idp = ofields[1] + ":" + 
+				    sprintf( "%d", atoi(ofields[3])) + ":" + 
+				    mapfields[ i-3 ];
+				observed[ idp ] = atof( ofields[ i ] );
+				// fprintf( stderr, "observed: %s  %8.2f\n", idp, observed[ idp ] );
+			}
+
+		} else {                   // read the file as an NMR-star file:
+
+		  nfields = split( oline, ofields, " " );
+
+		  if( nfields > 5 ){
+
+			if( ( strtype[ 1 ]  == "rna" ) || ( strtype[ 1 ]  == "dna" ) ){
+
+				//  The atom names in nmr-star files for nucleic acids are
+				//  generally protected by quotes:
+				// atomname = strip_quotes( ofields[4] ); not yet implemented!
+				atomname = ofields[4];
+
+                if( ofields[3] in omap ){
+				   idp = ofields[3] + ":" +
+						sprintf( "%d", atoi(ofields[2])) + ":" + atomname;
+				   observed[ idp ] = atof( ofields[ 6 ] );
+				// fprintf( stderr, "observed: %s  %8.2f\n", idp, observed[ idp ] );
+				}else{
+					fprintf( stderr, "unable to recognize input shifts line:\n");
+					fprintf( stderr, "%s\n", oline );
+					exit(1);
+				}
+
+			} else {   // here for proteins:
+
+                if( ofields[5] != "H") continue;
+
+                //  assume phe/tyr rings are always in fast exchange:
+				if(ofields[3]=="PHE" && ofields[4]=="HD1")  continue;
+				if(ofields[3]=="PHE" && ofields[4]=="HE1")  continue;
+				if(ofields[3]=="TYR" && ofields[4]=="HD1")  continue;
+				if(ofields[3]=="TYR" && ofields[4]=="HE1")  continue;
+
+				// convert protein methyl names to Amber/NAB format:
+				if(ofields[3]=="ALA" && ofields[4]=="HB")  ofields[5] = "HB3";
+				if(ofields[3]=="MET" && ofields[4]=="HE")  ofields[5] = "HE3";
+				if(ofields[3]=="VAL" && ofields[4]=="HG1") ofields[5] = "HG13";
+				if(ofields[3]=="VAL" && ofields[4]=="HG2") ofields[5] = "HG23";
+				if(ofields[3]=="THR" && ofields[4]=="HG2") ofields[5] = "HG23";
+				if(ofields[3]=="LEU" && ofields[4]=="HD1") ofields[5] = "HD13";
+				if(ofields[3]=="LEU" && ofields[4]=="HD2") ofields[5] = "HD23";
+				if(ofields[3]=="ILE" && ofields[4]=="HG2") ofields[5] = "HG23";
+				if(ofields[3]=="ILE" && ofields[4]=="HD1") ofields[5] = "HD13";
+				
+				idp = ofields[3] + ":" +
+					sprintf( "%d", atoi(ofields[2])) + ":" + ofields[4];
+				observed[ idp ] = atof( ofields[ 6 ] );
+				// fprintf( stderr, "obs: %s %8.3f\n", idp, observed[ idp ] );
+			}
+		}
+	  }
+	}
+	return( 1 );
+};

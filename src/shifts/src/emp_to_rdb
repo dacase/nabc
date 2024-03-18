@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "res	atomname	resname	ringcur	el	const	coil	pred	obs"
+echo "6	3	4N	6	8N	8N	8N	8N	8N	8N"
+awk 'NF==11 || NF==10{printf "%d\t%s\t%s\t%6.2f\t%6.2f\t%6.2f\t%6.2f\t%7.2f\t%7.2f\n", $3,$4,$2,$5,$6,$8,$9,$10,$11}' $1 > foouza
+sort -k1n -k2 < foouza
+/bin/rm foouza

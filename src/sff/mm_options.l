@@ -60,7 +60,7 @@ k4d{Assign}{Float}                 { ECHO; k4d = setVarDbl(yytext); }
 
 ips{Assign}[0123]                  { ECHO; ips = setVarInt(yytext); }
 
-gb{Assign}[012578]                 { ECHO; gb = setVarInt(yytext); }
+gb{Assign}[0123578]                { ECHO; gb = setVarInt(yytext); }
 gb_debug{Assign}[01]               { ECHO; gb_debug = setVarInt(yytext); }
 nr_debug{Assign}[01]               { ECHO; nr_debug = setVarInt(yytext); }
 gb2_debug{Assign}[01]              { ECHO; gb2_debug = setVarInt(yytext); }

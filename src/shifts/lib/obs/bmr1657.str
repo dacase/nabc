@@ -1,0 +1,1076 @@
+data_1657
+
+#######################
+#  Entry information  #
+#######################
+
+
+save_entry_information
+   _Saveframe_category      entry_information
+
+   _Entry_title            
+;
+Assignments of Backbone 1H, 13C, 15N Resonances and Secondary Structure of 
+Ribonuclease H from Escherichia coli by Heteronuclear Three-Dimensional NMR 
+Spectroscopy
+;
+
+   loop_
+      _Author_ordinal
+      _Author_family_name
+      _Author_given_name
+      _Author_middle_initials
+      _Author_family_title
+
+       1   Yamazaki  Toshio     .  . 
+       2   Yoshida   Mayumi     .  . 
+       3   Kanaya    Shigenori  .  . 
+       4   Nakamura  Haruki     .  . 
+       5   Nagayama  Kuniaki    .  . 
+
+   stop_
+
+   _BMRB_accession_number   1657
+   _BMRB_flat_file_name     bmr1657.str
+   _Entry_type              revision
+   _Submission_date         1995-07-31
+   _Accession_date          1996-04-13
+   _Entry_origination       BMRB
+   _NMR_STAR_version        2.1
+   _Experimental_method     NMR
+
+   loop_
+      _Saveframe_category_type
+      _Saveframe_category_type_count
+
+       assigned_chemical_shifts  1  
+
+   stop_
+
+   loop_
+      _Data_type
+      _Data_type_count
+
+      '1H chemical shifts'   317  
+      '13C chemical shifts'  122  
+      '15N chemical shifts'  148  
+
+   stop_
+
+   loop_
+      _Revision_date
+      _Revision_keyword
+      _Revision_author
+      _Revision_detail
+
+       1999-06-14  revision  BMRB 'Converted to BMRB NMR-STAR V 2.1 format'                
+       1996-04-13  revision  BMRB 'Link to the Protein Data Bank added'                    
+       1996-03-25  reformat  BMRB 'Converted to the BMRB 1996-03-01 STAR flat-file format' 
+       1995-07-31  original  BMRB 'Last release in original BMRB flat-file format'         
+
+   stop_
+
+save_
+
+
+#############################
+#  Citation for this entry  #
+#############################
+
+
+save_entry_citation
+   _Saveframe_category     entry_citation
+
+   _Citation_full         
+;
+ Yamazaki, Toshio, Yoshida, Mayumi, Kanaya, Shigenori, Nakamura, Haruki, 
+ Nagayama, Kuniaki, 
+ "Assignments of Backbone 1H, 13C, 15N Resonances and Secondary Structure 
+ of Ribonuclease H from Escherichia coli by Heteronuclear 
+ Three-Dimensional NMR Spectroscopy,"
+ Biochemistry 30, 6036-6047 (1991).
+;
+   _Citation_title        
+;
+Assignments of Backbone 1H, 13C, 15N Resonances and Secondary Structure of 
+Ribonuclease H from Escherichia coli by Heteronuclear Three-Dimensional NMR 
+Spectroscopy
+;
+   _Citation_status        published
+   _Citation_type          journal
+   _MEDLINE_UI_code        ?
+
+   loop_
+      _Author_ordinal
+      _Author_family_name
+      _Author_given_name
+      _Author_middle_initials
+      _Author_family_title
+
+       1   Yamazaki  Toshio     .  . 
+       2   Yoshida   Mayumi     .  . 
+       3   Kanaya    Shigenori  .  . 
+       4   Nakamura  Haruki     .  . 
+       5   Nagayama  Kuniaki    .  . 
+
+   stop_
+
+   _Journal_abbreviation   Biochemistry
+   _Journal_volume         30
+   _Page_first             6036
+   _Page_last              6047
+   _Year                   1991
+
+save_
+
+
+##################################
+#  Molecular system description  #
+##################################
+
+
+save_system_ribonuclease_H
+   _Saveframe_category      molecular_system
+
+   _Mol_system_name        'ribonuclease H'
+   _Abbreviation_common     ?
+
+   loop_
+      _Mol_system_component_name
+      _Mol_label
+
+      'ribonuclease H' $ribonuclease_H 
+
+   stop_
+
+   _System_physical_state   ?
+   _System_oligomer_state   ?
+   _System_paramagnetic     ?
+
+   loop_
+      _Database_name
+      _Database_accession_code
+      _Database_entry_mol_name
+      _Database_entry_details
+
+       PDB  2RN2       "Ribonuclease H (E.C.3.1.26.4)"                                                                                                                        . 
+       PDB  1RDD       "Ribonuclease Hi (E.C.3.1.26.4) Co-Crystallized With Mg+2"                                                                                             . 
+       PDB  1RCH       "Solution Nmr Structure Of Ribonuclease Hi From Escherichia Coli, 8 Structures"                                                                        . 
+       PDB  1GOB       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 77 Replaced By Ala (G77a) (A77 Rnase H)"                                                                . 
+       PDB  1RBV       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Ala (K95a)"                                                                              . 
+       PDB  1RDA       "Ribonuclease H (E.C.3.1.26.4) Mutant With Asp 10 Replaced By Asn (D10n)"                                                                              . 
+       PDB  1RDC       "Ribonuclease H (E.C.3.1.26.4) Mutant With Asp 70 Replaced By Asn (D70n)"                                                                              . 
+       PDB  1RBU       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Asn (K95n)"                                                                              . 
+       PDB  1KVC       "E. Coli Ribonuclease Hi D134n Mutant"                                                                                                                 . 
+       PDB  1LAV       "Ribonuclease H (E.C.3.1.26.4) Mutant With Val 74 Replaced By Leu (V74l)"                                                                              . 
+       PDB  1RDB       "Ribonuclease H (E.C.3.1.26.4) Mutant With Glu 48 Replaced By Gln (E48q)"                                                                              . 
+       PDB  1LAW       "Ribonuclease H (E.C.3.1.26.4) Mutant With Val 74 Replaced By Ile (V74i)"                                                                              . 
+       PDB  1KVB       "E. Coli Ribonuclease Hi D134h Mutant"                                                                                                                 . 
+       PDB  1RBT       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Gly (K95g)"                                                                              . 
+       PDB  1KVA       "E. Coli Ribonuclease Hi D134a Mutant"                                                                                                                 . 
+       PDB  1RBS       "Ribonuclease H (E.C.3.1.26.4) Mutant With His 62 Replaced By Ala (H62a)"                                                                              . 
+       PDB  1RBR       "Ribonuclease H (E.C.3.1.26.4) Mutant With His 62 Replaced By Pro (H62p)"                                                                              . 
+       PDB  1GOA       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 80b Inserted Between Gln 80 And Trp 81 (Ins(Q80-G) (G80b Rnase H)"                                      . 
+       PDB  1GOC       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 77 Replaced By Ala And Gly 80b Inserted Between Gln 80 And Trp 81 (G77a,Ins(Q80-G)) (A77G80B RNASE H)"  . 
+       PDB  1RNH       "Selenomethionyl Ribonuclease H (E.C.3.1.26.4)"                                                                                                        . 
+       PDB  1F21       "A Chain A, Divalent Metal Cofactor Binding In The Kinetic Folding Trajectory Of E. Coli Ribonuclease Hi"                                              . 
+
+   stop_
+
+save_
+
+
+    ########################
+    #  Monomeric polymers  #
+    ########################
+
+
+save_ribonuclease_H
+   _Saveframe_category                          monomeric_polymer
+
+   _Mol_type                                    polymer
+   _Mol_polymer_class                           protein
+   _Name_common                                'ribonuclease H'
+   _Abbreviation_common                         ?
+   _Enzyme_commission_number                    3.1.26.4
+   
+   	##############################
+   	#  Polymer residue sequence  #
+   	##############################
+   
+   
+   _Residue_count                               155
+   _Mol_residue_sequence                       
+;
+MLKQVEIFTDGSCLGNPGPG
+GYGAILRYRGREKTFSAGYT
+RTTNNRMELMAAIVALEALK
+EHCEVILSTDSQYVRQGITQ
+WIHNWKKRGWKTADKKPVKN
+VDLWQRLDAALGQHQIKWEW
+VKGHAGHPENERCDELARAA
+AMNPTLEDTGYQVEV
+;
+
+   loop_
+      _Residue_seq_code
+      _Residue_label
+
+         1   MET     2   LEU     3   LYS     4   GLN     5   VAL 
+         6   GLU     7   ILE     8   PHE     9   THR    10   ASP 
+        11   GLY    12   SER    13   CYS    14   LEU    15   GLY 
+        16   ASN    17   PRO    18   GLY    19   PRO    20   GLY 
+        21   GLY    22   TYR    23   GLY    24   ALA    25   ILE 
+        26   LEU    27   ARG    28   TYR    29   ARG    30   GLY 
+        31   ARG    32   GLU    33   LYS    34   THR    35   PHE 
+        36   SER    37   ALA    38   GLY    39   TYR    40   THR 
+        41   ARG    42   THR    43   THR    44   ASN    45   ASN 
+        46   ARG    47   MET    48   GLU    49   LEU    50   MET 
+        51   ALA    52   ALA    53   ILE    54   VAL    55   ALA 
+        56   LEU    57   GLU    58   ALA    59   LEU    60   LYS 
+        61   GLU    62   HIS    63   CYS    64   GLU    65   VAL 
+        66   ILE    67   LEU    68   SER    69   THR    70   ASP 
+        71   SER    72   GLN    73   TYR    74   VAL    75   ARG 
+        76   GLN    77   GLY    78   ILE    79   THR    80   GLN 
+        81   TRP    82   ILE    83   HIS    84   ASN    85   TRP 
+        86   LYS    87   LYS    88   ARG    89   GLY    90   TRP 
+        91   LYS    92   THR    93   ALA    94   ASP    95   LYS 
+        96   LYS    97   PRO    98   VAL    99   LYS   100   ASN 
+       101   VAL   102   ASP   103   LEU   104   TRP   105   GLN 
+       106   ARG   107   LEU   108   ASP   109   ALA   110   ALA 
+       111   LEU   112   GLY   113   GLN   114   HIS   115   GLN 
+       116   ILE   117   LYS   118   TRP   119   GLU   120   TRP 
+       121   VAL   122   LYS   123   GLY   124   HIS   125   ALA 
+       126   GLY   127   HIS   128   PRO   129   GLU   130   ASN 
+       131   GLU   132   ARG   133   CYS   134   ASP   135   GLU 
+       136   LEU   137   ALA   138   ARG   139   ALA   140   ALA 
+       141   ALA   142   MET   143   ASN   144   PRO   145   THR 
+       146   LEU   147   GLU   148   ASP   149   THR   150   GLY 
+       151   TYR   152   GLN   153   VAL   154   GLU   155   VAL 
+
+   stop_
+
+   _Sequence_homology_query_date                2001-02-12
+   _Sequence_homology_query_revised_last_date   2001-02-12
+
+   loop_
+      _Database_name
+      _Database_accession_code
+      _Database_entry_mol_name
+      _Sequence_query_to_submitted_percentage
+      _Sequence_subject_length
+      _Sequence_identity
+      _Sequence_positive
+      _Sequence_homology_expectation_value
+
+       PDB         2RN2       "Ribonuclease H (E.C.3.1.26.4)"                                                                                                                          100%    155     100%    100%    2e-90 
+       PDB         1RDD       "Ribonuclease Hi (E.C.3.1.26.4) Co-Crystallized With Mg+2"                                                                                               100%    155     100%    100%    2e-90 
+       PDB         1RCH       "Solution Nmr Structure Of Ribonuclease Hi From Escherichia Coli, 8 Structures"                                                                          100%    155     100%    100%    2e-90 
+       PDB         1GOB       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 77 Replaced By Ala (G77a) (A77 Rnase H)"                                                                  100%    155      99%     99%    8e-90 
+       PDB         1RBV       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Ala (K95a)"                                                                                100%    155      99%     99%    8e-90 
+       PDB         1RDA       "Ribonuclease H (E.C.3.1.26.4) Mutant With Asp 10 Replaced By Asn (D10n)"                                                                                100%    155      99%     99%    6e-90 
+       PDB         1RDC       "Ribonuclease H (E.C.3.1.26.4) Mutant With Asp 70 Replaced By Asn (D70n)"                                                                                100%    155      99%     99%    6e-90 
+       PDB         1RBU       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Asn (K95n)"                                                                                100%    155      99%     99%    6e-90 
+       PDB         1KVC       "E. Coli Ribonuclease Hi D134n Mutant"                                                                                                                   100%    155      99%     99%    6e-90 
+       PDB         1LAV       "Ribonuclease H (E.C.3.1.26.4) Mutant With Val 74 Replaced By Leu (V74l)"                                                                                100%    155      99%     99%    3e-90 
+       PDB         1RDB       "Ribonuclease H (E.C.3.1.26.4) Mutant With Glu 48 Replaced By Gln (E48q)"                                                                                100%    155      99%     99%    3e-90 
+       PDB         1LAW       "Ribonuclease H (E.C.3.1.26.4) Mutant With Val 74 Replaced By Ile (V74i)"                                                                                100%    155      99%     99%    2e-90 
+       PDB         1KVB       "E. Coli Ribonuclease Hi D134h Mutant"                                                                                                                   100%    155      99%     99%    1e-89 
+       PDB         1RBT       "Ribonuclease H (E.C.3.1.26.4) Mutant With Lys 95 Replaced By Gly (K95g)"                                                                                100%    155      99%     99%    1e-89 
+       PDB         1KVA       "E. Coli Ribonuclease Hi D134a Mutant"                                                                                                                   100%    155      99%     99%    1e-89 
+       PDB         1RBS       "Ribonuclease H (E.C.3.1.26.4) Mutant With His 62 Replaced By Ala (H62a)"                                                                                100%    155      99%     99%    2e-89 
+       PDB         1RBR       "Ribonuclease H (E.C.3.1.26.4) Mutant With His 62 Replaced By Pro (H62p)"                                                                                100%    155      99%     99%    2e-89 
+       PDB         1GOA       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 80b Inserted Between Gln 80 And Trp 81 (Ins(Q80-G) (G80b Rnase H)"                                        100%    156      99%     99%    4e-89 
+       PDB         1GOC       "Ribonuclease H (E.C.3.1.26.4) Mutant With Gly 77 Replaced By Ala And Gly 80b Inserted Between Gln 80 And Trp 81 (G77a,Ins(Q80-G)) (A77G80B RNASE H)"    100%    156      98%     98%    2e-88 
+       PDB         1RNH       "Selenomethionyl Ribonuclease H (E.C.3.1.26.4)"                                                                                                           99%    155      98%     98%    8e-88 
+       PDB         1F21       "A Chain A, Divalent Metal Cofactor Binding In The Kinetic Folding Trajectory Of E. Coli Ribonuclease Hi"                                                100%    155      98%     98%    2e-87 
+       DBJ         BAA77885.1 "(D83536) Ribonuclease HI (EC  3.1.26.4) (RNase HI) (Ribonuclease H) (RNase H). [Escherichia coli]"                                                      100%    155     100%    100%    2e-90 
+       EMBL        CAA23620.1 "(V00337) ribonuclease H [Escherichia coli]"                                                                                                             100%    155     100%    100%    2e-90 
+       EMBL        CAA27660.1 "(X04027) rnh polypeptide (aa 1-155) [Escherichia coli]"                                                                                                 100%    155     100%    100%    2e-90 
+       GenBank     AAG54510.1 "AE005196_8 (AE005196) RNase HI, degrades RNA of DNA-RNA hybrids, participates in DNA replication [Escherichia coli O157:H7]"                            100%    155     100%    100%    2e-90 
+       GenBank     AAC73319.1 "(AE000130) RNase HI, degrades RNA of DNA-RNA hybrids, participates in DNA replication [Escherichia coli K12]"                                           100%    155     100%    100%    2e-90 
+       GenBank     AAB08636.1 "(U70214) ribonuclease H [Escherichia coli]"                                                                                                             100%    155     100%    100%    2e-90 
+       GenBank     AAA24565.1 "(K00985) ribonuclease H [Escherichia coli]"                                                                                                             100%    155     100%    100%    2e-90 
+       PIR         ?          "NRECH ribonuclease H (EC 3.1.26.4) - Escherichia coli"                                                                                                  100%    155     100%    100%    2e-90 
+       SWISS_PROT  P00647     "RNH_ECOLI RIBONUCLEASE HI (RNASE HI) (RIBONUCLEASE H) (RNASE H)"                                                                                        100%    155     100%    100%    2e-90 
+
+   stop_
+
+save_
+
+
+    ####################
+    #  Natural source  #
+    ####################
+
+
+save_natural_source
+   _Saveframe_category   natural_source
+
+
+   loop_
+      _Mol_label
+      _Organism_name_common
+      _NCBI_taxonomy_ID
+      _Genus
+      _Species
+
+       ?  ?  ?  ?  ? 
+
+   stop_
+
+save_
+
+
+    #########################
+    #  Experimental source  #
+    #########################
+
+
+save_experimental_source
+   _Saveframe_category   experimental_source
+
+
+   loop_
+      _Mol_label
+      _Production_method
+      _Genus
+      _Species
+      _Strain
+
+      $ribonuclease_H 'not available'  Escherichia  coli  N4839-1 
+
+   stop_
+
+save_
+
+
+#####################################
+#  Sample contents and methodology  #
+#####################################
+	 
+    ########################
+    #  Sample description  #
+    ########################
+
+
+save_sample_one
+   _Saveframe_category   sample
+
+   _Sample_type          solution
+
+   loop_
+      _Mol_label
+      _Concentration_value
+      _Concentration_value_units
+      _Isotopic_labeling
+
+       ?  ?  ?  ? 
+
+   stop_
+
+save_
+
+
+#######################
+#  Sample conditions  #
+#######################
+
+
+save_sample_condition_set_one
+   _Saveframe_category   sample_conditions
+
+
+   loop_
+      _Variable_type
+      _Variable_value
+      _Variable_value_error
+      _Variable_value_units
+
+       pH             5.5  .  na 
+       temperature  300    .  K  
+
+   stop_
+
+save_
+
+
+####################
+#  NMR parameters  #
+####################
+
+    ##############################
+    #  Assigned chemical shifts  #
+    ##############################
+
+	################################
+	#  Chemical shift referencing  #
+	################################
+
+
+save_chem_shift_reference_par_set_one
+   _Saveframe_category   chemical_shift_reference
+
+
+   loop_
+      _Mol_common_name
+      _Atom_type
+      _Chem_shift_value
+
+       TMS              H  0  
+       TMS              C  0  
+      'liquid ammonia'  N  0  
+
+   stop_
+
+save_
+
+
+	###################################
+	#  Assigned chemical shift lists  #
+	###################################
+
+###################################################################
+#       Chemical Shift Ambiguity Index Value Definitions          #
+#                                                                 #
+#   Index Value            Definition                             #
+#                                                                 #
+#      1             Unique                                       #
+#      2             Ambiguity of geminal atoms or geminal methyl #
+#                         proton groups                           #
+#      3             Aromatic atoms on opposite sides of the ring #
+#                        (e.g. Tyr HE1 and HE2 protons)           #
+#      4             Intraresidue ambiguities (e.g. Lys HG and    #
+#                         HD protons)                             #
+#      5             Interresidue ambiguities (Lys 12 vs. Lys 27) #
+#      9             Ambiguous, specific ambiguity not defined    #
+#                                                                 #
+###################################################################
+
+
+save_chemical_shift_assignment_data_set_one
+   _Saveframe_category               assigned_chemical_shifts
+
+
+   loop_
+      _Sample_label
+
+      $sample_one 
+
+   stop_
+
+   _Sample_conditions_label         $sample_condition_set_one
+   _Chem_shift_reference_set_label  $chem_shift_reference_par_set_one
+   _Mol_system_component_name       'ribonuclease H'
+
+   loop_
+      _Atom_shift_assign_ID
+      _Residue_seq_code
+      _Residue_label
+      _Atom_name
+      _Atom_type
+      _Chem_shift_value
+      _Chem_shift_value_error
+      _Chem_shift_ambiguity_code
+
+         1     1   MET  CA   C   53.1   .  1  
+         2     1   MET  HA   H    4.17  .  1  
+         3     2   LEU  H    H    8.71  .  1  
+         4     2   LEU  HA   H    4.55  .  1  
+         5     2   LEU  N    N  125.1   .  1  
+         6     3   LYS  H    H    8.73  .  1  
+         7     3   LYS  CA   C   55.1   .  1  
+         8     3   LYS  HA   H    4.31  .  1  
+         9     3   LYS  N    N  123.8   .  1  
+        10     4   GLN  H    H    8.31  .  1  
+        11     4   GLN  CA   C   53.3   .  1  
+        12     4   GLN  HA   H    5.13  .  1  
+        13     4   GLN  N    N  122.8   .  1  
+        14     5   VAL  H    H    8.79  .  1  
+        15     5   VAL  HA   H    4.82  .  1  
+        16     5   VAL  N    N  121.8   .  1  
+        17     6   GLU  H    H    8.64  .  1  
+        18     6   GLU  CA   C   53.1   .  1  
+        19     6   GLU  HA   H    4.83  .  1  
+        20     6   GLU  N    N  124.1   .  1  
+        21     7   ILE  H    H    8.6   .  1  
+        22     7   ILE  HA   H    5.33  .  1  
+        23     7   ILE  N    N  121.8   .  1  
+        24     8   PHE  H    H    9.13  .  1  
+        25     8   PHE  CA   C   53.5   .  1  
+        26     8   PHE  HA   H    5.67  .  1  
+        27     8   PHE  N    N  128.2   .  1  
+        28     9   THR  H    H    8.05  .  1  
+        29     9   THR  CA   C   58.8   .  1  
+        30     9   THR  HA   H    5.61  .  1  
+        31     9   THR  N    N  109.5   .  1  
+        32    10   ASP  H    H    9.06  .  1  
+        33    10   ASP  CA   C   52.7   .  1  
+        34    10   ASP  HA   H    5.16  .  1  
+        35    10   ASP  N    N  120.2   .  1  
+        36    11   GLY  H    H    8.7   .  1  
+        37    11   GLY  CA   C   42.4   .  1  
+        38    11   GLY  HA2  H    3.39  .  2  
+        39    11   GLY  HA3  H    5.04  .  2  
+        40    11   GLY  N    N  106.7   .  1  
+        41    12   SER  H    H    8.8   .  1  
+        42    12   SER  CA   C   55.8   .  1  
+        43    12   SER  HA   H    4.78  .  1  
+        44    12   SER  N    N  113.5   .  1  
+        45    13   CYS  H    H    8.44  .  1  
+        46    13   CYS  CA   C   56.6   .  1  
+        47    13   CYS  HA   H    4.96  .  1  
+        48    13   CYS  N    N  123.2   .  1  
+        49    14   LEU  H    H    9.05  .  1  
+        50    14   LEU  HA   H    4.49  .  1  
+        51    14   LEU  N    N  128.3   .  1  
+        52    15   GLY  H    H    7.82  .  1  
+        53    15   GLY  CA   C   42.8   .  1  
+        54    15   GLY  HA2  H    3.83  .  2  
+        55    15   GLY  HA3  H    4.11  .  2  
+        56    15   GLY  N    N  107.6   .  1  
+        57    16   ASN  H    H    8.24  .  1  
+        58    16   ASN  CA   C   49.2   .  1  
+        59    16   ASN  HA   H    5.06  .  1  
+        60    16   ASN  N    N  116.2   .  1  
+        61    17   PRO  CA   C   61.3   .  1  
+        62    17   PRO  HA   H    4.92  .  1  
+        63    18   GLY  H    H    8.32  .  1  
+        64    18   GLY  CA   C   43.8   .  1  
+        65    18   GLY  HA2  H    3.9   .  2  
+        66    18   GLY  HA3  H    4.3   .  2  
+        67    18   GLY  N    N  105.3   .  1  
+        68    19   PRO  CA   C   61.3   .  1  
+        69    19   PRO  HA   H    4.92  .  1  
+        70    20   GLY  H    H    8.96  .  1  
+        71    20   GLY  CA   C   43.8   .  1  
+        72    20   GLY  HA2  H    3.76  .  2  
+        73    20   GLY  HA3  H    5.07  .  2  
+        74    20   GLY  N    N  108.4   .  1  
+        75    21   GLY  H    H    9.04  .  1  
+        76    21   GLY  CA   C   44.6   .  1  
+        77    21   GLY  HA2  H    4.22  .  2  
+        78    21   GLY  HA3  H    5.36  .  2  
+        79    21   GLY  N    N  106.5   .  1  
+        80    22   TYR  H    H    7.87  .  1  
+        81    22   TYR  CA   C   53.5   .  1  
+        82    22   TYR  HA   H    5.74  .  1  
+        83    22   TYR  N    N  113.3   .  1  
+        84    23   GLY  H    H    8.99  .  1  
+        85    23   GLY  CA   C   43.4   .  1  
+        86    23   GLY  HA2  H    3.9   .  2  
+        87    23   GLY  HA3  H    5.17  .  2  
+        88    23   GLY  N    N  106.2   .  1  
+        89    24   ALA  H    H    9.52  .  1  
+        90    24   ALA  CA   C   49.2   .  1  
+        91    24   ALA  HA   H    5.89  .  1  
+        92    24   ALA  N    N  126     .  1  
+        93    25   ILE  H    H    9.04  .  1  
+        94    25   ILE  HA   H    4.88  .  1  
+        95    25   ILE  N    N  120.7   .  1  
+        96    26   LEU  H    H    9.21  .  1  
+        97    26   LEU  HA   H    5.29  .  1  
+        98    26   LEU  N    N  129.2   .  1  
+        99    27   ARG  H    H    9.98  .  1  
+       100    27   ARG  CA   C   53.1   .  1  
+       101    27   ARG  HA   H    5.47  .  1  
+       102    27   ARG  N    N  127.1   .  1  
+       103    28   TYR  H    H    8.59  .  1  
+       104    28   TYR  CA   C   54.7   .  1  
+       105    28   TYR  HA   H    5.06  .  1  
+       106    28   TYR  N    N  125.2   .  1  
+       107    29   ARG  H    H    9.37  .  1  
+       108    29   ARG  CA   C   55.1   .  1  
+       109    29   ARG  HA   H    3.78  .  1  
+       110    29   ARG  N    N  126.7   .  1  
+       111    30   GLY  H    H    8.72  .  1  
+       112    30   GLY  CA   C   43.6   .  1  
+       113    30   GLY  HA2  H    3.61  .  2  
+       114    30   GLY  HA3  H    4.14  .  2  
+       115    30   GLY  N    N  104.9   .  1  
+       116    31   ARG  H    H    7.95  .  1  
+       117    31   ARG  CA   C   52.9   .  1  
+       118    31   ARG  HA   H    4.69  .  1  
+       119    31   ARG  N    N  121     .  1  
+       120    32   GLU  H    H    8.76  .  1  
+       121    32   GLU  CA   C   53.1   .  1  
+       122    32   GLU  HA   H    5.43  .  1  
+       123    32   GLU  N    N  122.7   .  1  
+       124    33   LYS  H    H    9.21  .  1  
+       125    33   LYS  CA   C   53.1   .  1  
+       126    33   LYS  HA   H    4.67  .  1  
+       127    33   LYS  N    N  125     .  1  
+       128    34   THR  H    H    8.14  .  1  
+       129    34   THR  CA   C   58.2   .  1  
+       130    34   THR  HA   H    5.32  .  1  
+       131    34   THR  N    N  114.5   .  1  
+       132    35   PHE  H    H    9.31  .  1  
+       133    35   PHE  CA   C   54.5   .  1  
+       134    35   PHE  HA   H    4.99  .  1  
+       135    35   PHE  N    N  120.6   .  1  
+       136    36   SER  H    H    8.4   .  1  
+       137    36   SER  CA   C   56.2   .  1  
+       138    36   SER  HA   H    4.58  .  1  
+       139    36   SER  N    N  113.9   .  1  
+       140    37   ALA  H    H    6.37  .  1  
+       141    37   ALA  CA   C   50.2   .  1  
+       142    37   ALA  HA   H    4.25  .  1  
+       143    37   ALA  N    N  120.8   .  1  
+       144    38   GLY  H    H    8.58  .  1  
+       145    38   GLY  CA   C   42.2   .  1  
+       146    38   GLY  HA2  H    3.49  .  2  
+       147    38   GLY  HA3  H    5.36  .  2  
+       148    38   GLY  N    N  106.2   .  1  
+       149    39   TYR  H    H    9.69  .  1  
+       150    39   TYR  CA   C   53.9   .  1  
+       151    39   TYR  HA   H    5.47  .  1  
+       152    39   TYR  N    N  122.8   .  1  
+       153    40   THR  H    H    8.81  .  1  
+       154    40   THR  CA   C   63.6   .  1  
+       155    40   THR  HA   H    3.73  .  1  
+       156    40   THR  N    N  113.5   .  1  
+       157    41   ARG  H    H    7.77  .  1  
+       158    41   ARG  CA   C   55.1   .  1  
+       159    41   ARG  HA   H    3.88  .  1  
+       160    41   ARG  N    N  119.9   .  1  
+       161    42   THR  H    H    8.85  .  1  
+       162    42   THR  CA   C   58     .  1  
+       163    42   THR  HA   H    4.08  .  1  
+       164    42   THR  N    N  125     .  1  
+       165    43   THR  H    H    8.53  .  1  
+       166    43   THR  CA   C   57     .  1  
+       167    43   THR  HA   H    5.28  .  1  
+       168    43   THR  N    N  106.5   .  1  
+       169    44   ASN  H    H    9.19  .  1  
+       170    44   ASN  CA   C   56     .  1  
+       171    44   ASN  HA   H    3.92  .  1  
+       172    44   ASN  N    N  120.6   .  1  
+       173    45   ASN  H    H    8.56  .  1  
+       174    45   ASN  CA   C   53.9   .  1  
+       175    45   ASN  HA   H    4.03  .  1  
+       176    45   ASN  N    N  116.3   .  1  
+       177    46   ARG  H    H    7.38  .  1  
+       178    46   ARG  CA   C   59     .  1  
+       179    46   ARG  HA   H    3.58  .  1  
+       180    46   ARG  N    N  116.5   .  1  
+       181    47   MET  H    H    7.71  .  1  
+       182    47   MET  CA   C   55.5   .  1  
+       183    47   MET  HA   H    4.44  .  1  
+       184    47   MET  N    N  118.2   .  1  
+       185    48   GLU  H    H    8.44  .  1  
+       186    48   GLU  CA   C   57.8   .  1  
+       187    48   GLU  HA   H    3.86  .  1  
+       188    48   GLU  N    N  119.3   .  1  
+       189    49   LEU  H    H    7.24  .  1  
+       190    49   LEU  HA   H    3.96  .  1  
+       191    49   LEU  N    N  116.1   .  1  
+       192    50   MET  H    H    8.69  .  1  
+       193    50   MET  CA   C   55.5   .  1  
+       194    50   MET  HA   H    3.93  .  1  
+       195    50   MET  N    N  118.7   .  1  
+       196    51   ALA  H    H    7.72  .  1  
+       197    51   ALA  CA   C   53.3   .  1  
+       198    51   ALA  HA   H    3.31  .  1  
+       199    51   ALA  N    N  117     .  1  
+       200    52   ALA  H    H    6.47  .  1  
+       201    52   ALA  CA   C   52.7   .  1  
+       202    52   ALA  HA   H    3.99  .  1  
+       203    52   ALA  N    N  113.7   .  1  
+       204    53   ILE  H    H    7.94  .  1  
+       205    53   ILE  HA   H    3.13  .  1  
+       206    53   ILE  N    N  116.5   .  1  
+       207    54   VAL  H    H    8.25  .  1  
+       208    54   VAL  HA   H    3.3   .  1  
+       209    54   VAL  N    N  116.5   .  1  
+       210    55   ALA  H    H    6.85  .  1  
+       211    55   ALA  CA   C   52.7   .  1  
+       212    55   ALA  HA   H    3.34  .  1  
+       213    55   ALA  N    N  119.4   .  1  
+       214    56   LEU  H    H    7.57  .  1  
+       215    56   LEU  HA   H    3.76  .  1  
+       216    56   LEU  N    N  112.8   .  1  
+       217    57   GLU  H    H    8.75  .  1  
+       218    57   GLU  CA   C   56.6   .  1  
+       219    57   GLU  HA   H    3.94  .  1  
+       220    57   GLU  N    N  118.4   .  1  
+       221    58   ALA  H    H    7.1   .  1  
+       222    58   ALA  CA   C   51.2   .  1  
+       223    58   ALA  HA   H    4.11  .  1  
+       224    58   ALA  N    N  119.6   .  1  
+       225    59   LEU  H    H    7.15  .  1  
+       226    59   LEU  HA   H    4.26  .  1  
+       227    59   LEU  N    N  118.4   .  1  
+       228    60   LYS  H    H    8.59  .  1  
+       229    60   LYS  CA   C   53.9   .  1  
+       230    60   LYS  HA   H    4.38  .  1  
+       231    60   LYS  N    N  121.8   .  1  
+       232    61   GLU  H    H    7.66  .  1  
+       233    61   GLU  CA   C   52.2   .  1  
+       234    61   GLU  HA   H    4.48  .  1  
+       235    61   GLU  N    N  116.4   .  1  
+       236    62   HIS  H    H    8.46  .  1  
+       237    62   HIS  HA   H    4.77  .  1  
+       238    62   HIS  N    N  119.2   .  1  
+       239    63   CYS  CA   C   57     .  1  
+       240    63   CYS  HA   H    5.12  .  1  
+       241    64   GLU  H    H    8.75  .  1  
+       242    64   GLU  CA   C   53.7   .  1  
+       243    64   GLU  HA   H    5.02  .  1  
+       244    64   GLU  N    N  122.6   .  1  
+       245    65   VAL  H    H    8.82  .  1  
+       246    65   VAL  HA   H    4.7   .  1  
+       247    65   VAL  N    N  125.6   .  1  
+       248    66   ILE  H    H    8.25  .  1  
+       249    66   ILE  HA   H    4.75  .  1  
+       250    66   ILE  N    N  127.4   .  1  
+       251    67   LEU  H    H    8.57  .  1  
+       252    67   LEU  HA   H    4.7   .  1  
+       253    67   LEU  N    N  134.5   .  1  
+       254    68   SER  H    H    8.72  .  1  
+       255    68   SER  CA   C   54.5   .  1  
+       256    68   SER  HA   H    5.73  .  1  
+       257    68   SER  N    N  120.8   .  1  
+       258    69   THR  H    H    8.5   .  1  
+       259    69   THR  CA   C   58.6   .  1  
+       260    69   THR  HA   H    5.11  .  1  
+       261    69   THR  N    N  119.7   .  1  
+       262    70   ASP  H    H    8.94  .  1  
+       263    70   ASP  CA   C   51.2   .  1  
+       264    70   ASP  HA   H    5.45  .  1  
+       265    70   ASP  N    N  127.7   .  1  
+       266    71   SER  H    H    8.31  .  1  
+       267    71   SER  CA   C   56.8   .  1  
+       268    71   SER  HA   H    4.52  .  1  
+       269    71   SER  N    N  115.5   .  1  
+       270    72   GLN  H    H    9.37  .  1  
+       271    72   GLN  CA   C   56.2   .  1  
+       272    72   GLN  HA   H    3.98  .  1  
+       273    72   GLN  N    N  132.8   .  1  
+       274    73   TYR  H    H    8.72  .  1  
+       275    73   TYR  CA   C   59.3   .  1  
+       276    73   TYR  HA   H    4.48  .  1  
+       277    73   TYR  N    N  123.6   .  1  
+       278    74   VAL  H    H    8.06  .  1  
+       279    74   VAL  HA   H    3.6   .  1  
+       280    74   VAL  N    N  117.4   .  1  
+       281    75   ARG  H    H    7.08  .  1  
+       282    75   ARG  CA   C   57.4   .  1  
+       283    75   ARG  HA   H    2.52  .  1  
+       284    75   ARG  N    N  117.7   .  1  
+       285    76   GLN  H    H    8.22  .  1  
+       286    76   GLN  CA   C   57     .  1  
+       287    76   GLN  HA   H    3.15  .  1  
+       288    76   GLN  N    N  120.6   .  1  
+       289    77   GLY  H    H    7.82  .  1  
+       290    77   GLY  CA   C   46.1   .  1  
+       291    77   GLY  HA2  H    3.14  .  2  
+       292    77   GLY  HA3  H    3.75  .  2  
+       293    77   GLY  N    N  107.1   .  1  
+       294    78   ILE  H    H    8.4   .  1  
+       295    78   ILE  HA   H    3.73  .  1  
+       296    78   ILE  N    N  119.9   .  1  
+       297    79   THR  H    H    7.8   .  1  
+       298    79   THR  CA   C   62.1   .  1  
+       299    79   THR  HA   H    4.11  .  1  
+       300    79   THR  N    N  107.4   .  1  
+       301    80   GLN  H    H    7.53  .  1  
+       302    80   GLN  CA   C   55.1   .  1  
+       303    80   GLN  HA   H    4.47  .  1  
+       304    80   GLN  N    N  117.3   .  1  
+       305    81   TRP  H    H    7.1   .  1  
+       306    81   TRP  CA   C   55.8   .  1  
+       307    81   TRP  HA   H    4.28  .  1  
+       308    81   TRP  N    N  118.2   .  1  
+       309    82   ILE  H    H    8.48  .  1  
+       310    82   ILE  HA   H    3.49  .  1  
+       311    82   ILE  N    N  117.9   .  1  
+       312    83   HIS  H    H    7.93  .  1  
+       313    83   HIS  HA   H    4.13  .  1  
+       314    83   HIS  N    N  118.4   .  1  
+       315    84   ASN  H    H    7.44  .  1  
+       316    84   ASN  CA   C   53.5   .  1  
+       317    84   ASN  HA   H    4.38  .  1  
+       318    84   ASN  N    N  117.7   .  1  
+       319    85   TRP  H    H    8.2   .  1  
+       320    85   TRP  CA   C   55.8   .  1  
+       321    85   TRP  HA   H    4.38  .  1  
+       322    85   TRP  N    N  120.3   .  1  
+       323    86   LYS  H    H    8.12  .  1  
+       324    86   LYS  CA   C   58.2   .  1  
+       325    86   LYS  HA   H    2.7   .  1  
+       326    86   LYS  N    N  119     .  1  
+       327    87   LYS  H    H    7.36  .  1  
+       328    87   LYS  CA   C   56.6   .  1  
+       329    87   LYS  HA   H    4.09  .  1  
+       330    87   LYS  N    N  119     .  1  
+       331    88   ARG  H    H    7.24  .  1  
+       332    88   ARG  CA   C   53.1   .  1  
+       333    88   ARG  HA   H    4.48  .  1  
+       334    88   ARG  N    N  116.3   .  1  
+       335    89   GLY  H    H    7.78  .  1  
+       336    89   GLY  CA   C   45.3   .  1  
+       337    89   GLY  HA2  H    3.93  .  1  
+       338    89   GLY  HA3  H    3.93  .  1  
+       339    89   GLY  N    N  108.7   .  1  
+       340    90   TRP  H    H    8.56  .  1  
+       341    90   TRP  CA   C   56.2   .  1  
+       342    90   TRP  HA   H    3.42  .  1  
+       343    90   TRP  N    N  112.8   .  1  
+       344    91   LYS  H    H    6.82  .  1  
+       345    91   LYS  CA   C   52     .  1  
+       346    91   LYS  HA   H    5.05  .  1  
+       347    91   LYS  N    N  116.7   .  1  
+       348    92   THR  H    H    8.9   .  1  
+       349    92   THR  CA   C   59     .  1  
+       350    92   THR  HA   H    4.38  .  1  
+       351    92   THR  N    N  109.6   .  1  
+       352    93   ALA  H    H    9.1   .  1  
+       353    93   ALA  CA   C   53.1   .  1  
+       354    93   ALA  HA   H    4.07  .  1  
+       355    93   ALA  N    N  123.6   .  1  
+       356    94   ASP  H    H    8     .  1  
+       357    94   ASP  CA   C   51.2   .  1  
+       358    94   ASP  HA   H    4.64  .  1  
+       359    94   ASP  N    N  114     .  1  
+       360    95   LYS  H    H    8.06  .  1  
+       361    95   LYS  CA   C   55.8   .  1  
+       362    95   LYS  HA   H    3.67  .  1  
+       363    95   LYS  N    N  112.5   .  1  
+       364    96   LYS  H    H    7.62  .  1  
+       365    96   LYS  CA   C   51.6   .  1  
+       366    96   LYS  HA   H    4.72  .  1  
+       367    96   LYS  N    N  119.8   .  1  
+       368    97   PRO  CA   C   60.9   .  1  
+       369    97   PRO  HA   H    4.61  .  1  
+       370    98   VAL  H    H    7.57  .  1  
+       371    98   VAL  HA   H    3.44  .  1  
+       372    98   VAL  N    N  120.7   .  1  
+       373    99   LYS  H    H    8.29  .  1  
+       374    99   LYS  CA   C   55.5   .  1  
+       375    99   LYS  HA   H    4.05  .  1  
+       376    99   LYS  N    N  127.9   .  1  
+       377   100   ASN  H    H    9.45  .  1  
+       378   100   ASN  CA   C   53.1   .  1  
+       379   100   ASN  HA   H    4.28  .  1  
+       380   100   ASN  N    N  115.8   .  1  
+       381   101   VAL  H    H    7.65  .  1  
+       382   101   VAL  HA   H    3.6   .  1  
+       383   101   VAL  N    N  119     .  1  
+       384   102   ASP  H    H    8.59  .  1  
+       385   102   ASP  CA   C   54.3   .  1  
+       386   102   ASP  HA   H    4.09  .  1  
+       387   102   ASP  N    N  119     .  1  
+       388   103   LEU  H    H    7.28  .  1  
+       389   103   LEU  HA   H    4.16  .  1  
+       390   103   LEU  N    N  118.6   .  1  
+       391   104   TRP  H    H    8.55  .  1  
+       392   104   TRP  CA   C   59.3   .  1  
+       393   104   TRP  HA   H    4.56  .  1  
+       394   104   TRP  N    N  121     .  1  
+       395   105   GLN  H    H    8.42  .  1  
+       396   105   GLN  CA   C   57.4   .  1  
+       397   105   GLN  HA   H    3.66  .  1  
+       398   105   GLN  N    N  115.8   .  1  
+       399   106   ARG  H    H    7.02  .  1  
+       400   106   ARG  CA   C   57.4   .  1  
+       401   106   ARG  HA   H    4.18  .  1  
+       402   106   ARG  N    N  121     .  1  
+       403   107   LEU  H    H    8.76  .  1  
+       404   107   LEU  HA   H    4.12  .  1  
+       405   107   LEU  N    N  121.6   .  1  
+       406   108   ASP  H    H    8.76  .  1  
+       407   108   ASP  CA   C   56.6   .  1  
+       408   108   ASP  HA   H    4.56  .  1  
+       409   108   ASP  N    N  118.4   .  1  
+       410   109   ALA  H    H    7.88  .  1  
+       411   109   ALA  CA   C   52.9   .  1  
+       412   109   ALA  HA   H    4.2   .  1  
+       413   109   ALA  N    N  119.1   .  1  
+       414   110   ALA  H    H    7.67  .  1  
+       415   110   ALA  CA   C   52.7   .  1  
+       416   110   ALA  HA   H    4.3   .  1  
+       417   110   ALA  N    N  121     .  1  
+       418   111   LEU  H    H    8.68  .  1  
+       419   111   LEU  HA   H    4.1   .  1  
+       420   111   LEU  N    N  117.4   .  1  
+       421   112   GLY  H    H    7.54  .  1  
+       422   112   GLY  CA   C   44.4   .  1  
+       423   112   GLY  HA2  H    4.13  .  2  
+       424   112   GLY  HA3  H    3.95  .  2  
+       425   112   GLY  N    N  101.5   .  1  
+       426   113   GLN  H    H    7.52  .  1  
+       427   113   GLN  CA   C   53.5   .  1  
+       428   113   GLN  HA   H    4.27  .  1  
+       429   113   GLN  N    N  117.2   .  1  
+       430   114   HIS  H    H    7.37  .  1  
+       431   114   HIS  HA   H    5.04  .  1  
+       432   114   HIS  N    N  116.6   .  1  
+       433   115   GLN  H    H    8.48  .  1  
+       434   115   GLN  CA   C   52.7   .  1  
+       435   115   GLN  HA   H    4.74  .  1  
+       436   115   GLN  N    N  120.9   .  1  
+       437   116   ILE  H    H    8.57  .  1  
+       438   116   ILE  HA   H    4.54  .  1  
+       439   116   ILE  N    N  125.9   .  1  
+       440   117   LYS  H    H    8.81  .  1  
+       441   117   LYS  CA   C   52.7   .  1  
+       442   117   LYS  HA   H    4.48  .  1  
+       443   117   LYS  N    N  129.8   .  1  
+       444   118   TRP  H    H    8.26  .  1  
+       445   118   TRP  CA   C   54.1   .  1  
+       446   118   TRP  HA   H    4.46  .  1  
+       447   118   TRP  N    N  125.9   .  1  
+       448   119   GLU  H    H    8.94  .  1  
+       449   119   GLU  CA   C   52.5   .  1  
+       450   119   GLU  HA   H    4.34  .  1  
+       451   119   GLU  N    N  126.5   .  1  
+       452   120   TRP  H    H    7.93  .  1  
+       453   120   TRP  CA   C   52     .  1  
+       454   120   TRP  HA   H    5.62  .  1  
+       455   120   TRP  N    N  125.8   .  1  
+       456   121   VAL  H    H    8.03  .  1  
+       457   121   VAL  HA   H    4.2   .  1  
+       458   121   VAL  N    N  123.6   .  1  
+       459   122   LYS  H    H    8.46  .  1  
+       460   122   LYS  CA   C   53.9   .  1  
+       461   122   LYS  HA   H    4.54  .  1  
+       462   122   LYS  N    N  124.3   .  1  
+       463   123   GLY  H    H    8.46  .  1  
+       464   123   GLY  CA   C   43.4   .  1  
+       465   123   GLY  HA2  H    4.07  .  2  
+       466   123   GLY  HA3  H    3.91  .  2  
+       467   123   GLY  N    N  111.3   .  1  
+       468   124   HIS  H    H    8.57  .  1  
+       469   124   HIS  HA   H    4.64  .  1  
+       470   124   HIS  N    N  116.5   .  1  
+       471   125   ALA  H    H    8.14  .  1  
+       472   125   ALA  CA   C   50.8   .  1  
+       473   125   ALA  HA   H    4.45  .  1  
+       474   125   ALA  N    N  123.5   .  1  
+       475   126   GLY  H    H    8.66  .  1  
+       476   126   GLY  CA   C   43.4   .  1  
+       477   126   GLY  HA2  H    3.82  .  1  
+       478   126   GLY  HA3  H    3.82  .  1  
+       479   126   GLY  N    N  109.8   .  1  
+       480   127   HIS  H    H    8.4   .  1  
+       481   127   HIS  HA   H    5.23  .  1  
+       482   127   HIS  N    N  118.5   .  1  
+       483   128   PRO  CA   C   63.6   .  1  
+       484   128   PRO  HA   H    4.39  .  1  
+       485   129   GLU  H    H    9.37  .  1  
+       486   129   GLU  CA   C   59     .  1  
+       487   129   GLU  HA   H    3.63  .  1  
+       488   129   GLU  N    N  117.8   .  1  
+       489   130   ASN  H    H    7.66  .  1  
+       490   130   ASN  CA   C   56.6   .  1  
+       491   130   ASN  HA   H    4.45  .  1  
+       492   130   ASN  N    N  117.2   .  1  
+       493   131   GLU  H    H    7.83  .  1  
+       494   131   GLU  CA   C   57.8   .  1  
+       495   131   GLU  HA   H    3.92  .  1  
+       496   131   GLU  N    N  120.2   .  1  
+       497   132   ARG  H    H    8.02  .  1  
+       498   132   ARG  CA   C   57.4   .  1  
+       499   132   ARG  HA   H    4.09  .  1  
+       500   132   ARG  N    N  119.8   .  1  
+       501   133   CYS  H    H    8.1   .  1  
+       502   133   CYS  CA   C   63.2   .  1  
+       503   133   CYS  HA   H    4.01  .  1  
+       504   133   CYS  N    N  117.8   .  1  
+       505   134   ASP  H    H    7.78  .  1  
+       506   134   ASP  CA   C   55.3   .  1  
+       507   134   ASP  HA   H    4.46  .  1  
+       508   134   ASP  N    N  120.8   .  1  
+       509   135   GLU  H    H    7.83  .  1  
+       510   135   GLU  CA   C   57.8   .  1  
+       511   135   GLU  HA   H    3.92  .  1  
+       512   135   GLU  N    N  118.9   .  1  
+       513   136   LEU  H    H    8.3   .  1  
+       514   136   LEU  HA   H    4.02  .  1  
+       515   136   LEU  N    N  120.1   .  1  
+       516   137   ALA  H    H    8.35  .  1  
+       517   137   ALA  CA   C   53.5   .  1  
+       518   137   ALA  HA   H    3.62  .  1  
+       519   137   ALA  N    N  122.7   .  1  
+       520   138   ARG  H    H    8.24  .  1  
+       521   138   ARG  CA   C   57.6   .  1  
+       522   138   ARG  HA   H    3.8   .  1  
+       523   138   ARG  N    N  116.5   .  1  
+       524   139   ALA  H    H    7.89  .  1  
+       525   139   ALA  CA   C   52.9   .  1  
+       526   139   ALA  HA   H    4.04  .  1  
+       527   139   ALA  N    N  120.4   .  1  
+       528   140   ALA  H    H    7.88  .  1  
+       529   140   ALA  CA   C   52.7   .  1  
+       530   140   ALA  HA   H    3.98  .  1  
+       531   140   ALA  N    N  121.8   .  1  
+       532   141   ALA  H    H    7.79  .  1  
+       533   141   ALA  CA   C   52.7   .  1  
+       534   141   ALA  HA   H    3.75  .  1  
+       535   141   ALA  N    N  119.2   .  1  
+       536   142   MET  H    H    7.11  .  1  
+       537   142   MET  CA   C   53.9   .  1  
+       538   142   MET  HA   H    4.29  .  1  
+       539   142   MET  N    N  111     .  1  
+       540   143   ASN  H    H    7.42  .  1  
+       541   143   ASN  CA   C   49.4   .  1  
+       542   143   ASN  HA   H    5.04  .  1  
+       543   143   ASN  N    N  117     .  1  
+       544   144   PRO  CA   C   62.1   .  1  
+       545   144   PRO  HA   H    4.1   .  1  
+       546   145   THR  H    H    7.49  .  1  
+       547   145   THR  CA   C   59.3   .  1  
+       548   145   THR  HA   H    4.56  .  1  
+       549   145   THR  N    N  108.4   .  1  
+       550   146   LEU  H    H    8.08  .  1  
+       551   146   LEU  HA   H    4.76  .  1  
+       552   146   LEU  N    N  123.4   .  1  
+       553   147   GLU  H    H    8.35  .  1  
+       554   147   GLU  CA   C   52.5   .  1  
+       555   147   GLU  HA   H    4.82  .  1  
+       556   147   GLU  N    N  117.9   .  1  
+       557   148   ASP  H    H   10.04  .  1  
+       558   148   ASP  CA   C   50.4   .  1  
+       559   148   ASP  HA   H    4.88  .  1  
+       560   148   ASP  N    N  125.6   .  1  
+       561   149   THR  H    H    7.88  .  1  
+       562   149   THR  CA   C   62.5   .  1  
+       563   149   THR  HA   H    4.14  .  1  
+       564   149   THR  N    N  116.6   .  1  
+       565   150   GLY  H    H    8.02  .  1  
+       566   150   GLY  CA   C   43     .  1  
+       567   150   GLY  HA2  H    4.21  .  2  
+       568   150   GLY  HA3  H    3.73  .  2  
+       569   150   GLY  N    N  106.7   .  1  
+       570   151   TYR  H    H    7.27  .  1  
+       571   151   TYR  CA   C   56.8   .  1  
+       572   151   TYR  HA   H    4.24  .  1  
+       573   151   TYR  N    N  121.4   .  1  
+       574   152   GLN  H    H    7.6   .  1  
+       575   152   GLN  CA   C   52.3   .  1  
+       576   152   GLN  HA   H    4.15  .  1  
+       577   152   GLN  N    N  126     .  1  
+       578   153   VAL  H    H    7.86  .  1  
+       579   153   VAL  HA   H    3.84  .  1  
+       580   153   VAL  N    N  120.6   .  1  
+       581   154   GLU  H    H    8.26  .  1  
+       582   154   GLU  CA   C   54.5   .  1  
+       583   154   GLU  HA   H    4.34  .  1  
+       584   154   GLU  N    N  125.2   .  1  
+       585   155   VAL  H    H    7.73  .  1  
+       586   155   VAL  HA   H    4.04  .  1  
+       587   155   VAL  N    N  125.4   .  1  
+
+   stop_
+
+   loop_
+      _Chem_shift_value_error
+
+       .01 
+       .2  
+       .1  
+
+   stop_
+
+save_
+

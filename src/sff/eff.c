@@ -2447,6 +2447,7 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
    REAL_T tmme1, t1, t2, treduce1;
    int i, j, k, goff, threadnum, numthreads, maxthreads;
    int iteration, mask, consumer, producer, numcopies;
+   REAL_T erism = 0.0;
    int dummy = 0;
    size_t n;
 
@@ -2522,6 +2523,8 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
    /* If the iteration count equals 0, print the header for task 0 only. */
 
    if (*iter == 0 && mytaskid == 0) {
+         fprintf(nabout, "      iter    Total       bad      vdW     elect"
+              "   nonpolar   genBorn      frms\n");
       fflush(nabout);
    }
 
@@ -2692,7 +2695,7 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
       else 
       {
 
-         if (gb == 9) { // what is this???
+         if (gb == 9) { // r6 gb:
             e_gb =
                egbr6(lpairs, upairs, pairlist, lpairs, upairs, pairlist,
                    x, grad, prm->Fs, prm->Rborn, prm->Charges, &kappa,
@@ -2736,16 +2739,18 @@ REAL_T mme34(REAL_T * x, REAL_T * f, int *iter)
                q_hcp1, q_hcp2, q_hcp3, grad, &enb, &eel);
          } else {
             nbond(lpairs,upairs, pairlist, 0, x, grad, &enb, &eel, NULL, NULL, 0);
+            // if (gb == 3){ erism = rism(x, grad); }
          }
       }
       ene[1] = enb + enbips;
       ene[2] = eel + eelips;
-      ene[10] = 0.0;
+      ene[10] = erism;
       ene[11] = 0.0;
       ene[12] = 0.0;
       if (e_debug) {
          EXPR("%9.3f", enb);
          EXPR("%9.3f", eel);
+         EXPR("%9.3f", erism);
       }
 
       t2 = seconds();

@@ -1,0 +1,68 @@
+int			planep();
+
+int		get_pep_info( molecule m, point pn[1], point pc[1], 
+		point pbis[1], float pb[1], int pepres[1] )
+{
+
+	int		npep, ipep, npepold, strand;
+	atom		a;
+	point		Cpos[ dynamic ], Opos[ dynamic ], Npos[ dynamic ];
+	point		pcb;
+	string		l_resname;
+
+	allocate Cpos[ m.nresidues ];
+	allocate Opos[ m.nresidues ];
+	allocate Npos[ m.nresidues ];
+
+	npep = 0;
+ 	npepold=0;
+	strand = 1;
+	for( a in m ){ 
+	  if( a.strandnum == strand )  l_resname = a.resname;
+//	  fprintf( stderr, "%s %s %d %d %s\n", a.atomname, a.resname, a.strandnum, strand, l_resname );
+
+//   find peptide groups:  assumes that molecules with atoms named
+//        "N", "C", "O" are peptides/proteins;  also assumes that
+//        atom order in the loop will be N before C before O
+
+	  if( a.atomname == "N" && npep > 0 ) { 
+	    Npos[ npep ] = a.pos; pepres[ npep ] = a.tresnum;
+	  }
+	  if( a.atomname == "C" ) { npep++; Cpos[ npep ] = a.pos; }
+	  if( a.atomname == "O" && a.resname != "WAT" && a.resname != "HOH" &&
+          npep > 0 ) Opos[ npep ] = a.pos;
+
+//   check to see if we're done a strand, if so might need to modify
+//   number of peptides
+	  if( a.strandnum != strand  || a.tatomnum == m.natoms ){
+//	    fprintf( stderr, "done strand %d l_resname %s\n", a.strandnum, l_resname );
+	    if( npep > npepold && l_resname != "NME" && l_resname != "NH2" ){ 
+//	      fprintf( stderr, "subtracting an npep\n" );
+		npep -= 1;  //final CO group won't have a corresponding 
+                         	//    next-residue N to match
+		}
+	    strand = a.strandnum;
+	    npepold = npep;
+	    l_resname = a.resname;
+	  }
+	}
+//	printf( "\nfound %d peptides\n\n", npep );
+
+	if( npep == 0 ) return( npep );
+	for( ipep=1; ipep<= npep; ipep++ ){
+
+    	planep( Cpos[ipep], Opos[ipep], Npos[ipep], pn[ipep],
+        	pc[ipep], pb[ipep] );
+    	pc[ipep] = 0.5586*Npos[ipep] + 0.5955*Opos[ipep] - 0.1541*Cpos[ipep];
+		pcb = pc[ipep];
+
+		pbis[ ipep ] = pcb - Cpos[ipep];
+		pbis[ ipep ] /= sqrt(pbis[ipep] @ pbis[ipep]);
+	}
+
+	deallocate Cpos;
+	deallocate Opos;
+	deallocate Npos;
+
+	return( npep );
+};

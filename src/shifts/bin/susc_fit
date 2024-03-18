@@ -1,0 +1,458 @@
+#! /usr/bin/perl -w
+
+$GAUSSIAN = 0;   #  set to 1 for Gaussian, 0 for deMon
+$HAIGH_MALLION = 0;  # set to 1 to fit Haigh-Mallion, 0 to fit chi tensors
+$path_to_gaussian = "/home/case/qchem/run_g09"; # points to Gaussian executable
+$path_to_demon3 = "/home/case/qchem/run_demon3";    # points to deMon executable
+$method = "OLYP/aug-cc-pVTZ";  #  dft method + basis
+
+#
+#----------------------------------------------------------------
+#   Usage: susc_fit <dist> <pdb-file> <id>
+#      where dist = distance from solvent-accessible surface
+#      pdb-file is the input pdb file
+#      id will be the first part of the output file names
+#----------------------------------------------------------------
+#   Run the "ms" program from input pdb file, getting surface
+#   points at some distance from the van der Waals surface.
+#
+#   Then run the DeMon or Gaussian programs to get quantum CSA values, 
+#   and the shifts program to get empirical CSA values.
+#
+#   Finally, run a least-squares routine to fit the adjustable parameters
+#   in the empirical function to the quantum values.
+#----------------------------------------------------------------
+#   Assumes that the user's path will include "shifts", "lsq" (from
+#   the shifts3.1 or later releases) and an appropriate quantum
+#   chemistry program (Gaussian or deMon).
+#
+#   If a file called "$id.log" (Gaussian) or "$id.OUT1" (deMon) is
+#   present, the script assumes that these files containt he approrpriate
+#   quantum output, and does not re-run the qchem calculation.
+#----------------------------------------------------------------
+#   User must also supply an "<id>.chi" file that defines the
+#   susceptibilities to be used in the fits.  See documentation of the
+#   "shifts" program for what goes into this file
+#----------------------------------------------------------------
+
+use Cwd;
+
+$#ARGV == 2 || die "Usage: susc_fit <dist> <pdb-file> <id>\n";
+$dist = $ARGV[0];
+$density = 0.15;   # hard-wire this now, rather than input parameter
+$file = $ARGV[1];
+$id = $ARGV[2];
+
+$alt = $resno = $atnum = 0;  # avoid unused variable warnings
+
+if( $ENV{TEST_SHIFTS} ){
+#   set up path for test suite: things don't have to be in user's regular path:
+	$path = cwd() .+ "/../";
+} else {
+	$path = "";
+}
+
+#=============================================================================
+#    Run Mike Connolly's "ms" program to get points on various surfaces:
+#=============================================================================
+
+open (MSRAD, ">ms.rad") || die "can't open ms.rad\n";
+
+$effrad[1] = 3.25 + $dist;
+$effrad[2] = 2.80 + $dist;
+$effrad[4] = 2.95 + $dist;
+$effrad[7] = 3.10 + $dist;
+$effrad[8] = 3.20 + $dist;
+$effrad[15] = 2.60 + $dist;
+
+print MSRAD <<"EOF";
+    1      $effrad[1]   
+    2      $effrad[2]  
+    4      $effrad[4] 
+    7      $effrad[7]   
+    8      $effrad[8]  
+   15      $effrad[15]  
+EOF
+
+close(MSRAD); 
+
+#   change a pdb or pqr file to atm format, using our standard
+#     atom types
+#
+open (PQR, "$file") || die "can't find input file $file\n";
+open (ATM, ">input.atm") || die "can't open input.atm\n";
+
+$type{"H"} = 15; $type{"C"} = 7; $type{"N"} = 4;
+$type{"O"} = 2; $type{"S"} = 8; $type{"F"} = 4; $type{"P"} = 1;
+
+$atno = 0;
+while (<PQR>) { 
+	@_ = split; 
+	next if $_[0] ne "ATOM";
+	$atno++; $surf[$atno] = 0.;
+#
+#   decipher the pdb record:
+#
+	( $atnum, $atname1, $atname2, $alt, $resname[$atno], $resno[$atno],
+		$x[$atno], $y[$atno], $z[$atno] ) =
+   	 	unpack("x7 a4 x a a3 a a3 x3 a3 x4 a8 a8 a8",$_);
+	if ($atname1 eq " ") {
+    	$atname[$atno] = $atname2
+	} else {
+    	$atname[$atno] = $atname1 . $atname2
+	}
+#
+#   get an atomic radius:
+#
+	if ( defined($type{substr($atname[$atno],0,1)}) ){
+		$r = $type{substr($atname[$atno],0,1)};
+	} else {
+		print STDERR "Error in atom type: $_[2]\n";
+	}
+
+	printf ATM "%10.5f%10.5f%10.5f%5d    2    1\n",$_[5],$_[6],$_[7],$r;
+}
+
+close(ATM);
+
+printf STDERR "Running ms to get get points $dist Ang. from the vdW surface\n\n";
+system ("${path}ms -atm input.atm -rad ms.rad -d $density -rp 0.0 >>msinfo") == 0
+	or die "ms step failed: $?\n";
+
+if ( $GAUSSIAN ){ 
+
+#=============================================================================
+#   Prepare the input file for Gaussian; also make a pdb file for viewing:
+#=============================================================================
+
+open (CONTACT, "contact") || die "contact file not found\n";
+open (CONTACT_PDB, ">$id.pdb") || die "cannot open $id.pdb\n";
+open (CONTACT_INP, ">$id.com") || die "cannot open $id.com\n";
+
+print CONTACT_PDB "REMARK Derived from $file with dist=$dist and density=$density\n";
+print CONTACT_INP "#$method NMR\n\n  derived from $id.pdb\n\n";
+print CONTACT_INP "0   1\n";
+
+$iat=0;
+while (<CONTACT>) {
+	@_ = split(' '); $at = $_[0]; $iat++;
+	$surf[$at] += $_[7];
+	printf CONTACT_PDB "ATOM   %4d H    DUM  %4d    %8.3f%8.3f%8.3f\n", 
+			$iat, $iat, $_[4],$_[5],$_[6];
+	printf CONTACT_INP "Bq %10.4f %10.4f %10.4f\n", $_[4],$_[5],$_[6];
+}
+$ndummy = $iat;
+
+for( $i=1; $i<= $atno; $i++){
+	if( substr($atname[$i],0,2) eq "Cl" ){   #special case for Chlorine
+		$firstlet = "Cl";
+	} else {
+		$firstlet = substr($atname[$i],0,1);
+	}
+	printf CONTACT_PDB "ATOM   %4s %-4s %3s   %3s    %8.3f%8.3f%8.3f\n",
+		$i,$atname[$i],$resname[$i],$iat+1,$x[$i],$y[$i],$z[$i];
+	printf CONTACT_INP "%s %10.4f %10.4f %10.4f\n", 
+			$firstlet, $x[$i],$y[$i],$z[$i];
+}
+print CONTACT_INP "\n";
+
+close( CONTACT_PDB); close( CONTACT_INP );
+
+unlink("contact","input.atm");
+unlink("ms.rad","before", "msinfo");
+
+#=============================================================================
+#    Run Gaussian to get the qchem values for CSA tensors:
+#=============================================================================
+
+if ( -e "$id.log" ){
+	printf STDERR "$id.log is present: skipping qchem step\n\n";
+} else {
+	printf STDERR "running Gaussian\n\n";
+	system( "$path_to_gaussian $id") == 0 or die "Gaussian step failed: $?\n";
+}
+
+unlink( "$id.com" );
+
+#=============================================================================
+#    Put the computed chi tensors for the dummy atoms into an lsq column:
+#=============================================================================
+
+$xxl = $xyl = $xzl = $yxl = $yyl = $yzl = $zxl = $zyl = $zzl = "";
+
+open ( G98_OUT, "$id.log" ) || die "can't open $id.log\n";
+open ( QCSA, ">$id.qcsa" ) || die "can't open $id.qcsa\n";
+
+$n = 0;
+while (<G98_OUT>){
+
+	if( /Bq\s+Isotropic =/) {
+		$n++; last if $n > $ndummy;
+		$_ = <G98_OUT>; ($xxl, $xx, $yxl, $yx, $zxl, $zx) = split(' ',$_);
+		$_ = <G98_OUT>; ($xyl, $xy, $yyl, $yy, $zyl, $zy) = split(' ',$_);
+		$_ = <G98_OUT>; ($xzl, $xz, $yzl, $yz, $zzl, $zz) = split(' ',$_);
+		printf QCSA "%8.3f\n%8.3f\n%8.3f\n%8.3f\n%8.3f\n%8.3f\n",
+			$xx, 0.5*($xy+$yx), $yy, 0.5*($xz+$zx), 0.5*($yz+$zy),$zz;
+	}
+}
+
+close( G98_OUT ); close( QCSA );
+
+} else {   #  use deMon to get the qchem values 
+
+#=============================================================================
+#   Prepare the input file for deMon; also make a pdb file for viewing:
+#=============================================================================
+
+open (CONTACT, "contact") || die "contact file not found\n";
+open (CONTACT_PDB, ">$id.pdb") || die "cannot open $id.pdb\n";
+open (CONTACT_INP, ">$id.inp") || die "cannot open $id.inp\n";
+
+#
+#  convert a "contact" solvent-accessible surface file to
+#  one where each line corresponds to an atom, in a pdb format;
+#  append the original pdb file at the end
+#
+#  Also output an input file for deMon
+#
+print CONTACT_PDB "REMARK Derived from $file with dist=$dist and density=$density\n";
+print CONTACT_INP <<"EOF";
+TITLE Derived from $file with dist=$dist and density=$density
+SCFTYPE  RKS Tol=3.0e-6 MAX=75
+GUESS TB
+ORBITALS CARTESIAN
+ERIS MULTIPOLE
+VxcType Auxis OLYP
+GRID FINE
+QUADRATURE RANDOM
+MIXING -0.1
+DIIS ON
+NMR NICS
+PRINT NMR
+CHARGE 0
+MULTIPLICITY 1
+GEOMETRY CARTESIAN ANGSTROM
+EOF
+
+$iat=0;
+while (<CONTACT>) {
+	@_ = split(' '); $at = $_[0]; $iat++;
+	$surf[$at] += $_[7];
+	printf CONTACT_PDB "ATOM   %4d H    DUM  %4d    %8.3f%8.3f%8.3f\n", 
+			$iat, $iat, $_[4],$_[5],$_[6];
+	printf CONTACT_INP "X%-3d %10.4f %10.4f %10.4f\n", $iat,$_[4],$_[5],$_[6];
+}
+$ndummy = $iat;
+
+for( $i=1; $i<= $atno; $i++){
+	if( substr($atname[$i],0,2) eq "Cl" ){   #special case for Chlorine
+		$firstlet = "Cl";
+	} else {
+		$firstlet = substr($atname[$i],0,1);
+	}
+	printf CONTACT_PDB "ATOM   %4s %-4s %3s   %3s    %8.3f%8.3f%8.3f\n",
+		$i,$atname[$i],$resname[$i],$iat+1,$x[$i],$y[$i],$z[$i];
+	printf CONTACT_INP "%s%-4d %10.4f %10.4f %10.4f\n", 
+			$firstlet, $i + $ndummy, $x[$i],$y[$i],$z[$i]; 
+}
+
+print CONTACT_INP <<"EOF";
+END
+BASIS (TZVP)
+AUXIS (GEN-A2*)
+EOF
+
+close( CONTACT_PDB); close( CONTACT_INP );
+
+unlink("contact","input.atm");
+unlink("ms.rad","before", "msinfo");
+
+#=============================================================================
+#    Run deMon to get the qchem values for CSA tensors:
+#=============================================================================
+
+if ( -e "$id.out" ){
+
+	printf STDERR "$id.out is present: skipping qchem step\n\n";
+
+} else {
+
+	printf STDERR "running deMon\n\n";
+	system( "$path_to_demon3 $id") == 0 or die "deMon failed: $?\n";
+#	unlink( "$id.inp" );
+}
+
+#=============================================================================
+#    Put the computed chi tensors for the dummy atoms into an lsq column:
+#=============================================================================
+
+open ( DEMON_OUT, "$id.out" ) || die "can't open $id.out\n";
+open ( CSA, ">$id.qcsa" ) || die "can't open $id.qcsa\n";
+
+$n = 0;
+while (<DEMON_OUT>){
+
+	if( /^ NICS VALUE /) {
+		$n++; last if $n > $ndummy;
+		$_ = <DEMON_OUT>;
+		$_ = <DEMON_OUT>;
+		$_ = <DEMON_OUT>;
+		$_ = <DEMON_OUT>;
+		$_ = <DEMON_OUT>;
+		@F = split(' ',$_); $xx = $F[1]; $xy = $F[2]; $xz = $F[3];
+		$_ = <DEMON_OUT>;
+		@F = split(' ',$_); $yx = $F[1]; $yy = $F[2]; $yz = $F[3];
+		$_ = <DEMON_OUT>;
+		@F = split(' ',$_); $zx = $F[1]; $zy = $F[2]; $zz = $F[3];
+		printf CSA "%8.3f\n%8.3f\n%8.3f\n%8.3f\n%8.3f\n%8.3f\n",
+		$xx, 0.5*($xy+$yz), $yy, 0.5*($xz+$zx), 0.5*($yz+$zy),$zz;
+	}
+}
+
+close( DEMON_OUT ); close( CSA );
+
+}    #  end of "if $GAUSSIAN" block
+
+if( $HAIGH_MALLION ){
+#=============================================================================
+#    Run shifts to get the Haigh-Mallion shifts for the same points:
+#=============================================================================
+	die "Haigh-Mallion section not yet implmented\n";
+
+
+} else {
+#=============================================================================
+#    Run shifts to get the magnetic moment CSA's for the same points:
+#=============================================================================
+
+
+$shifts_cmd = "${path}shifts -csa -noreduce -nocoil ':DUM:H' $id > $id.SHIFTS";
+
+printf STDERR "running $shifts_cmd\n\n";
+system( "$shifts_cmd" ) == 0 or die "shifts command failed: $?";
+
+#=============================================================================
+#   Collect the results into a set of columns, one for each susceptibility
+#     center defined in the "chi" file:    
+#=============================================================================
+
+open ( SHIFTS_OUT, "$id.emp" ) || die "can't open $id.emp\n";
+open ( CSA, ">$id.ecsa" ) || die "can't open $id.ecsa\n";
+
+$first = 1;
+$tmax = 0;
+
+while( <SHIFTS_OUT> ) {
+
+	next unless /^chi/;
+	@_ = split(' ', $_);
+	$t = $_[1];
+	$tmax = $t > $tmax ? $t : $tmax;
+	if( $t == 1 && $first == 0 ){
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xx[$i]; }
+			printf CSA "\n";
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xy[$i]; }
+			printf CSA "\n";
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $yy[$i]; }
+			printf CSA "\n";
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xz[$i]; }
+			printf CSA "\n";
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $yz[$i]; }
+			printf CSA "\n";
+		foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $zz[$i]; }
+			printf CSA "\n";
+	}
+	$xx[$t] = $_[2];
+	$xy[$t] = $_[3];
+	$yy[$t] = $_[4];
+	$xz[$t] = $_[5];
+	$yz[$t] = $_[6];
+	$zz[$t] = $_[7];
+	$first = 0;
+}
+
+if( $t != 1 ){
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xx[$i]; }  
+		printf CSA "\n";
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xy[$i]; }  
+		printf CSA "\n";
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $yy[$i]; }  
+		printf CSA "\n";
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $xz[$i]; }  
+		printf CSA "\n";
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $yz[$i]; }  
+		printf CSA "\n";
+	foreach $i (1 .. $tmax ){ printf CSA "%8.3f  ", $zz[$i]; }  
+		printf CSA "\n";
+}
+
+close( SHIFTS_OUT ); close( CSA );
+
+#=============================================================================
+#   Run a least-squares fit between the qcsa and the ecsa files:
+#=============================================================================
+
+$lsq_cmd = "paste $id.qcsa $id.ecsa | ${path}lsq $tmax 0.1 ";
+foreach $i (1 .. $tmax ){ $lsq_cmd .= " 0.99"; }
+$lsq_cmd .= " > $id.lsq.fit 2> $id.lsq.out";
+
+printf STDERR "running $lsq_cmd\n\n";
+system( $lsq_cmd ) == 0 or die "lsq command failed: $?";
+
+print STDERR "fitted parameters are in  $id.lsq.out\n";
+
+#=============================================================================
+#   Construct an optimized "chi" file:
+#=============================================================================
+
+$orig = 0.;
+open (LSQOUT, "$id.lsq.out") || die "can't open $id.lsq.out\n";
+print STDERR "opening $id.lsq.out\n";
+
+while(<LSQOUT>){
+
+	if( $_ =~ /^Cauchy/ ){
+		@F = split(' ',$_); $nchi = $F[3]; 
+		printf STDERR "lsq fit $nchi anisotropy parameters:\n";
+		next;
+	}
+	next unless /^Parameters:/;
+	foreach $i (1 .. $nchi){
+		$_ = <LSQOUT>; ( $fit[$i], $orig[$i] ) = split(' ',$_);
+		print STDERR "      $i:  $fit[$i]\n";
+	}
+	last;
+}
+close(LSQOUT);
+
+open( FITCHI, ">$id.opt.chi" ) || die "can't open $id.opt.chi\n";
+print FITCHI "# Fit values from $id.lsq.out\n#\n";
+
+open (CHI, "$id.chi") || die "can't open $id.chi\n";
+$i = 0;
+while(<CHI>){
+
+	if( /^#/ || /^\/\//) { print FITCHI "$_"; next; }
+	
+	$i++;
+	@F = split(' ',$_); $nfields = @F;
+	if( $nfields==4 ){
+		$chi_iso = $F[2]*$fit[$i];
+		$chi_anis = $F[3]*$fit[$i];
+		print FITCHI "$F[0]  $F[1]  $chi_iso  $chi_anis\n";
+	} else {
+		if ($nfields == 5){
+			$chi_iso = $F[3]*$fit[$i];
+			$chi_anis = $F[4]*$fit[$i];
+			print FITCHI "$F[0]  $F[1]  $F[2]  $chi_iso  $chi_anis\n";
+		} else {
+			die "trouble reading this line from $id.chi:\n$_\n";
+		}
+	}
+	
+}
+close(CHI);
+close(FITCHI);
+
+print STDERR "updated anisotropy file is $id.opt.chi\n";
+}

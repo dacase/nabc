@@ -847,6 +847,7 @@ void checkpoint(char *fname, int natom, REAL_T * x, int iter)
 #  include "sff2.c"
 #endif
 #include "mask.c"
+#include "newton.c"
 
 /***********************************************************************
                             MME_INIT_SFF()
@@ -1254,7 +1255,8 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
             mpierror(-1);
          }
       } // loop over atoms
- } else if (gb == 8) {
+
+   } else if (gb == 8) {
       // Allocate NeckIdx
       NeckIdx = ivector(0, prm->Natom);
 
@@ -1328,152 +1330,150 @@ int mme_init_sff(PARMSTRUCT_T * prm_in, int *frozen_in, int *constrained_in,
       gboffset = 0.195141;
       gbneckscale = 0.826836;
 
-   }// else if (gb == 8)
+   }
 
-
-  if (hcp == 4) {  /* for hcp>4 switch to 2-q hcpo */
+   if (hcp == 4) {  /* for hcp>4 switch to 2-q hcpo */
        hcp = 2;
        hcpo = 1;
-  } else {
+   } else {
        hcpo=0;
-  }
+   }
 
-  if (hcp == 0)    /* HCP uses its own pairlist */
-  {
+   if (hcp == 0)    /* HCP uses its own pairlist */ {
 
-   /*
-    * Free (if allocated) then reallocate the non-polar pairlistnp and pair count
-    * arrays.  The pair list array is an array of arrays, and could contain NULL
-    * elements if mme_init were called a second time prior to initialization
-    * of the pair lists by nblist.
-    */
+      /*
+       * Free (if allocated) then reallocate the non-polar pairlistnp and pair count
+       * arrays.  The pair list array is an array of arrays, and could contain NULL
+       * elements if mme_init were called a second time prior to initialization
+       * of the pair lists by nblist.
+       */
 
-   if (pairlistnp != NULL) {
-      for (i = 0; i < nold; i++) {
-         free_ivector(pairlistnp[i], 0, 1);
+      if (pairlistnp != NULL) {
+         for (i = 0; i < nold; i++) {
+            free_ivector(pairlistnp[i], 0, 1);
+         }
+         free(pairlistnp);
       }
-      free(pairlistnp);
-   }
-   np_pairs = -1;
+      np_pairs = -1;
 
-   free_ivector(upairsnp, 0, prm->Natom);
-   free_ivector(lpairsnp, 0, prm->Natom);
+      free_ivector(upairsnp, 0, prm->Natom);
+      free_ivector(lpairsnp, 0, prm->Natom);
+   
+      upairsnp = ivector(0, prm->Natom);
+      lpairsnp = ivector(0, prm->Natom);
 
-   upairsnp = ivector(0, prm->Natom);
-   lpairsnp = ivector(0, prm->Natom);
-
-   if ((pairlistnp = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
-      fprintf(nabout, "Error allocating pairlistnp array in mme_init!\n");
-      fflush(nabout);
-      mpierror(-1);
-   }
-
-   for (i = 0; i < prm->Natom; i++) {
-      pairlistnp[i] = NULL;
-      lpairsnp[i] = upairsnp[i] = 0;
-   }
-
-   /*
-    * Free (if allocated) then reallocate the non-polar pairlist2np and pair count
-    * arrays.  The pair list array is an array of arrays, and could contain NULL
-    * elements if mme_init were called a second time prior to initialization
-    * of the pair lists by nblist.
-    */
-
-   if (pairlist2np != NULL) {
-      for (i = 0; i < nold; i++) {
-         free_ivector(pairlist2np[i], 0, 1);
+      if ((pairlistnp = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
+         fprintf(nabout, "Error allocating pairlistnp array in mme_init!\n");
+         fflush(nabout);
+         mpierror(-1);
       }
-      free(pairlist2np);
-   }
-   np_pairs2 = -1;
 
-   free_ivector(upairs2np, 0, prm->Natom);
-   free_ivector(lpairs2np, 0, prm->Natom);
+      for (i = 0; i < prm->Natom; i++) {
+         pairlistnp[i] = NULL;
+         lpairsnp[i] = upairsnp[i] = 0;
+      }
 
-   upairs2np = ivector(0, prm->Natom);
-   lpairs2np = ivector(0, prm->Natom);
+      /*
+       * Free (if allocated) then reallocate the non-polar pairlist2np and pair count
+       * arrays.  The pair list array is an array of arrays, and could contain NULL
+       * elements if mme_init were called a second time prior to initialization
+       * of the pair lists by nblist.
+       */
 
-   if ((pairlist2np = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
-      fprintf(nabout, "Error allocating pairlist2np array in mme_init!\n");
-      fflush(nabout);
-      mpierror(-1);
-   }
+      if (pairlist2np != NULL) {
+         for (i = 0; i < nold; i++) {
+            free_ivector(pairlist2np[i], 0, 1);
+         }
+         free(pairlist2np);
+      }
+      np_pairs2 = -1;
 
-   for (i = 0; i < prm->Natom; i++) {
-      pairlist2np[i] = NULL;
-      lpairs2np[i] = upairs2np[i] = 0;
-   }
+      free_ivector(upairs2np, 0, prm->Natom);
+      free_ivector(lpairs2np, 0, prm->Natom);
+
+      upairs2np = ivector(0, prm->Natom);
+      lpairs2np = ivector(0, prm->Natom);
+
+      if ((pairlist2np = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
+         fprintf(nabout, "Error allocating pairlist2np array in mme_init!\n");
+         fflush(nabout);
+         mpierror(-1);
+      }
+
+      for (i = 0; i < prm->Natom; i++) {
+         pairlist2np[i] = NULL;
+         lpairs2np[i] = upairs2np[i] = 0;
+      }
 
 #if defined(SCALAPACK) || defined(MPI)
 
-   /*
-    * Free (if allocated) then reallocate the non-bonded pairlist2 and pair count
-    * arrays.  The pair list array is an array of arrays, and could contain NULL
-    * elements if mme_init were called a second time prior to initialization
-    * of the pair lists by nblist.
-    */
+      /*
+       * Free (if allocated) then reallocate the non-bonded pairlist2 and pair count
+       * arrays.  The pair list array is an array of arrays, and could contain NULL
+       * elements if mme_init were called a second time prior to initialization
+       * of the pair lists by nblist.
+       */
 
-   if (pairlist2 != NULL) {
-      for (i = 0; i < nold; i++) {
-         free_ivector(pairlist2[i], 0, 1);
+      if (pairlist2 != NULL) {
+         for (i = 0; i < nold; i++) {
+            free_ivector(pairlist2[i], 0, 1);
+         }
+         free(pairlist2);
       }
-      free(pairlist2);
-   }
-   nb_pairs2 = -1;
+      nb_pairs2 = -1;
 
-   free_ivector(upairs2, 0, prm->Natom);
-   free_ivector(lpairs2, 0, prm->Natom);
+      free_ivector(upairs2, 0, prm->Natom);
+      free_ivector(lpairs2, 0, prm->Natom);
 
-   upairs2 = ivector(0, prm->Natom);
-   lpairs2 = ivector(0, prm->Natom);
+      upairs2 = ivector(0, prm->Natom);
+      lpairs2 = ivector(0, prm->Natom);
 
-   if ((pairlist2 = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
-      fprintf(nabout, "Error allocating pairlist2 array in mme_init!\n");
-      fflush(nabout);
-      mpierror(-1);
-   }
+      if ((pairlist2 = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
+         fprintf(nabout, "Error allocating pairlist2 array in mme_init!\n");
+         fflush(nabout);
+         mpierror(-1);
+      }
 
-   for (i = 0; i < prm->Natom; i++) {
-      pairlist2[i] = NULL;
-      lpairs2[i] = upairs2[i] = 0;
-   }
+      for (i = 0; i < prm->Natom; i++) {
+         pairlist2[i] = NULL;
+         lpairs2[i] = upairs2[i] = 0;
+      }
 
 #endif
 
-   /*
-    * Free (if allocated) then reallocate the non-bonded pairlist and pair count
-    * arrays.  The pair list array is an array of arrays, and could contain NULL
-    * elements if mme_init were called a second time prior to initialization
-    * of the pair lists by nblist.
-    */
+      /*
+       * Free (if allocated) then reallocate the non-bonded pairlist and pair count
+       * arrays.  The pair list array is an array of arrays, and could contain NULL
+       * elements if mme_init were called a second time prior to initialization
+       * of the pair lists by nblist.
+       */
 
-   if (pairlist != NULL) {
-      for (i = 0; i < nold; i++) {
-         free_ivector(pairlist[i], 0, 1);
+      if (pairlist != NULL) {
+         for (i = 0; i < nold; i++) {
+            free_ivector(pairlist[i], 0, 1);
+         }
+         free(pairlist);
       }
-      free(pairlist);
+      nb_pairs = -1;
+
+      free_ivector(upairs, 0, prm->Natom);
+      free_ivector(lpairs, 0, prm->Natom);
+
+      upairs = ivector(0, prm->Natom);
+      lpairs = ivector(0, prm->Natom);
+
+      if ((pairlist = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
+         fprintf(nabout, "Error allocating pairlist array in mme_init!\n");
+         fflush(nabout);
+         mpierror(-1);
+      }
+
+      for (i = 0; i < prm->Natom; i++) {
+         pairlist[i] = NULL;
+         lpairs[i] = upairs[i] = 0;
+      }
+
    }
-   nb_pairs = -1;
-
-   free_ivector(upairs, 0, prm->Natom);
-   free_ivector(lpairs, 0, prm->Natom);
-
-   upairs = ivector(0, prm->Natom);
-   lpairs = ivector(0, prm->Natom);
-
-   if ((pairlist = (int **) malloc(prm->Natom * sizeof(int *))) == NULL) {
-      fprintf(nabout, "Error allocating pairlist array in mme_init!\n");
-      fflush(nabout);
-      mpierror(-1);
-   }
-
-   for (i = 0; i < prm->Natom; i++) {
-      pairlist[i] = NULL;
-      lpairs[i] = upairs[i] = 0;
-   }
-
-  }
 
    frozen = frozen_in;
    nfrozen = belly_parm(prm->Natom, frozen);

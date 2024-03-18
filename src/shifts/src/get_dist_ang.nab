@@ -1,0 +1,38 @@
+int             bonded_atoms() c;
+int		get_dist_ang( molecule m, atom a, atom ai[ 10 ],
+		float hndist, float hnca, float hnco )
+{
+
+	atom		aj[ 10 ];
+	int		j, nj;
+	float		r_aa, costh;
+	point		vsub1, vsub2;
+
+	hndist = distp( a.pos,ai[ 1 ].pos );      // getting hndist
+
+	nj = bonded_atoms( ai[ 1 ], aj );  	// getting connections
+
+	for( j = 1; j <= nj; j = j + 1 ) {
+	  vsub1 = a.pos - ai[ 1 ].pos;		// N->H
+	  vsub2 = aj[ j ].pos - ai[ 1 ].pos;	// N->C
+	  r_aa = sqrt( vsub1 @ vsub1 );
+	  vsub1 /= r_aa;
+	  r_aa = sqrt( vsub2 @ vsub2 );
+	  vsub2 /= r_aa;
+	  costh = vsub1 @ vsub2;
+
+	  if( ( aj[ j ].atomname ) == "CA" ) {
+	    hnca = costh;
+//	    fprintf( stderr, "atom %s, atom %s, atom %s\n", a.fullname, ai[ 1 ].fullname, aj[ j ].fullname );
+//	    fprintf( stderr, "hndist %.3f  hnca %.3f  \n", hndist, hnca );
+	  }
+	  else if( ( aj[ j ].atomname ) == "C" ) {
+	    hnco = costh;
+//	    fprintf( stderr, "atom %s, atom %s, atom %s\n", a.fullname, ai[ 1 ].fullname, aj[ j ].fullname );
+//	    fprintf( stderr, "hndist %.3f  hnco %3.f\n", hndist, hnco );
+	  }
+//	  else fprintf( stderr, "ignoring angle between atom %s, atom %s, atom %s\n", a.fullname, ai[ 1 ].fullname, aj[ j ].fullname );
+	}
+
+	return( 1 );
+};
