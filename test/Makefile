@@ -101,9 +101,6 @@ tnetcdf:  tnetcdf.o
 	@echo "[NABC] CC $@"
 	$(VB)$(CC) -o $@ $<  $(LIBS) $(FLIBS_ARCH)
 
-trism-cuda: trism-cuda.o
-	nvcc -o $@ $<  $(LIBS) -L/usr/local/cuda/lib64 -lcufft -lcuda -lcudart
-
 #---------------------------------------------------------------------------
 #  non-tests:
 

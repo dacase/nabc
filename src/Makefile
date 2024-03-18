@@ -26,6 +26,7 @@ clean:
 	-(cd nab && $(MAKE) clean )
 	-(cd nss && $(MAKE) clean )
 	-(cd nss && $(MAKE) clean )
+	-(cd shifts/src && $(MAKE) clean )
 	-(cd netcdf-c-4.7.2 && $(MAKE) clean )
 	-(cd netcdf-fortran-4.5.2 && $(MAKE) clean )
 

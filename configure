@@ -476,15 +476,12 @@ LM=$lm
 
 ###############################################################################
 
-#  (3)  C, NVCC compilers
+#  (3)  CC compilers
 
 CFLAGS=$bintraj $inc $ompflag $cstdflags $mpiflag $cifflags
 CNOOPTFLAGS=-g -O0
 COPTFLAGS=$optflags
 
-CUDA_DIR=/usr/local/cuda
-NVCC = nvcc
-NVFLAGS = -O3 -m64 -gencode=arch=compute_80,code=sm_80 -I\$(CUDA_DIR)/include
 ###############################################################################
 
 #  (4)  other flags:
